@@ -10,6 +10,15 @@ DocExtract AI is an enterprise-grade web application and intelligent data extrac
   - **Invoices**: Extracts line items, tax details, billing terms, date chronology, and vendor records.
   - **Receipts**: Tailored for business travel, retail, and expense management logs.
   - **Purchase Orders**: Maps ordering hierarchies, delivery deadlines, unit totals, and custom terms.
+- **🔄 Intelligent Multi-Provider AI Fallback Engine**:
+  - Automatically routes document payloads through a resilient cognitive tier.
+  - **Primary**: Google Gemini (`gemini`)
+  - **Secondary / Fallback**: OpenRouter (`openrouter`) (Default: `google/gemini-2.5-flash`)
+  - **Emergency Fallback**: Groq Engine (`groq`) (Default: `llama-3.2-11b-vision-preview`)
+  - Logs execution traces, failover logs, error statuses, and exact API latencies directly into an interactive Diagnostics Terminal.
+- **💾 Export & Portability Suite**:
+  - **Download JSON**: Instantly export the fully parsed schema in clean formatted JSON for ERP ingestion.
+  - **Export CSV**: Standardize metadata headers and detailed table rows into a structured CSV file for accounting and ledger management.
 - **📁 Multi-Format Upload Hub**: Supports native drag-and-drop or manual selection for PDFs, PNGs, JPGs, JPEGs, and WEBP formats up to 10MB.
 - **⚡ Hybrid Visual OCR & Parsing Pipeline**:
   - Automatically identifies whether documents contain selectable digital text layers or require localized visual OCR.
@@ -38,7 +47,7 @@ DocExtract AI is an enterprise-grade web application and intelligent data extrac
   - 🟢 **Node.js** & **Express**
   - 🦾 **TypeScript** (Strict type definitions spanning client & server layers)
 - **Cognitive Engines**:
-  - 🧠 **Google Gen AI** (Contextual semantic analysis and structured JSON parsing)
+  - 🧠 **Multi-Model Fallback System** (Gemini, OpenRouter, Groq API interfaces)
   - 👁️ **Tesseract.js / pdf.js** (Digital text extraction and visual OCR)
 
 ---
@@ -54,8 +63,20 @@ docextract-ai/
 ├── server.ts                 # Full-stack server (Express, API routers, Vite middleware)
 ├── tsconfig.json             # TypeScript compiler rules
 ├── vite.config.ts            # Client-side bundler configuration
+├── netlify.toml              # Netlify cloud configuration
 │
-└── src/                      # Client application codebase
+├── server/                   # Backend services & orchestrators
+│   └── services/
+│       └── ai/
+│           ├── ProviderInterface.ts  # Interface standard for AI Services
+│           ├── GeminiService.ts     # Google Gemini API provider integration
+│           ├── OpenRouterService.ts # OpenRouter proxy service integration
+│           ├── GroqService.ts       # Groq high-speed vision model integration
+│           ├── FallbackManager.ts   # Failover scheduling & trace-logging engine
+│           ├── PromptBuilder.ts     # Standardized schema extraction instructions
+│           └── ResponseValidator.ts # Dynamic validation, sanitization, & parsing
+│
+└── src/                      # Client React codebase
     ├── App.tsx               # Primary screen router, states, and app entry
     ├── index.css             # Tailwinds setup, base styles, and animations
     ├── main.tsx              # React mounting file
@@ -65,7 +86,7 @@ docextract-ai/
         ├── HomeView.tsx      # High-fidelity dashboard, landing and features page
         ├── UploadView.tsx    # File drag-and-drop and templates selector
         ├── AnalyzingView.tsx # Real-time progress visualizer and pipeline status logs
-        ├── ResultsView.tsx   # Visual workbench, mock-document, and spreadsheet
+        ├── ResultsView.tsx   # Visual workbench, mock-document, fallback engine tabs, and spreadsheet
         └── AnalyticsView.tsx # Dynamic arithmetic audits, confidence score gauges, and alerts
 ```
 
@@ -99,6 +120,13 @@ Ensure you have the following installed on your machine:
    Open the newly created `.env` file and input your secure API Credentials:
    ```env
    GEMINI_API_KEY=your_gemini_api_key_here
+   
+   # Optional Fallbacks
+   OPENROUTER_API_KEY=your_openrouter_key
+   OPENROUTER_MODEL=google/gemini-2.5-flash
+   GROQ_API_KEY=your_groq_key
+   GROQ_MODEL=llama-3.2-11b-vision-preview
+   AI_PROVIDER_PRIORITY=gemini,openrouter,groq
    ```
 
 4. **Launch the Development Server**:
@@ -126,7 +154,7 @@ Ensure you have the following installed on your machine:
 This project is fully ready for zero-config deployment to **Netlify** with dynamic serverless capability.
 
 ### 📦 Automatic Configuration
-The workspace contains a `netlify.toml` file that auto-configures Netlify to:
+The workspace contains a `netlify.toml` file that auto-configure Netlify to:
 - Run the build command (`npm run build`).
 - Host static web assets from the `dist/` folder.
 - Route all `/api/extract` requests directly to a serverless function at `/netlify/functions/extract.ts`.
@@ -145,6 +173,11 @@ The workspace contains a `netlify.toml` file that auto-configures Netlify to:
    - In Netlify, go to **Site Settings > Environment variables**.
    - Click **Add a variable** and add:
      - `GEMINI_API_KEY` = *[Your Google Gemini API Key]*
+     - `OPENROUTER_API_KEY` = *[Optional: Your OpenRouter API Key]*
+     - `OPENROUTER_MODEL` = *[Optional: google/gemini-2.5-flash]*
+     - `GROQ_API_KEY` = *[Optional: Your Groq API Key]*
+     - `GROQ_MODEL` = *[Optional: llama-3.2-11b-vision-preview]*
+     - `AI_PROVIDER_PRIORITY` = *[Optional: gemini,openrouter,groq]*
 6. Click **Deploy site**. Netlify will build the client and package the serverless function automatically!
 
 ---
