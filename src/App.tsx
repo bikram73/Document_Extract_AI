@@ -336,26 +336,26 @@ export default function App() {
     <div className="min-h-screen bg-surface text-on-surface flex flex-col justify-between select-none transition-colors duration-300">
       
       {/* Premium Navigation Header */}
-      <header className="sticky top-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 px-6 py-4 transition-colors duration-300">
+      <header className="sticky top-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 px-4 py-3 sm:px-6 sm:py-4 transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button 
             onClick={() => setActiveTab("home")}
-            className="flex items-center gap-2.5 cursor-pointer text-left"
+            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer text-left"
           >
-            <div className="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-blue-600/20">
-              <Sparkles className="w-5 h-5 fill-white" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-blue-600/20 shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 fill-white" />
             </div>
             <div>
-              <span className="font-extrabold text-base tracking-tight text-on-surface">DocExtract <span className="text-primary">AI</span></span>
-              <span className="text-[10px] block text-primary font-bold tracking-wider font-sans leading-none uppercase mt-0.5">AI Extraction Engine</span>
+              <span className="font-extrabold text-sm sm:text-base tracking-tight text-on-surface">DocExtract <span className="text-primary">AI</span></span>
+              <span className="text-[9px] sm:text-[10px] hidden min-[380px]:block text-primary font-bold tracking-wider font-sans leading-none uppercase mt-0.5">AI Extraction Engine</span>
             </div>
           </button>
 
           {/* Nav links */}
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-3 sm:gap-6">
             <button 
               onClick={() => setActiveTab("home")}
-              className={`text-sm font-semibold transition-colors cursor-pointer ${
+              className={`text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
                 activeTab === "home" ? "text-primary" : "text-on-surface-variant hover:text-on-surface"
               }`}
             >
@@ -363,7 +363,7 @@ export default function App() {
             </button>
             <button 
               onClick={handleStartExtract}
-              className={`text-sm font-semibold transition-colors cursor-pointer ${
+              className={`text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
                 activeTab === "upload" || activeTab === "analyzing" || activeTab === "results" || activeTab === "analytics"
                   ? "text-primary" 
                   : "text-on-surface-variant hover:text-on-surface"
@@ -374,7 +374,7 @@ export default function App() {
             <a 
               href="#features"
               onClick={() => activeTab !== "home" && setActiveTab("home")}
-              className="text-sm font-semibold text-on-surface-variant hover:text-on-surface hidden md:block"
+              className="text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hidden md:block"
             >
               Features
             </a>
@@ -383,13 +383,13 @@ export default function App() {
             <button
               onClick={toggleTheme}
               id="theme-toggle-btn"
-              className="p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-all cursor-pointer shadow-sm flex items-center justify-center relative group active:scale-95"
+              className="p-1.5 sm:p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-all cursor-pointer shadow-sm flex items-center justify-center relative group active:scale-95"
               title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
             >
               {theme === "light" ? (
-                <Moon className="w-4 h-4 text-on-surface" />
+                <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-on-surface" />
               ) : (
-                <Sun className="w-4 h-4 text-amber-400" />
+                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
               )}
             </button>
           </nav>
