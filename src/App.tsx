@@ -306,6 +306,21 @@ export default function App() {
         })
       });
 
+      const contentType = response.headers.get("content-type") || "";
+      if (!response.ok || !contentType.includes("application/json")) {
+        const responseText = await response.text();
+        let errorMessage = "Extraction service is currently unavailable.";
+        try {
+          const parsed = JSON.parse(responseText);
+          errorMessage = parsed.error || errorMessage;
+        } catch {
+          // Response is HTML or plain text (e.g. 502/503 from container gateway or server start)
+          errorMessage = `Server responded with status ${response.status}. The AI extraction engine may still be booting up or experiencing transient rate limits. Please try again in a few seconds.`;
+        }
+        setErrorMsg(errorMessage);
+        return;
+      }
+
       const resData = await response.json();
       if (resData.success && resData.data) {
         setExtractedData(resData.data);
