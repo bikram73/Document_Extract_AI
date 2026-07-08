@@ -232,7 +232,7 @@ export default function ResultsView({
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
         <div className="lg:col-span-5 space-y-4 w-full">
-          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full lg:h-[750px] min-h-[660px] lg:min-h-0">
+          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-4 sm:p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full lg:h-[750px] min-h-[360px] sm:min-h-[520px] lg:min-h-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Document Viewer</span>
               
@@ -263,7 +263,7 @@ export default function ResultsView({
             </div>
 
             {leftTab === "ocr" ? (
-              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
+              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-4 sm:p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
               
               {/* Document Header */}
               <div className="space-y-6">
@@ -432,10 +432,10 @@ export default function ResultsView({
             </div>
             ) : (
               /* PDF / Image source file previewer tab */
-              <div className="flex-grow flex flex-col w-full min-h-[580px]">
+              <div className="flex-grow flex flex-col w-full min-h-[300px] sm:min-h-[460px]">
                 {activeFile?.base64Data ? (
                   activeFile.mimeType === "application/pdf" || activeFile.name.toLowerCase().endsWith(".pdf") ? (
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
                       {/* PDF Representation / IFrame view modes */}
                       <div className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 flex items-center justify-between gap-3 shrink-0">
                         <div className="flex bg-slate-200/60 dark:bg-slate-950 p-1 rounded-lg">
@@ -470,10 +470,10 @@ export default function ResultsView({
                       </div>
 
                       {pdfViewMode === "embed" && (
-                        <div className="flex-grow w-full h-full min-h-[500px]">
+                        <div className="flex-grow w-full h-full min-h-[240px] sm:min-h-[400px]">
                           <iframe
                             src={`data:application/pdf;base64,${activeFile.base64Data}#navpanes=0&toolbar=0&statusbar=0`}
-                            className="w-full h-full min-h-[500px] border-none"
+                            className="w-full h-full min-h-[240px] sm:min-h-[400px] border-none"
                             title="Source PDF Document"
                           />
                         </div>
@@ -593,7 +593,7 @@ export default function ResultsView({
                     )}
                   </div>
                   ) : (
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-4 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-3 sm:p-4 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
                       <div className="flex-grow flex items-center justify-center overflow-hidden w-full h-full p-2">
                         <img
                           src={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
@@ -617,7 +617,7 @@ export default function ResultsView({
                 ) : (
                   /* Elegant rendering for preloaded presets with no uploaded base64 data */
                   fileName.toLowerCase().includes("stripe") ? (
-                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* PDF Header Simulation */}
                       <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
                         <div>
@@ -708,7 +708,7 @@ export default function ResultsView({
                       </div>
                     </div>
                   ) : fileName.toLowerCase().includes("uber") ? (
-                    <div className="relative bg-[#ffffff] dark:bg-[#121212] w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#ffffff] dark:bg-[#121212] w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* Thermal Receipt Style Frame */}
                       <div className="flex flex-col items-center pb-4 border-b border-dashed border-slate-200 dark:border-slate-800 text-center">
                         <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-black text-sm mb-1.5">U</div>
@@ -791,7 +791,7 @@ export default function ResultsView({
                       </div>
                     </div>
                   ) : fileName.toLowerCase().includes("acme") || fileName.toLowerCase().includes("purchase") ? (
-                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* PO Form Layout */}
                       <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
                         <div>
@@ -879,7 +879,7 @@ export default function ResultsView({
                     </div>
                   ) : (
                     /* Default generic preview fallback for other uploads */
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-8 flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-4 sm:p-8 flex flex-col items-center justify-center text-center space-y-6">
                       <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
                         <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
                       </div>
@@ -944,7 +944,7 @@ export default function ResultsView({
           </div>
 
           {/* Tab Body */}
-          <div className="p-6 text-left flex-grow overflow-y-auto custom-scrollbar lg:h-[650px] lg:min-h-0 min-h-[440px]">
+          <div className="p-4 sm:p-6 text-left flex-grow overflow-y-auto custom-scrollbar lg:h-[650px] lg:min-h-0 min-h-[300px] sm:min-h-[400px]">
             
             {/* SUBTAB 1: GENERAL INFO */}
             {activeSubTab === "general" && (
