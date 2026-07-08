@@ -58,7 +58,7 @@ assets/Purchase_order.png
 
 Then display it like this:
 
-<img src="assets/Purchase_order.png" width="700"/>
+<img src="sample-documents/Purchase_order.png" width="700"/>
 
 Or simply provide the PDF link:
 
