@@ -380,18 +380,32 @@ export default function App() {
             </a>
 
             {/* Premium Theme Switcher Button */}
-            <button
+            <motion.button
               onClick={toggleTheme}
               id="theme-toggle-btn"
-              className="p-1.5 sm:p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-all cursor-pointer shadow-sm flex items-center justify-center relative group active:scale-95"
+              className="p-1.5 sm:p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary cursor-pointer shadow-sm flex items-center justify-center relative group overflow-hidden"
               title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              whileTap={{ scale: 0.85, rotate: 15 }}
+              whileHover={{ scale: 1.08 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              {theme === "light" ? (
-                <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-on-surface" />
-              ) : (
-                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
-              )}
-            </button>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={theme}
+                  initial={{ y: -12, opacity: 0, rotate: -45 }}
+                  animate={{ y: 0, opacity: 1, rotate: 0 }}
+                  exit={{ y: 12, opacity: 0, rotate: 45 }}
+                  transition={{ duration: 0.18 }}
+                  className="flex items-center justify-center"
+                >
+                  {theme === "light" ? (
+                    <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-on-surface" />
+                  ) : (
+                    <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </motion.button>
           </nav>
         </div>
       </header>
