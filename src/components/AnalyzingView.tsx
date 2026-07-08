@@ -83,7 +83,7 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
           ) : (
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100 text-xs font-semibold">
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              <span>Running Gemini 3.5 Flash Model</span>
+              <span>Running AI Extraction Pipeline</span>
             </div>
           )}
 

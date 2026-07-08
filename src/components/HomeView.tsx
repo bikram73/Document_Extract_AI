@@ -206,7 +206,7 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
                 onClick={onStartExtract}
                 className="bg-white text-primary hover:bg-blue-50 font-extrabold px-10 py-4 rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 duration-150 text-base"
               >
-                Extract Document
+                Start Extract Document
               </button>
             </div>
           </div>

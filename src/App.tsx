@@ -216,7 +216,7 @@ export default function App() {
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight text-on-surface">DocExtract <span className="text-primary">AI</span></span>
-              <span className="text-[10px] block text-primary font-bold tracking-wider font-sans leading-none uppercase mt-0.5">Gemini 3.5 Flash Engine</span>
+              <span className="text-[10px] block text-primary font-bold tracking-wider font-sans leading-none uppercase mt-0.5">AI Extraction Engine</span>
             </div>
           </button>
 
@@ -312,7 +312,7 @@ export default function App() {
           <div className="flex items-center gap-1.5 font-medium">
             <span>Powered by</span>
             <Cpu className="w-3.5 h-3.5 text-blue-600" />
-            <span className="font-bold text-slate-800">Gemini 3.5 Flash</span>
+            <span className="font-bold text-slate-800">AI Document Engine</span>
           </div>
         </div>
       </footer>

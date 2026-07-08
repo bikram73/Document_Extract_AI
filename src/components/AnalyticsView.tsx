@@ -85,7 +85,7 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
 
         <div className="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
           <span>PIPELINE ENGINE:</span>
-          <span className="bg-slate-200 px-2.5 py-1 rounded-full font-bold">GEMINI 3.5 FLASH</span>
+          <span className="bg-slate-200 px-2.5 py-1 rounded-full font-bold">COGNITIVE AI</span>
         </div>
       </div>
 
