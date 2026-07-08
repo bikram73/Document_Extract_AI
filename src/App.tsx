@@ -104,6 +104,25 @@ export default function App() {
   const [extractedData, setExtractedData] = useState<ExtractedData>(SAMPLE_INVOICE_DATA);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Fallback Engine state
+  const [providerUsed, setProviderUsed] = useState<string>("gemini");
+  const [providerReason, setProviderReason] = useState<string>("Primary Provider");
+  const [providerLogs, setProviderLogs] = useState<any[]>([
+    {
+      provider: "gemini",
+      event: "STARTED",
+      message: "Attempting document extraction using GEMINI (Primary)...",
+      timestamp: new Date(Date.now() - 4000).toISOString(),
+    },
+    {
+      provider: "gemini",
+      event: "SUCCESS",
+      message: "Successfully extracted structured data in 452ms.",
+      timestamp: new Date().toISOString(),
+      latencyMs: 452,
+    },
+  ]);
+
   // Nav actions
   const handleStartExtract = () => {
     setActiveTab("upload");
@@ -117,6 +136,23 @@ export default function App() {
       mimeType: "application/pdf"
     });
     setExtractedData(SAMPLE_INVOICE_DATA);
+    setProviderUsed("gemini");
+    setProviderReason("Primary Provider");
+    setProviderLogs([
+      {
+        provider: "gemini",
+        event: "STARTED",
+        message: "Attempting document extraction using GEMINI (Primary)...",
+        timestamp: new Date(Date.now() - 4000).toISOString(),
+      },
+      {
+        provider: "gemini",
+        event: "SUCCESS",
+        message: "Successfully extracted structured data in 452ms.",
+        timestamp: new Date().toISOString(),
+        latencyMs: 452,
+      },
+    ]);
     setErrorMsg(null);
     setActiveTab("results");
   };
@@ -132,6 +168,23 @@ export default function App() {
         mimeType: "application/pdf"
       });
       setExtractedData(SAMPLE_INVOICE_DATA);
+      setProviderUsed("gemini");
+      setProviderReason("Primary Provider");
+      setProviderLogs([
+        {
+          provider: "gemini",
+          event: "STARTED",
+          message: "Attempting document extraction using GEMINI (Primary)...",
+          timestamp: new Date(Date.now() - 4000).toISOString(),
+        },
+        {
+          provider: "gemini",
+          event: "SUCCESS",
+          message: "Successfully extracted structured data in 452ms.",
+          timestamp: new Date().toISOString(),
+          latencyMs: 452,
+        },
+      ]);
     } else if (sampleType === "receipt") {
       setActiveFile({
         name: "Uber Taxi Receipt.png",
@@ -140,6 +193,36 @@ export default function App() {
         mimeType: "image/png"
       });
       setExtractedData(SAMPLE_RECEIPT);
+      setProviderUsed("openrouter");
+      setProviderReason("Primary provider rate-limited (429); automatically failed over to OpenRouter");
+      setProviderLogs([
+        {
+          provider: "gemini",
+          event: "STARTED",
+          message: "Attempting document extraction using GEMINI (Primary)...",
+          timestamp: new Date(Date.now() - 6000).toISOString(),
+        },
+        {
+          provider: "gemini",
+          event: "FAILED",
+          message: "API request failed with status 429: Too Many Requests. Rate limit exceeded.",
+          timestamp: new Date(Date.now() - 4500).toISOString(),
+          latencyMs: 1500,
+        },
+        {
+          provider: "openrouter",
+          event: "STARTED",
+          message: "Initiating primary fallback via OpenRouter (google/gemini-2.5-flash)...",
+          timestamp: new Date(Date.now() - 4500).toISOString(),
+        },
+        {
+          provider: "openrouter",
+          event: "SUCCESS",
+          message: "Successfully extracted structured data using OpenRouter in 980ms.",
+          timestamp: new Date().toISOString(),
+          latencyMs: 980,
+        },
+      ]);
     } else {
       setActiveFile({
         name: "Acme Corp Purchase.jpg",
@@ -148,6 +231,49 @@ export default function App() {
         mimeType: "image/jpeg"
       });
       setExtractedData(SAMPLE_PO);
+      setProviderUsed("groq");
+      setProviderReason("Primary provider rate-limited (429) and secondary OpenRouter timed out; emergency failover to Groq");
+      setProviderLogs([
+        {
+          provider: "gemini",
+          event: "STARTED",
+          message: "Attempting document extraction using GEMINI (Primary)...",
+          timestamp: new Date(Date.now() - 10000).toISOString(),
+        },
+        {
+          provider: "gemini",
+          event: "FAILED",
+          message: "API request failed with status 429: Too Many Requests.",
+          timestamp: new Date(Date.now() - 8500).toISOString(),
+          latencyMs: 1500,
+        },
+        {
+          provider: "openrouter",
+          event: "STARTED",
+          message: "Initiating fallback extraction using OpenRouter...",
+          timestamp: new Date(Date.now() - 8500).toISOString(),
+        },
+        {
+          provider: "openrouter",
+          event: "FAILED",
+          message: "API request failed with status 503: Service Temporarily Unavailable.",
+          timestamp: new Date(Date.now() - 4000).toISOString(),
+          latencyMs: 4500,
+        },
+        {
+          provider: "groq",
+          event: "STARTED",
+          message: "Initiating emergency fallback using Groq (llama-3.2-11b-vision-preview)...",
+          timestamp: new Date(Date.now() - 4000).toISOString(),
+        },
+        {
+          provider: "groq",
+          event: "SUCCESS",
+          message: "Successfully extracted structured data using Groq in 610ms.",
+          timestamp: new Date().toISOString(),
+          latencyMs: 610,
+        },
+      ]);
     }
     setActiveTab("analyzing");
   };
@@ -174,6 +300,9 @@ export default function App() {
       const resData = await response.json();
       if (resData.success && resData.data) {
         setExtractedData(resData.data);
+        setProviderUsed(resData.providerUsed || "gemini");
+        setProviderReason(resData.providerReason || "Primary Provider");
+        setProviderLogs(resData.providerLogs || []);
       } else {
         setErrorMsg(resData.error || "An error occurred during extraction.");
       }
@@ -291,6 +420,9 @@ export default function App() {
                 fileSize={activeFile.size} 
                 onUpdateData={handleUpdateData}
                 onGoToAnalytics={handleGoToAnalytics}
+                providerUsed={providerUsed}
+                providerReason={providerReason}
+                providerLogs={providerLogs}
               />
             )}
 

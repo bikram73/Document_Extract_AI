@@ -11,10 +11,22 @@ interface ResultsViewProps {
   fileSize: string;
   onUpdateData: (updated: ExtractedData) => void;
   onGoToAnalytics: () => void;
+  providerUsed?: string;
+  providerReason?: string;
+  providerLogs?: any[];
 }
 
-export default function ResultsView({ data, fileName, fileSize, onUpdateData, onGoToAnalytics }: ResultsViewProps) {
-  const [activeSubTab, setActiveSubTab] = useState<"general" | "items" | "json">("general");
+export default function ResultsView({ 
+  data, 
+  fileName, 
+  fileSize, 
+  onUpdateData, 
+  onGoToAnalytics,
+  providerUsed = "gemini",
+  providerReason = "Primary Provider",
+  providerLogs = []
+}: ResultsViewProps) {
+  const [activeSubTab, setActiveSubTab] = useState<"general" | "items" | "json" | "fallback">("general");
   const [copied, setCopied] = useState(false);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
 
@@ -97,10 +109,26 @@ export default function ResultsView({ data, fileName, fileSize, onUpdateData, on
             <FileCheck className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="font-bold text-lg text-on-surface flex items-center gap-2">
+            <h1 className="font-bold text-lg text-on-surface flex flex-wrap items-center gap-2">
               Structured Workbench 
               <span className="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full">
                 {data.documentType || "Processed Document"}
+              </span>
+              <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
+                providerUsed === "gemini" 
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-100" 
+                  : providerUsed === "openrouter" 
+                  ? "bg-amber-50 text-amber-700 border border-amber-100" 
+                  : "bg-rose-50 text-rose-700 border border-rose-100"
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  providerUsed === "gemini" 
+                    ? "bg-emerald-500 animate-pulse" 
+                    : providerUsed === "openrouter" 
+                    ? "bg-amber-500" 
+                    : "bg-rose-500"
+                }`}></span>
+                Engine: {providerUsed === "gemini" ? "Google Gemini" : providerUsed === "openrouter" ? "OpenRouter" : "Groq"}
               </span>
             </h1>
             <p className="text-xs text-on-surface-variant font-mono">
@@ -305,20 +333,20 @@ export default function ResultsView({ data, fileName, fileSize, onUpdateData, on
         {/* Right Side: Tabbed Structured Workbench Form */}
         <div className="lg:col-span-7 bg-white rounded-3xl border border-outline-variant/30 shadow-sm overflow-hidden flex flex-col">
           {/* Section Tabs */}
-          <div className="flex border-b border-outline-variant/30 bg-slate-50">
+          <div className="flex border-b border-outline-variant/30 bg-slate-50 overflow-x-auto">
             <button
               onClick={() => setActiveSubTab("general")}
-              className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+              className={`flex-1 min-w-[120px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "general" 
                   ? "border-primary text-primary bg-white" 
                   : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
               }`}
             >
-              General Information
+              General Info
             </button>
             <button
               onClick={() => setActiveSubTab("items")}
-              className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+              className={`flex-1 min-w-[120px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "items" 
                   ? "border-primary text-primary bg-white" 
                   : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
@@ -328,13 +356,23 @@ export default function ResultsView({ data, fileName, fileSize, onUpdateData, on
             </button>
             <button
               onClick={() => setActiveSubTab("json")}
-              className={`flex-1 py-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+              className={`flex-1 min-w-[100px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "json" 
                   ? "border-primary text-primary bg-white" 
                   : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
               }`}
             >
               Raw JSON
+            </button>
+            <button
+              onClick={() => setActiveSubTab("fallback")}
+              className={`flex-1 min-w-[150px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                activeSubTab === "fallback" 
+                  ? "border-primary text-primary bg-white" 
+                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
+              }`}
+            >
+              Fallback Engine
             </button>
           </div>
 
@@ -681,6 +719,121 @@ export default function ResultsView({ data, fileName, fileSize, onUpdateData, on
                       {JSON.stringify(data, null, 2)}
                     </code>
                   </pre>
+                </div>
+              </div>
+            )}
+
+            {/* SUBTAB 4: FALLBACK ENGINE DIAGNOSTICS */}
+            {activeSubTab === "fallback" && (
+              <div className="space-y-6">
+                <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-4 text-xs space-y-3 text-left">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-700 uppercase tracking-wide">Fallback Engine Blueprint</span>
+                    <span className="px-2 py-0.5 font-bold text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                      SYSTEM ONLINE
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 text-center text-[11px] pt-1">
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-1">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Primary</span>
+                      <span className="font-semibold text-slate-800">Google Gemini</span>
+                      <span className="text-[9px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full font-bold">Priority 1</span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-1">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Fallback</span>
+                      <span className="font-semibold text-slate-800">OpenRouter</span>
+                      <span className="text-[9px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full font-bold">Priority 2</span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-1">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">Final Fallback</span>
+                      <span className="font-semibold text-slate-800">Groq Engine</span>
+                      <span className="text-[9px] text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded-full font-bold">Priority 3</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-150 rounded-2xl p-5 shadow-sm text-xs space-y-3 text-left">
+                  <h4 className="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                    Orchestrator Decision
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 block uppercase">Selected Provider</span>
+                      <span className="text-xs font-semibold text-blue-700 capitalize">{providerUsed}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 block uppercase">Failover Reason</span>
+                      <span className="text-xs font-medium text-slate-600">{providerReason}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4 text-left">
+                  <h4 className="font-bold text-slate-800 text-sm">Execution Traces &amp; Memory Logs</h4>
+                  
+                  <div className="relative border-l-2 border-slate-150 ml-4 pl-6 space-y-5">
+                    {providerLogs && providerLogs.length > 0 ? (
+                      providerLogs.map((log: any, idx: number) => {
+                        const isSuccess = log.event === "SUCCESS";
+                        const isFailed = log.event === "FAILED";
+                        const isSkipped = log.event === "SKIPPED";
+                        
+                        return (
+                          <div key={idx} className="relative">
+                            {/* Dot */}
+                            <span className={`absolute -left-[33px] top-1 w-4 h-4 rounded-full border-2 bg-white flex items-center justify-center ${
+                              isSuccess 
+                                ? "border-emerald-500" 
+                                : isFailed 
+                                ? "border-rose-500" 
+                                : isSkipped
+                                ? "border-amber-400"
+                                : "border-blue-500"
+                            }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${
+                                isSuccess 
+                                  ? "bg-emerald-500" 
+                                  : isFailed 
+                                  ? "bg-rose-500" 
+                                  : isSkipped
+                                  ? "bg-amber-400"
+                                  : "bg-blue-500"
+                              }`}></span>
+                            </span>
+
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold text-xs text-slate-800 capitalize">{log.provider}</span>
+                                <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full ${
+                                  isSuccess 
+                                    ? "bg-emerald-50 text-emerald-700" 
+                                    : isFailed 
+                                    ? "bg-rose-50 text-rose-700" 
+                                    : isSkipped
+                                    ? "bg-amber-50 text-amber-700"
+                                    : "bg-blue-50 text-blue-700"
+                                }`}>
+                                  {log.event}
+                                </span>
+                                {log.latencyMs !== undefined && (
+                                  <span className="text-[10px] font-mono text-slate-400">
+                                    ({log.latencyMs}ms)
+                                  </span>
+                                )}
+                                <span className="text-[9px] text-slate-400 font-mono ml-auto">
+                                  {new Date(log.timestamp).toLocaleTimeString()}
+                                </span>
+                              </div>
+                              <p className="text-slate-600 text-xs leading-relaxed">{log.message}</p>
+                            </div>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <p className="text-slate-400 italic text-xs">No diagnostics traces available for this session.</p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
