@@ -1,6 +1,10 @@
 # 📄 DocExtract AI — Document Data Extraction Engine
 
+---
+
 ![DocExtract AI](public/dashboard.png)
+
+---
 
 <div align="center">
   <a href="https://doc-extract-ai.netlify.app/" target="_blank" style="text-decoration: none;">
