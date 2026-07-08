@@ -418,6 +418,7 @@ export default function App() {
                 data={extractedData} 
                 fileName={activeFile.name} 
                 fileSize={activeFile.size} 
+                activeFile={activeFile}
                 onUpdateData={handleUpdateData}
                 onGoToAnalytics={handleGoToAnalytics}
                 providerUsed={providerUsed}

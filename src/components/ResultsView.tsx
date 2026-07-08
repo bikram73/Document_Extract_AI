@@ -2,9 +2,9 @@ import { useState, useMemo } from "react";
 import { 
   FileText, Copy, Check, Save, Plus, Trash2, Edit2, Info, ListCollapse, 
   HelpCircle, Sparkles, Building, Calendar, DollarSign, Percent, ShieldCheck, FileCheck,
-  Download, FileSpreadsheet
+  Download, FileSpreadsheet, Eye
 } from "lucide-react";
-import { ExtractedData, LineItem } from "../types";
+import { ExtractedData, LineItem, ActiveFile } from "../types";
 
 interface ResultsViewProps {
   data: ExtractedData;
@@ -15,6 +15,7 @@ interface ResultsViewProps {
   providerUsed?: string;
   providerReason?: string;
   providerLogs?: any[];
+  activeFile?: ActiveFile;
 }
 
 export default function ResultsView({ 
@@ -25,11 +26,13 @@ export default function ResultsView({
   onGoToAnalytics,
   providerUsed = "gemini",
   providerReason = "Primary Provider",
-  providerLogs = []
+  providerLogs = [],
+  activeFile
 }: ResultsViewProps) {
   const [activeSubTab, setActiveSubTab] = useState<"general" | "items" | "json" | "fallback">("general");
   const [copied, setCopied] = useState(false);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
+  const [leftTab, setLeftTab] = useState<"ocr" | "source">("ocr");
 
   // Copy helper
   const handleCopyJSON = () => {
@@ -219,17 +222,38 @@ export default function ResultsView({
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="bg-slate-100 rounded-3xl p-6 border border-slate-200/50 shadow-inner">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold text-slate-500 font-mono">SCANNED DOCUMENT CANVAS</span>
-              <span className="text-xs font-bold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                OCR Hover Overlays Active
-              </span>
+          <div className="bg-slate-100 rounded-3xl p-6 border border-slate-200/50 shadow-inner flex flex-col h-full">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <span className="text-xs font-bold text-slate-500 font-mono uppercase tracking-wider">Document Viewer</span>
+              
+              <div className="flex bg-slate-200/60 p-1 rounded-xl">
+                <button
+                  onClick={() => setLeftTab("ocr")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    leftTab === "ocr"
+                      ? "bg-white text-blue-700 shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  <span>OCR Overlays</span>
+                </button>
+                <button
+                  onClick={() => setLeftTab("source")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    leftTab === "source"
+                      ? "bg-white text-blue-700 shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <Eye className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Source File</span>
+                </button>
+              </div>
             </div>
 
-            {/* Simulated Printed Document Canvas */}
-            <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none">
+            {leftTab === "ocr" ? (
+              <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none">
               
               {/* Document Header */}
               <div className="space-y-6">
@@ -396,6 +420,60 @@ export default function ResultsView({
               </div>
 
             </div>
+            ) : (
+              /* PDF / Image source file previewer tab */
+              <div className="flex-grow flex flex-col h-full min-h-[440px]">
+                {activeFile?.base64Data ? (
+                  activeFile.mimeType === "application/pdf" || activeFile.name.toLowerCase().endsWith(".pdf") ? (
+                    <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-full">
+                      <object
+                        data={`data:application/pdf;base64,${activeFile.base64Data}`}
+                        type="application/pdf"
+                        className="w-full h-full border-none"
+                      >
+                        <iframe
+                          src={`data:application/pdf;base64,${activeFile.base64Data}`}
+                          className="w-full h-full border-none"
+                          title="Source PDF Document"
+                        />
+                      </object>
+                    </div>
+                  ) : (
+                    <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 overflow-hidden p-4 flex items-center justify-center bg-slate-50/50 animate-fade-in">
+                      <img
+                        src={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
+                        alt="Source Document File"
+                        className="max-w-full max-h-full object-contain rounded-lg border border-slate-200 shadow-md"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  )
+                ) : (
+                  /* Elegant placeholder for sample presets with no uploaded base64 data */
+                  <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200/80 p-8 flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
+                      <FileText className="w-8 h-8 text-blue-500" />
+                    </div>
+                    <div className="max-w-xs space-y-3">
+                      <h3 className="font-bold text-slate-800 text-sm sm:text-base">Sample Document Canvas</h3>
+                      <p className="text-xs text-slate-500 leading-relaxed">
+                        You are currently viewing the default preset <strong>{fileName}</strong> ({fileSize}).
+                      </p>
+                      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-150 text-[11px] text-slate-500 leading-normal text-left space-y-1.5 shadow-inner">
+                        <p className="font-bold text-slate-700 flex items-center gap-1">
+                          💡 <span>How to preview your own documents:</span>
+                        </p>
+                        <ol className="list-decimal pl-4 space-y-1 text-slate-600">
+                          <li>Click on <strong>Workspace</strong> in the navigation.</li>
+                          <li>Drag and drop or upload your own <strong>PDF</strong> or <strong>Image</strong> file.</li>
+                          <li>We will display the full original document side-by-side right here!</li>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
