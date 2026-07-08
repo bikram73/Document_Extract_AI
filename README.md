@@ -1,5 +1,7 @@
 # 📄 DocExtract AI — Document Data Extraction Engine
 
+![DocExtract AI](public/dashboard.png)
+
 <div align="center">
   <a href="https://doc-extract-ai.netlify.app/" target="_blank" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/🌐_LIVE_DEMO-doc--extract--ai.netlify.app-004ac6?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" />
