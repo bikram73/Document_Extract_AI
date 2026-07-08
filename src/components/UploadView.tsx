@@ -1,5 +1,5 @@
 import { useState, useRef, DragEvent, ChangeEvent } from "react";
-import { Upload, FileText, Sparkles, CheckCircle2, ChevronRight, Image as ImageIcon } from "lucide-react";
+import { Upload, FileText, Sparkles, CheckCircle2, ChevronRight, Image as ImageIcon, ShieldCheck, Zap, Layers, HelpCircle, Check } from "lucide-react";
 import { motion } from "motion/react";
 import { ActiveFile } from "../types";
 
@@ -90,66 +90,139 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
-      <div className="text-center mb-8 space-y-2">
+    <div className="max-w-4xl mx-auto py-8 px-4 space-y-10">
+      {/* Header Section */}
+      <div className="text-center space-y-3">
         <h1 className="text-3xl font-extrabold text-on-surface tracking-tight">
           Upload Document for Analysis
         </h1>
-        <p className="text-sm text-on-surface-variant max-w-xl mx-auto">
-          Choose a standard business document like an invoice, receipt, or purchase order. Our AI parser will extract line items, financials, and metadata automatically.
+        <p className="text-sm text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+          Choose a standard business document like an invoice, receipt, or purchase order. Our AI-driven fallback pipeline will parse keys, lines, and metrics instantly.
         </p>
+
+        {/* Quick badges */}
+        <div className="flex flex-wrap justify-center gap-2 pt-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 text-xs font-medium border border-blue-100/50 dark:border-blue-900/30">
+            <Zap className="w-3 h-3" /> Auto Failover Pipeline
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium border border-emerald-100/50 dark:border-emerald-900/30">
+            <ShieldCheck className="w-3 h-3" /> Secure Client Privacy
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 text-xs font-medium border border-indigo-100/50 dark:border-indigo-900/30">
+            <Layers className="w-3 h-3" /> Hierarchical Extractor
+          </span>
+        </div>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl flex items-center gap-2">
+        <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 text-red-700 dark:text-red-300 text-sm rounded-2xl flex items-center gap-2">
           <span className="font-semibold">Error:</span> {error}
         </div>
       )}
 
-      {/* Drag & Drop Card */}
-      <div
-        onDragEnter={handleDrag}
-        onDragOver={handleDrag}
-        onDragLeave={handleDrag}
-        onDrop={handleDrop}
-        onClick={triggerFileInput}
-        className={`relative rounded-3xl border-2 border-dashed p-12 text-center transition-all cursor-pointer group ${
-          dragActive 
-            ? "border-primary bg-blue-50/10 dark:bg-blue-950/20" 
-            : "border-outline-variant hover:border-primary/60 bg-surface-container-lowest"
-        }`}
-      >
-        <input
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-          accept=".pdf,image/png,image/jpeg,image/webp"
-          onChange={handleChange}
-        />
+      {/* Main Grid: Upload Area on Left, Guidelines on Right */}
+      <div className="grid md:grid-cols-5 gap-8 items-start">
+        {/* Left Drag & Drop Block */}
+        <div className="md:col-span-3 space-y-4">
+          <div
+            onDragEnter={handleDrag}
+            onDragOver={handleDrag}
+            onDragLeave={handleDrag}
+            onDrop={handleDrop}
+            onClick={triggerFileInput}
+            className={`relative rounded-3xl border-2 border-dashed p-10 text-center transition-all cursor-pointer group ${
+              dragActive 
+                ? "border-primary bg-blue-50/10 dark:bg-blue-950/20" 
+                : "border-outline-variant hover:border-primary/60 bg-surface-container-lowest"
+            }`}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept=".pdf,image/png,image/jpeg,image/webp"
+              onChange={handleChange}
+            />
 
-        <div className="max-w-sm mx-auto space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
-            <Upload className="w-8 h-8" />
+            <div className="max-w-xs mx-auto space-y-4">
+              <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+                <Upload className="w-8 h-8" />
+              </div>
+
+              <div className="space-y-1">
+                <p className="font-bold text-on-surface text-base">
+                  Drag &amp; drop document files
+                </p>
+                <p className="text-xs text-on-surface-variant">
+                  or <span className="text-primary font-semibold underline">browse files</span> from your device
+                </p>
+              </div>
+
+              <p className="text-xs text-on-surface-variant/70 bg-surface-container-low dark:bg-slate-900 px-3 py-1.5 rounded-full inline-block">
+                PDF, PNG, JPG, or WEBP up to 10MB
+              </p>
+            </div>
           </div>
+        </div>
 
-          <div className="space-y-1">
-            <p className="font-bold text-on-surface text-base">
-              Drag and drop document files here
-            </p>
+        {/* Right Details/Guidelines Sidebar */}
+        <div className="md:col-span-2 space-y-6 bg-surface-container-lowest border border-outline-variant/30 p-6 rounded-3xl">
+          <div className="space-y-2">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-on-surface flex items-center gap-2">
+              <HelpCircle className="w-4 h-4 text-primary" /> Extraction Capabilities
+            </h3>
             <p className="text-xs text-on-surface-variant">
-              or <span className="text-primary font-semibold underline">browse files</span> from your device
+              Our extraction system is designed to identify key data elements automatically:
             </p>
           </div>
 
-          <p className="text-xs text-on-surface-variant/70">
-            Supports PDF, PNG, JPG, and WEBP up to 10MB
-          </p>
+          <div className="space-y-3.5 text-xs">
+            <div className="flex gap-2.5 items-start">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <span className="font-bold text-on-surface">Metadata Keys</span>
+                <p className="text-on-surface-variant">Merchant/Supplier name, date, invoice numbers, tax IDs, and billing addresses.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2.5 items-start">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <span className="font-bold text-on-surface">Tabular Line Items</span>
+                <p className="text-on-surface-variant">Automatic extraction of nested tables, including description, quantity, unit price, tax, and item totals.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2.5 items-start">
+              <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <span className="font-bold text-on-surface">Financial Integrity</span>
+                <p className="text-on-surface-variant">Net amounts, currency identification, applicable tax details, and total balance due calculations.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-outline-variant/30 pt-4 text-[11px] text-on-surface-variant flex items-center gap-2 leading-relaxed">
+            <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+            <span>Files are processed in-memory. Zero retention storage is utilized for security.</span>
+          </div>
         </div>
       </div>
 
       {/* Sample presets */}
-      <div className="mt-12 space-y-4 text-left">
-        <h2 className="text-lg font-bold text-on-surface">Or explore a pre-populated template:</h2>
+      <div className="space-y-4 text-left">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-on-surface flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-yellow-500 fill-yellow-500/20" /> Try a Pre-loaded Document
+          </h2>
+          <span className="text-xs text-on-surface-variant font-medium">No upload required • Dynamic fallbacks</span>
+        </div>
         
         <div className="grid md:grid-cols-3 gap-4">
           <button
@@ -202,6 +275,48 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
               <p className="text-xs text-on-surface-variant">B2B hardware equipment</p>
             </div>
           </button>
+        </div>
+      </div>
+
+      {/* Multi-Provider Failover Map / Workflow Block */}
+      <div className="bg-gradient-to-tr from-slate-50 to-blue-50/20 dark:from-slate-900/40 dark:to-blue-950/10 border border-outline-variant/30 rounded-3xl p-6 space-y-6">
+        <div className="space-y-1">
+          <h3 className="text-sm font-bold text-on-surface flex items-center gap-2">
+            <Layers className="w-4 h-4 text-blue-600" /> Auto-Fallback Extraction Process
+          </h3>
+          <p className="text-xs text-on-surface-variant">
+            If our primary AI model fails or hits token limits, the engine will seamlessly failover to preserve your workflow:
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+          <div className="p-4 bg-white dark:bg-slate-900/60 rounded-2xl border border-outline-variant/20 relative">
+            <div className="absolute top-3 right-3 text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 px-2 py-0.5 rounded-full">Primary</div>
+            <span className="text-xs font-black text-slate-400 font-mono">01</span>
+            <h4 className="font-semibold text-xs text-on-surface mt-1">Google Gemini</h4>
+            <p className="text-[11px] text-on-surface-variant mt-1">Primary multi-modal parser. Extracts complex multi-table structures instantly.</p>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-slate-900/60 rounded-2xl border border-outline-variant/20 relative">
+            <div className="absolute top-3 right-3 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 px-2 py-0.5 rounded-full">Secondary</div>
+            <span className="text-xs font-black text-slate-400 font-mono">02</span>
+            <h4 className="font-semibold text-xs text-on-surface mt-1">OpenRouter (Gemini)</h4>
+            <p className="text-[11px] text-on-surface-variant mt-1">Sub-second alternative path. Takes over instantly in case of quota constraints.</p>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-slate-900/60 rounded-2xl border border-outline-variant/20 relative">
+            <div className="absolute top-3 right-3 text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/30 px-2 py-0.5 rounded-full">Tertiary</div>
+            <span className="text-xs font-black text-slate-400 font-mono">03</span>
+            <h4 className="font-semibold text-xs text-on-surface mt-1">Groq (Llama Vision)</h4>
+            <p className="text-[11px] text-on-surface-variant mt-1">Ultra-low latency fallback route optimized for extremely high-speed extractions.</p>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-slate-900/60 rounded-2xl border border-outline-variant/20 relative">
+            <div className="absolute top-3 right-3 text-[10px] font-bold text-slate-600 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Integrity</div>
+            <span className="text-xs font-black text-slate-400 font-mono">04</span>
+            <h4 className="font-semibold text-xs text-on-surface mt-1">Mathematical Audit</h4>
+            <p className="text-[11px] text-on-surface-variant mt-1">Performs tax, quantity, and line-item arithmetic validation automatically.</p>
+          </div>
         </div>
       </div>
     </div>
