@@ -201,18 +201,12 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
             <p className="text-base text-blue-100 max-w-lg mx-auto">
               Join hundreds of enterprise companies saving thousands of hours of manual entry every month with DocExtract AI.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 pt-2">
+            <div className="flex justify-center pt-2">
               <button 
                 onClick={onStartExtract}
-                className="bg-white text-primary hover:bg-slate-50 font-bold px-8 py-3 rounded-xl transition-all cursor-pointer"
+                className="bg-white text-primary hover:bg-blue-50 font-extrabold px-10 py-4 rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 duration-150 text-base"
               >
-                Start Free Trial
-              </button>
-              <button 
-                onClick={onStartExtract}
-                className="bg-blue-600 hover:bg-blue-700 text-white border border-blue-400/30 font-bold px-8 py-3 rounded-xl transition-all cursor-pointer"
-              >
-                Book a Demo
+                Extract Document
               </button>
             </div>
           </div>

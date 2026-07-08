@@ -216,7 +216,7 @@ export default function App() {
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight text-on-surface">DocExtract <span className="text-primary">AI</span></span>
-              <span className="text-[10px] block text-on-surface-variant font-mono leading-none">VERSION 1.0</span>
+              <span className="text-[10px] block text-primary font-bold tracking-wider font-sans leading-none uppercase mt-0.5">Gemini 3.5 Flash Engine</span>
             </div>
           </button>
 
