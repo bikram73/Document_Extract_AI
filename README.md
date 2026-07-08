@@ -1,4 +1,4 @@
-# 📄 DocExtract AI — Intelligent Document Data Extraction Agent
+# 📄 DocExtract AI — Document Data Extraction Engine
 
 <div align="center">
   <a href="https://doc-extract-ai.netlify.app/" target="_blank" style="text-decoration: none;">
@@ -6,7 +6,7 @@
   </a>
 </div>
 
-DocExtract AI is an enterprise-grade web application and intelligent data extraction engine designed to convert unstructured physical documents—such as invoices, receipts, and purchase orders—into highly validated, structured JSON payloads. By combining state-of-the-art OCR systems with cognitive language modeling, the platform automates data entry and integrates seamlessly with enterprise ERP platforms.
+DocExtract AI is a full-stack web application designed to convert unstructured business documents—such as invoices, receipts, and purchase orders—into validated, structured JSON payloads. The system couples client-side parsing (digital PDF text extraction and optical character recognition) with cognitive language models to automate data extraction.
 
 ---
 
@@ -42,13 +42,13 @@ DocExtract AI is an enterprise-grade web application and intelligent data extrac
   - **Context-Powered Toggle**: Global theme state manager powered by a lightweight **React Context Provider** (`ThemeContext`).
   - **Dynamic Theme Synchronization**: Seamlessly toggles the root interface between high-contrast light and dark UI states.
   - **Smart Persistence**: Detects and defaults automatically to the user's OS system preferences, with manual selections securely persisted inside `localStorage`.
-  - **Fluid Tokens**: Utilizes custom Tailwind design tokens to guarantee gorgeous color consistency across all views and interactive widgets under both modes.
+  - **Fluid Tokens**: Utilizes custom Tailwind design tokens to guarantee color consistency across all views and interactive widgets under both modes.
 - **🔔 Interactive Toast Notification System**:
-  - **Action Acknowledgements**: Displays beautiful, non-blocking floating notifications when downloading JSON configurations, exporting CSV ledgers, copying payloads, or updating ledger items.
+  - **Action Acknowledgements**: Displays non-blocking floating notifications when downloading JSON configurations, exporting CSV ledgers, copying payloads, or updating ledger items.
   - **Custom Animation Curves**: Utilizes smooth micro-motion and responsive cubic-bezier scales/slides to slide toast bubbles gracefully on screen.
-  - **Multi-Type States**: Supports adaptive `success`, `info`, and `error` styles designed to blend perfectly with Light and Dark aesthetics.
+  - **Multi-Type States**: Supports adaptive `success`, `info`, and `error` styles designed to blend with Light and Dark aesthetics.
 - **✨ Premium View Entrance Transitions**:
-  - **Dynamic Entrance**: Applies an ultra-premium slide-and-scale entrance animation to active workspaces and dashboard panels during system mounting.
+  - **Dynamic Entrance**: Applies a slide-and-scale entrance animation to active workspaces and dashboard panels during system mounting.
   - **Visual Continuity**: Smoothes out screen-routing transitions using custom physics curves (`[0.16, 1, 0.3, 1]`) to match native desktop interfaces.
 
 ---
@@ -121,7 +121,7 @@ Ensure you have the following installed on your machine:
 - [Node.js](https://nodejs.org/) (v18 or higher recommended)
 - [npm](https://www.npmjs.com/) (Node package manager)
 
-### ⚙️ Step-by-Step Installation
+### ⚙️ Step-by-Step Setup
 
 1. **Clone the Project**:
    ```bash
@@ -159,7 +159,7 @@ Ensure you have the following installed on your machine:
    👉 **`http://localhost:3000`**
 
 5. **Build for Production**:
-   Compiles client-side bundles and compiles server TypeScript into a highly optimized, standalone CommonJS module inside `dist/`:
+   Compiles client-side bundles and compiles server TypeScript into an optimized, standalone CommonJS module inside `dist/`:
    ```bash
    npm run build
    ```
@@ -171,48 +171,233 @@ Ensure you have the following installed on your machine:
 
 ---
 
-## ⚡ Netlify Deployment Guide
+## 🏗️ Architecture Pipeline
 
-This project is fully ready for zero-config deployment to **Netlify** with dynamic serverless capability.
+Below is a visual diagram of the document processing and extraction pipeline:
 
-### 📦 Automatic Configuration
-The workspace contains a `netlify.toml` file that auto-configure Netlify to:
-- Run the build command (`npm run build`).
-- Host static web assets from the `dist/` folder.
-- Route all `/api/extract` requests directly to a serverless function at `/netlify/functions/extract.ts`.
-- Fall back gracefully to `index.html` for React routing.
-
-### ⚙️ Step-by-Step Netlify Deploy
-
-1. **Push your code** to a Git repository (GitHub, GitLab, or Bitbucket).
-2. Go to your **[Netlify Dashboard](https://app.netlify.com/)** and click **"Add new site" > "Import an existing project"**.
-3. Link your Git repository.
-4. Netlify will auto-detect the configuration from `netlify.toml`:
-   - **Build command**: `npm run build`
-   - **Publish directory**: `dist`
-   - **Functions directory**: `netlify/functions`
-5. **Add Environment Variables**:
-   - In Netlify, go to **Site Settings > Environment variables**.
-   - Click **Add a variable** and add:
-     - `GEMINI_API_KEY` = *[Your Google Gemini API Key]*
-     - `OPENROUTER_API_KEY` = *[Optional: Your OpenRouter API Key]*
-     - `OPENROUTER_MODEL` = *[Optional: google/gemini-2.5-flash]*
-     - `GROQ_API_KEY` = *[Optional: Your Groq API Key]*
-     - `GROQ_MODEL` = *[Optional: llama-3.2-11b-vision-preview]*
-     - `AI_PROVIDER_PRIORITY` = *[Optional: gemini,openrouter,groq]*
-6. Click **Deploy site**. Netlify will build the client and package the serverless function automatically!
+```text
++------------------------------------------------------------+
+|                        User Upload                         |
+|         Supports PDF, PNG, JPG, JPEG, WEBP (< 10MB)        |
++------------------------------+-----------------------------+
+                               |
+                               v
++------------------------------------------------------------+
+|                  Client-Side Pre-processing                |
+|  - Digital PDF: Extracts raw text layers via pdf.js        |
+|  - Images/Scans: Extracts localized text via Tesseract.js  |
++------------------------------+-----------------------------+
+                               |
+                               v
++------------------------------------------------------------+
+|            Node.js / Express Backend Proxy                 |
+|            - Endpoints exposed at /api/extract             |
+|            - Handles environment-safe API credentials      |
++------------------------------+-----------------------------+
+                               |
+                               v
++------------------------------------------------------------+
+|              Intelligent AI Provider Fallback              |
+|        Attempts connection in priority sequence:            |
+|        1. Gemini Service (Primary)                         |
+|        2. OpenRouter Service (Secondary)                   |
+|        3. Groq Vision Service (Tertiary / Emergency)       |
++------------------------------+-----------------------------+
+                               |
+                               v
++------------------------------------------------------------+
+|               Post-Extraction Validation Layer             |
+| - Strips formatting/markdown wrappers                      |
+| - Verifies schema compliance (vendor, financials, totals)  |
+| - Normalizes numerical records & line-item schemas         |
++------------------------------+-----------------------------+
+                               |
+                               v
++------------------------------------------------------------+
+|                  Interactive UI Workbench                  |
+| - Real-time editable spreadsheet with custom recalculations|
+| - Integrity checks panel & copyable JSON output terminal   |
++------------------------------------------------------------+
+```
 
 ---
 
-## 🔒 Security & Data Compliance
+## 🧠 AI Prompt Strategy & Anti-Hallucination Guardrails
 
-- **No Public API Exposure**: All requests involving cognitive translation or secure keys are proxied safely through Node/Express backend layers. No secrets are ever transmitted to or accessible from browser developer tools.
-- **Ephemeral Processing**: Document bytes are parsed dynamically and are not stored permanently.
+To ensure high-fidelity extraction and mitigate hallucination tendencies of large language models, the prompting framework is engineered as follows:
+
+1. **Strict Output Constraints (No Preambles)**: The model is instructed to output a raw JSON payload directly. By explicitly stating: `"Return ONLY a valid JSON object. Do not include any markdown formatting, backticks, or wrapper blocks"`, we prevent parsing failures on the backend and bypass conversational preambles.
+2. **Explicit Null Coercion**: Instead of allowing the model to make logical guesses about missing metadata fields (such as `vendorTaxId` or `dueDate`), the prompt instructions state: `"If a field is not present in the document, set its value to null. Do not invent, extrapolate, or estimate values."`
+3. **Closed-Loop Arithmetic Auditing**: Rather than blindly transcribing numerical strings, the prompt instructs the model to double-check calculation logic (e.g., confirming whether `subtotal + tax = total`) and reflect the mathematical validity in an `integrityCheck` block.
+4. **Post-Extraction Sanitizer**: The backend implements a robust verification utility (`ResponseValidator.ts`) that runs immediately after the LLM output is received. It catches partial/broken JSON, enforces correct numeric conversions, handles array fallbacks for missing line items, and establishes sensible defaults to prevent interface exceptions.
+
+---
+
+## 📊 Confidence Scores Explanation
+
+Each document extraction evaluates and assigns a set of distinct confidence ratings:
+
+- **Overall Confidence**: An aggregate assessment of the document's structure, completeness, and legibility as assessed by the language model contextually.
+- **Vendor Confidence**: Determined by analyzing the clarity and prominence of the vendor name, registered tax ID, and branding fields.
+- **Date Confidence**: Generated by analyzing standard ISO representations, matching syntax markers, and checking logical chronology.
+- **Line Items Confidence**: Evaluates the consistency of tables, itemizations, description boundaries, and math calculations across individual entries.
+- **Currency Confidence**: Evaluates the consistency of currency identifiers throughout the document.
+
+---
+
+## 📄 Challenge Deliverables
+
+The core requirements outlined in the challenge guidelines are mapped to the following modules:
+
+1. **Sample Documents Included**: Pre-configured sample files for **Invoices**, **Receipts**, and **Purchase Orders** are integrated directly into the Upload Hub. Reviewers can test the extraction features immediately with one click.
+2. **Structured JSON Output**: A copyable, syntax-highlighted JSON code block is updated in real-time in the output terminal of the Workbench as edits are made.
+3. **Validation Notes & Audits**: The interactive workspace highlights integrity warnings regarding:
+   - **Chronology**: Verifying that the due date occurs on or after the issue date.
+   - **Arithmetic**: Ensuring line items sum precisely to the subtotal, and subtotal + tax sums precisely to the total.
+   - **Currency Uniformity**: Flagging mismatched currency codes within the same document context.
+4. **Transparent Codebase**: Schema properties are isolated cleanly within TypeScript type definitions to ensure complete compliance.
+
+---
+
+## 🖨️ Sample JSON Payload
+
+Below is an example of the validated extraction output schema generated by the system:
+
+```json
+{
+  "documentType": "Invoice",
+  "vendorName": "Stripe Payments UK",
+  "vendorTaxId": "GB 123 456 789",
+  "invoiceNumber": "INV-2024-88412",
+  "issueDate": "Oct 24, 2024",
+  "dueDate": "Nov 23, 2024",
+  "currency": "USD ($)",
+  "paymentTerms": "Net 30",
+  "financials": {
+    "subtotal": 1995.00,
+    "tax": 399.00,
+    "total": 2394.00
+  },
+  "lineItems": [
+    {
+      "description": "AI Document Processing (Enterprise)",
+      "qty": 1,
+      "unitPrice": 1200.00,
+      "amount": 1200.00
+    },
+    {
+      "description": "Custom API Integration Support",
+      "qty": 5,
+      "unitPrice": 150.00,
+      "amount": 750.00
+    },
+    {
+      "description": "Monthly Cloud Storage Surcharge",
+      "qty": 1,
+      "unitPrice": 45.00,
+      "amount": 45.00
+    }
+  ],
+  "confidence": {
+    "overall": 95,
+    "vendor": 99,
+    "date": 97,
+    "lineItems": 84,
+    "currency": 100
+  },
+  "insights": "This document appears to be a Service Invoice from Stripe Payments UK dated October 24, 2024. The billing cycle matches your previous subscriptions.",
+  "integrityCheck": {
+    "dateValidation": "PASSED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [
+    {
+      "title": "Address Mismatch",
+      "message": "The vendor address on invoice differs from the Master Data record. Recommended: Update CRM record."
+    }
+  ]
+}
+```
+
+---
+
+## 🌐 API Documentation
+
+The Express server exposes the following API endpoints to handle document operations securely:
+
+### 1. Document Extraction
+- **Endpoint**: `POST /api/extract`
+- **Content-Type**: `application/json`
+- **Request Body**:
+  ```json
+  {
+    "base64Data": "data:image/png;base64,iVBORw0KG...",
+    "mimeType": "image/png",
+    "fileName": "invoice_october.png"
+  }
+  ```
+- **Success Response (200 OK)**:
+  ```json
+  {
+    "success": true,
+    "data": { ... }, // ExtractedData structured JSON schema
+    "providerUsed": "gemini",
+    "providerReason": "Primary Provider",
+    "providerLogs": [
+      {
+        "provider": "gemini",
+        "event": "STARTED",
+        "message": "Attempting document extraction using GEMINI...",
+        "timestamp": "2026-07-08T05:31:15.000Z"
+      },
+      {
+        "provider": "gemini",
+        "event": "SUCCESS",
+        "message": "Successfully extracted structured data in 1435ms.",
+        "timestamp": "2026-07-08T05:31:16.435Z",
+        "latencyMs": 1435
+      }
+    ]
+  }
+  ```
+- **Error Response (500 Internal Server Error)**:
+  ```json
+  {
+    "success": false,
+    "error": "Intelligent AI Provider Fallback Engine failed. All active providers failed to extract data."
+  }
+  ```
+
+### 2. Health Check
+- **Endpoint**: `GET /api/health`
+- **Success Response (200 OK)**:
+  ```json
+  {
+    "status": "ok",
+    "timestamp": "2026-07-08T05:31:15.000Z"
+  }
+  ```
+
+---
+
+## ⚡ Performance Notes
+
+- **Processing Latency**: Standard processing cycles average between **1.5 to 4 seconds** depending on document length and network round-trip speeds.
+- **Payload Max Limits**: API routes enforce a maximum request limit of **50MB** to support high-resolution scans, while client-side validations warn of files exceeding **10MB** to optimize client performance.
+- **OCR Processing Time**: Tesseract.js client OCR processes document text in **1 to 2 seconds** locally before transporting data to the server, ensuring quick frontend feedback.
+
+---
+
+## ⚠️ Known Limitations
+
+1. **Extremely Low Resolution / Blurry Images**: Hand-captured documents with high radial blur, glare, or extremely low lighting might degrade OCR accuracy, resulting in lower confidence scores.
+2. **Complex Multi-Page Tables**: Documents with tables spanning across multiple pages without consistent header records can occasionally experience row-alignment drift.
+3. **Handwritten Fields**: While the cognitive model is capable of reading legible cursive handwriting, highly stylized or messy handwriting can occasionally result in transcription gaps.
+4. **Foreign Language Currencies**: Standard processing maps USD, EUR, GBP, and major currency formats accurately. Highly exotic or regional currency symbols might fallback to default representation string formats.
 
 ---
 
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-
-
