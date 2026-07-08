@@ -381,6 +381,31 @@ The Express server exposes the following API endpoints to handle document operat
 
 ---
 
+# 📄 Sample Documents & Extraction Results
+
+To help reviewers quickly evaluate the AI Document Data Extractor, a complete set of sample documents and their corresponding structured JSON outputs are included in this repository.
+
+### Included Samples
+
+- 📄 Invoice → PDF + Extracted JSON
+- 🧾 Receipt → Image + Extracted JSON
+- 📦 Purchase Order → PDF + Extracted JSON
+
+👉 **View all sample documents and outputs here:**
+
+## **➡️ [Sample Documents & Extraction Results](./SAMPLE_RESULTS.md)**
+
+This page includes:
+
+- Original input documents
+- Generated JSON outputs
+- Validation summary
+- OCR and AI extraction results
+- Confidence scores
+- AI provider information
+
+---
+
 ## ⚡ Performance Notes
 
 - **Processing Latency**: Standard processing cycles average between **1.5 to 4 seconds** depending on document length and network round-trip speeds.
