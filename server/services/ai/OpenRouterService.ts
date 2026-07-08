@@ -21,8 +21,13 @@ export class OpenRouterService implements AIService {
     // Prepare content payload
     const content: any[] = [{ type: "text", text: promptText }];
 
-    // If it's an image or pdf, we send it as an image_url (OpenRouter supports standard OpenAI format)
-    if (mimeType.startsWith("image/") || mimeType === "application/pdf") {
+    // OpenRouter's standard chat completions image_url does not natively support PDF binary inputs.
+    if (mimeType === "application/pdf") {
+      throw new Error("OpenRouter does not support native PDF inputs via image_url. Please use Google Gemini or upload an image format (PNG, JPEG, WEBP).");
+    }
+
+    // If it's an image, we send it as an image_url (OpenRouter supports standard OpenAI format)
+    if (mimeType.startsWith("image/")) {
       content.push({
         type: "image_url",
         image_url: {
