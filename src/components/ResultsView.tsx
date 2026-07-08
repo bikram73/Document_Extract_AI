@@ -34,7 +34,9 @@ export default function ResultsView({
   const [activeSubTab, setActiveSubTab] = useState<"general" | "items" | "json" | "fallback">("general");
   const [copied, setCopied] = useState(false);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
-  const [leftTab, setLeftTab] = useState<"ocr" | "source">("ocr");
+  const [leftTab, setLeftTab] = useState<"ocr" | "source">("source");
+  const [mobileTab, setMobileTab] = useState<"document" | "editor">("document");
+  const [pdfViewMode, setPdfViewMode] = useState<"embed" | "simulation">("embed");
 
   // Copy helper
   const handleCopyJSON = () => {
@@ -226,10 +228,36 @@ export default function ResultsView({
         </div>
       </div>
 
+      {/* Device Tab Selector (Visible on Mobile/Tablet only, hidden on Desktop) */}
+      <div className="lg:hidden flex bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-2xl border border-slate-200/30 dark:border-slate-800/50 mb-4 shadow-sm">
+        <button
+          onClick={() => setMobileTab("document")}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+            mobileTab === "document"
+              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+          }`}
+        >
+          <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <span>📄 Document View</span>
+        </button>
+        <button
+          onClick={() => setMobileTab("editor")}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
+            mobileTab === "editor"
+              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+          }`}
+        >
+          <Edit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <span>✍️ Form Editor ({data.lineItems?.length || 0})</span>
+        </button>
+      </div>
+
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col min-h-[660px]">
+        <div className={`lg:col-span-5 space-y-4 ${mobileTab === "document" ? "block" : "hidden lg:block"}`}>
+          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full lg:h-[750px] min-h-[660px] lg:min-h-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Document Viewer</span>
               
@@ -260,7 +288,7 @@ export default function ResultsView({
             </div>
 
             {leftTab === "ocr" ? (
-              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
+              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
               
               {/* Document Header */}
               <div className="space-y-6">
@@ -432,24 +460,52 @@ export default function ResultsView({
               <div className="flex-grow flex flex-col w-full min-h-[580px]">
                 {activeFile?.base64Data ? (
                   activeFile.mimeType === "application/pdf" || activeFile.name.toLowerCase().endsWith(".pdf") ? (
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
-                      {/* Interactive PDF Header Warn */}
-                      <div className="bg-amber-500/10 dark:bg-amber-400/5 border-b border-amber-500/20 px-4 py-2.5 text-[11px] text-amber-800 dark:text-amber-300 font-medium flex items-center justify-between gap-3 shrink-0">
-                        <span className="flex items-center gap-1.5 leading-snug">
-                          <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                          <span>Browser sandboxing blocks raw PDF views. Showing dynamic extraction structure.</span>
-                        </span>
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
+                      {/* PDF Representation / IFrame view modes */}
+                      <div className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 flex items-center justify-between gap-3 shrink-0">
+                        <div className="flex bg-slate-200/60 dark:bg-slate-950 p-1 rounded-lg">
+                          <button
+                            onClick={() => setPdfViewMode("embed")}
+                            className={`px-3 py-1 rounded text-[10px] font-bold transition-all cursor-pointer ${
+                              pdfViewMode === "embed"
+                                ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
+                                : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
+                            }`}
+                          >
+                            Interactive PDF
+                          </button>
+                          <button
+                            onClick={() => setPdfViewMode("simulation")}
+                            className={`px-3 py-1 rounded text-[10px] font-bold transition-all cursor-pointer ${
+                              pdfViewMode === "simulation"
+                                ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
+                                : "text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-slate-200"
+                            }`}
+                          >
+                            Visual Extract Structure
+                          </button>
+                        </div>
                         <a
                           href={`data:application/pdf;base64,${activeFile.base64Data}`}
                           download={activeFile.name}
-                          className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white rounded-md font-bold text-[10px] transition-all whitespace-nowrap active:scale-[0.98]"
+                          className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-md font-bold text-[10px] transition-all whitespace-nowrap active:scale-[0.98]"
                         >
-                          Download Raw PDF
+                          Download PDF
                         </a>
                       </div>
 
-                      {/* PDF Representation Body */}
-                      <div className="p-6 flex flex-col flex-grow overflow-y-auto custom-scrollbar select-none text-xs bg-[#fdfdfd] dark:bg-[#0c0f17] text-slate-800 dark:text-slate-100">
+                      {pdfViewMode === "embed" && (
+                        <div className="flex-grow w-full h-full min-h-[500px]">
+                          <iframe
+                            src={`data:application/pdf;base64,${activeFile.base64Data}#navpanes=0&toolbar=0&statusbar=0`}
+                            className="w-full h-full min-h-[500px] border-none"
+                            title="Source PDF Document"
+                          />
+                        </div>
+                      )}
+
+                      {pdfViewMode === "simulation" && (
+                        <div className="p-6 flex flex-col flex-grow overflow-y-auto custom-scrollbar select-none text-xs bg-[#fdfdfd] dark:bg-[#0c0f17] text-slate-800 dark:text-slate-100">
                         {/* Simulation Header */}
                         <div className="flex justify-between items-start pb-5 border-b border-slate-200 dark:border-slate-800">
                           <div>
@@ -559,7 +615,8 @@ export default function ResultsView({
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )}
+                  </div>
                   ) : (
                     <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-4 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
                       <div className="flex-grow flex items-center justify-center overflow-hidden w-full h-full p-2">
@@ -866,7 +923,7 @@ export default function ResultsView({
         </div>
 
         {/* Right Side: Tabbed Structured Workbench Form */}
-        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
+        <div className={`lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col lg:h-[750px] ${mobileTab === "editor" ? "block" : "hidden lg:block"}`}>
           {/* Section Tabs */}
           <div className="flex border-b border-outline-variant/30 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-x-auto">
             <button
@@ -912,7 +969,7 @@ export default function ResultsView({
           </div>
 
           {/* Tab Body */}
-          <div className="p-6 text-left min-h-[440px]">
+          <div className="p-6 text-left flex-grow overflow-y-auto custom-scrollbar lg:h-[650px] lg:min-h-0 min-h-[440px]">
             
             {/* SUBTAB 1: GENERAL INFO */}
             {activeSubTab === "general" && (
