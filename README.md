@@ -6,10 +6,6 @@
   </a>
 </div>
 
-<div align="center">
-  <img src="public/dashboard.png" alt="DocExtract AI Workspace Dashboard Mockup" width="800" style="border-radius: 12px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);" />
-</div>
-
 DocExtract AI is an enterprise-grade web application and intelligent data extraction engine designed to convert unstructured physical documents—such as invoices, receipts, and purchase orders—into highly validated, structured JSON payloads. By combining state-of-the-art OCR systems with cognitive language modeling, the platform automates data entry and integrates seamlessly with enterprise ERP platforms.
 
 ---
