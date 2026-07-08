@@ -1,0 +1,294 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+    
+    <!-- Primary Blue Gradient -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    
+    <!-- Sparkle Gold Gradient -->
+    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+
+    <!-- Glowing Lines Gradient -->
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.1" />
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.1" />
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="cardShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.06" />
+    </filter>
+    <filter id="btnShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#2563eb" flood-opacity="0.2" />
+    </filter>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bgGrad)" />
+
+  <!-- Grid Pattern Overlay -->
+  <g opacity="0.3">
+    <path d="M 0,50 L 1200,50 M 0,100 L 1200,100 M 0,150 L 1200,150 M 0,200 L 1200,200 M 0,250 L 1200,250 M 0,300 L 1200,300 M 0,350 L 1200,350 M 0,400 L 1200,400 M 0,450 L 1200,450 M 0,500 L 1200,500 M 0,550 L 1200,550 M 0,600 L 1200,600" stroke="#cbd5e1" stroke-width="0.5" />
+    <path d="M 100,0 L 100,675 M 200,0 L 200,675 M 300,0 L 300,675 M 400,0 L 400,675 M 500,0 L 500,675 M 600,0 L 600,675 M 700,0 L 700,675 M 800,0 L 800,675 M 900,0 L 900,675 M 1000,0 L 1000,675 M 1100,0 L 1100,675" stroke="#cbd5e1" stroke-width="0.5" />
+  </g>
+
+  <!-- Ambient background glow elements -->
+  <circle cx="950" cy="330" r="280" fill="#3b82f6" opacity="0.05" filter="blur(40px)" />
+  <circle cx="1100" cy="150" r="150" fill="#a855f7" opacity="0.03" filter="blur(50px)" />
+
+  <!-- ================= HEADER / TOP BAR ================= -->
+  <g transform="translate(0, 0)">
+    <!-- Header Background -->
+    <rect x="0" y="0" width="1200" height="80" fill="#ffffff" opacity="0.9" />
+    <line x1="0" y1="80" x2="1200" y2="80" stroke="#e2e8f0" stroke-width="1" />
+
+    <!-- Logo & Title -->
+    <g transform="translate(50, 20)">
+      <!-- Logo Blue Box -->
+      <rect width="40" height="40" rx="10" fill="#004ac6" />
+      <!-- Star / Sparkle in logo -->
+      <path d="M20 10l2.5 6.5 6.5 2.5-6.5 2.5L20 30l-2.5-6.5-6.5-2.5 6.5-2.5z" fill="#ffffff" />
+      <path d="M12 11l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#ffffff" opacity="0.8" />
+      
+      <!-- Text -->
+      <text x="55" y="20" font-family="'Inter', sans-serif" font-weight="900" font-size="20" fill="#0f172a">DocExtract <tspan fill="#004ac6">AI</tspan></text>
+      <text x="55" y="32" font-family="'Inter', sans-serif" font-weight="800" font-size="9" fill="#004ac6" letter-spacing="1">AI EXTRACTION ENGINE</text>
+    </g>
+
+    <!-- Navigation Menu Items -->
+    <g transform="translate(900, 30)">
+      <text x="0" y="16" font-family="'Inter', sans-serif" font-weight="700" font-size="14" fill="#004ac6" cursor="pointer">Home</text>
+      <text x="70" y="16" font-family="'Inter', sans-serif" font-weight="600" font-size="14" fill="#64748b" cursor="pointer">Workspace</text>
+      <text x="170" y="16" font-family="'Inter', sans-serif" font-weight="600" font-size="14" fill="#64748b" cursor="pointer">Features</text>
+      
+      <!-- Theme Toggle Icon (Sun) -->
+      <g transform="translate(250, -5)">
+        <circle cx="15" cy="20" r="18" fill="#f1f5f9" />
+        <circle cx="15" cy="20" r="7" fill="#f59e0b" />
+        <!-- Ray lines -->
+        <line x1="15" y1="8" x2="15" y2="10" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="15" y1="30" x2="15" y2="32" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="5" y1="20" x2="7" y2="20" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="23" y1="20" x2="25" y2="20" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="8" y1="13" x2="10" y2="15" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="20" y1="25" x2="22" y2="27" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="8" y1="27" x2="10" y2="25" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+        <line x1="20" y1="15" x2="22" y2="13" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" />
+      </g>
+    </g>
+  </g>
+
+  <!-- ================= LEFT HERO CONTENT ================= -->
+  <g transform="translate(50, 160)">
+    <!-- Enterprise AI Badge -->
+    <g>
+      <rect width="180" height="28" rx="14" fill="#eff6ff" />
+      <!-- Small Sparkle Icon -->
+      <path d="M18 10l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z" fill="#2563eb" />
+      <text x="40" y="18" font-family="'Inter', sans-serif" font-weight="800" font-size="11" fill="#2563eb" letter-spacing="0.5">ENTERPRISE AI EXTRACTION</text>
+    </g>
+
+    <!-- Main Title -->
+    <g transform="translate(0, 50)">
+      <text x="0" y="40" font-family="'Inter', sans-serif" font-weight="900" font-size="46" fill="#0f172a" letter-spacing="-1">Extract Structured Data</text>
+      <text x="0" y="95" font-family="'Inter', sans-serif" font-weight="900" font-size="46" fill="#0f172a" letter-spacing="-1">from Any Document</text>
+    </g>
+
+    <!-- Subtitle Paragraph -->
+    <g transform="translate(0, 180)">
+      <text x="0" y="24" font-family="'Inter', sans-serif" font-weight="500" font-size="16" fill="#475569" width="480">Upload invoices, receipts, or purchase orders and let AI convert</text>
+      <text x="0" y="48" font-family="'Inter', sans-serif" font-weight="500" font-size="16" fill="#475569">them into validated JSON within seconds. Automate your data entry</text>
+      <text x="0" y="72" font-family="'Inter', sans-serif" font-weight="500" font-size="16" fill="#475569">with clinical precision.</text>
+    </g>
+
+    <!-- Hero Action Buttons -->
+    <g transform="translate(0, 290)">
+      <!-- Primary Blue CTA Button -->
+      <g filter="url(#btnShadow)" cursor="pointer">
+        <rect width="200" height="54" rx="12" fill="#004ac6" />
+        <text x="35" y="32" font-family="'Inter', sans-serif" font-weight="700" font-size="15" fill="#ffffff">Extract Document</text>
+        <!-- Arrow icon -->
+        <path d="M152 27 h12 M158 21 l6 6 -6 6" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      </g>
+
+      <!-- Secondary View Sample Button -->
+      <g transform="translate(220, 0)" cursor="pointer">
+        <rect width="160" height="54" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+        <!-- Eye icon -->
+        <circle cx="45" cy="27" r="5" fill="none" stroke="#004ac6" stroke-width="2" />
+        <path d="M33 27 c4-6 10-9 12-9 s8 3 12 9 c-4 6-10 9-12 9 s-8-3-12-9z" fill="none" stroke="#004ac6" stroke-width="1.8" />
+        <text x="65" y="32" font-family="'Inter', sans-serif" font-weight="700" font-size="15" fill="#004ac6">View Sample</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================= RIGHT VISUAL DASHBOARD MOCKUP ================= -->
+  <g transform="translate(600, 120)">
+    
+    <!-- Large Container Backdrop Shadow -->
+    <rect width="550" height="430" rx="24" fill="#ffffff" filter="url(#cardShadow)" />
+    
+    <!-- Mockup Inner Canvas/Header bar -->
+    <path d="M 0,24 A 24,24 0 0,1 24,0 L 526,0 A 24,24 0 0,1 550,24 L 550,60 L 0,60 Z" fill="#f8fafc" />
+    <line x1="0" y1="60" x2="550" y2="60" stroke="#e2e8f0" stroke-width="1" />
+    
+    <!-- Mockup Window Controls -->
+    <circle cx="25" cy="30" r="6" fill="#f87171" />
+    <circle cx="45" cy="30" r="6" fill="#fbbf24" />
+    <circle cx="65" cy="30" r="6" fill="#34d399" />
+    
+    <text x="275" y="35" font-family="'Inter', sans-serif" font-weight="700" font-size="12" fill="#64748b" text-anchor="middle">Extraction Workspace Dashboard</text>
+    
+    <!-- Glowing Network / Extraction Process Visual -->
+    
+    <!-- Flow Lines from left inputs to right outputs -->
+    <!-- Input Side: Floating Document Thumbnails -->
+    <g transform="translate(30, 90)" filter="url(#cardShadow)">
+      <rect width="150" height="90" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+      <!-- Invoice header lines -->
+      <rect x="15" y="15" width="40" height="8" rx="2" fill="#004ac6" opacity="0.8" />
+      <rect x="15" y="32" width="70" height="5" rx="1.5" fill="#94a3b8" />
+      <rect x="15" y="44" width="50" height="5" rx="1.5" fill="#cbd5e1" />
+      <line x1="15" y1="64" x2="135" y2="64" stroke="#e2e8f0" stroke-width="1" />
+      <!-- Line items -->
+      <rect x="15" y="74" width="60" height="4" rx="1" fill="#cbd5e1" />
+      <rect x="110" y="74" width="25" height="4" rx="1" fill="#004ac6" />
+      
+      <!-- Small icon overlay -->
+      <circle cx="125" cy="25" r="10" fill="#eff6ff" />
+      <path d="M122 25 h6 M125 22 v6" stroke="#004ac6" stroke-width="1.5" stroke-linecap="round" />
+    </g>
+
+    <g transform="translate(30, 200)" filter="url(#cardShadow)">
+      <rect width="150" height="90" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+      <rect x="15" y="15" width="40" height="8" rx="2" fill="#a855f7" opacity="0.8" />
+      <rect x="15" y="32" width="80" height="5" rx="1.5" fill="#94a3b8" />
+      <rect x="15" y="44" width="60" height="5" rx="1.5" fill="#cbd5e1" />
+      <line x1="15" y1="64" x2="135" y2="64" stroke="#e2e8f0" stroke-width="1" />
+      <rect x="15" y="74" width="50" height="4" rx="1" fill="#cbd5e1" />
+      <rect x="115" y="74" width="20" height="4" rx="1" fill="#a855f7" />
+      
+      <circle cx="125" cy="25" r="10" fill="#faf5ff" />
+      <path d="M121 27l2.5 2.5 4.5-4.5" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    </g>
+
+    <g transform="translate(30, 310)" filter="url(#cardShadow)">
+      <rect width="150" height="90" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" opacity="0.8" />
+      <rect x="15" y="15" width="30" height="8" rx="2" fill="#0ea5e9" opacity="0.8" />
+      <rect x="15" y="32" width="50" height="5" rx="1.5" fill="#cbd5e1" />
+      <line x1="15" y1="64" x2="135" y2="64" stroke="#e2e8f0" stroke-width="1" />
+      <rect x="15" y="74" width="40" height="4" rx="1" fill="#cbd5e1" />
+    </g>
+
+    <!-- Connective processing node animation graphic in center -->
+    <path d="M 180,135 C 240,135 230,225 290,225" stroke="url(#glowGrad)" stroke-width="3" fill="none" filter="url(#glow)" />
+    <path d="M 180,245 C 230,245 240,225 290,225" stroke="url(#glowGrad)" stroke-width="3" fill="none" filter="url(#glow)" />
+    <path d="M 180,355 C 240,355 230,225 290,225" stroke="url(#glowGrad)" stroke-width="3" fill="none" opacity="0.4" />
+
+    <!-- Center Cognitive AI Pulsating Node -->
+    <g transform="translate(290, 225)">
+      <!-- Outer glowing rings -->
+      <circle cx="0" cy="0" r="30" fill="#3b82f6" opacity="0.15" filter="url(#glow)" />
+      <circle cx="0" cy="0" r="20" fill="url(#sparkleGrad)" opacity="0.8" />
+      <!-- Sparkle center icon -->
+      <path d="M-8 0 l8 -3.5 l0 7 L0 0" fill="#ffffff" opacity="0" />
+      <path d="M0 -8 l3.5 8 l-7 0 L0 0" fill="#ffffff" opacity="0" />
+      <path d="M-6 -6 L6 6 M-6 6 L6 -6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
+      <circle cx="0" cy="0" r="3" fill="#ffffff" />
+    </g>
+
+    <!-- Connective output lines -->
+    <path d="M 290,225 C 340,225 330,150 370,150" stroke="url(#glowGrad)" stroke-width="3" fill="none" filter="url(#glow)" />
+    <path d="M 290,225 C 340,225 330,285 370,285" stroke="url(#glowGrad)" stroke-width="3" fill="none" filter="url(#glow)" />
+
+    <!-- Output Side: Dynamic JSON Payload Codebox -->
+    <g transform="translate(370, 75)" filter="url(#cardShadow)">
+      <rect width="155" height="135" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+      <!-- Terminal header -->
+      <rect x="0" y="0" width="155" height="20" rx="12" fill="#1e293b" />
+      <rect x="10" y="7" width="18" height="6" rx="1.5" fill="#475569" />
+      <text x="145" y="14" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8" fill="#a855f7" text-anchor="end">JSON</text>
+      
+      <!-- Code text -->
+      <text x="12" y="38" font-family="'JetBrains Mono', monospace" font-size="8" fill="#38bdf8" xml:space="preserve">{</text>
+      <text x="20" y="52" font-family="'JetBrains Mono', monospace" font-size="8" fill="#f43f5e" xml:space="preserve">"type": <tspan fill="#34d399">"Invoice"</tspan>,</text>
+      <text x="20" y="66" font-family="'JetBrains Mono', monospace" font-size="8" fill="#f43f5e" xml:space="preserve">"vendor": <tspan fill="#34d399">"Stripe"</tspan>,</text>
+      <text x="20" y="80" font-family="'JetBrains Mono', monospace" font-size="8" fill="#f43f5e" xml:space="preserve">"total": <tspan fill="#fbbf24">2394.00</tspan>,</text>
+      <text x="20" y="94" font-family="'JetBrains Mono', monospace" font-size="8" fill="#f43f5e" xml:space="preserve">"items": <tspan fill="#64748b">[ ... ]</tspan></text>
+      <text x="12" y="108" font-family="'JetBrains Mono', monospace" font-size="8" fill="#38bdf8" xml:space="preserve">}</text>
+      <rect x="12" y="118" width="60" height="5" rx="1.5" fill="#334155" />
+    </g>
+
+    <!-- Output Side: Arithmetic & Integrity Check checklist -->
+    <g transform="translate(370, 230)" filter="url(#cardShadow)">
+      <rect width="155" height="150" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+      <!-- Checklist title -->
+      <rect x="0" y="0" width="155" height="24" rx="12" fill="#f8fafc" />
+      <text x="12" y="16" font-family="'Inter', sans-serif" font-weight="800" font-size="9" fill="#475569" letter-spacing="0.5">INTEGRITY RUN</text>
+      
+      <!-- Checkbox lines -->
+      <g transform="translate(12, 36)">
+        <circle cx="8" cy="8" r="7" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" />
+        <path d="M5 8 l2 2 l4-4" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <text x="22" y="11" font-family="'Inter', sans-serif" font-weight="700" font-size="9" fill="#0f172a">Arithmetic Check</text>
+      </g>
+      
+      <g transform="translate(12, 64)">
+        <circle cx="8" cy="8" r="7" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" />
+        <path d="M5 8 l2 2 l4-4" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <text x="22" y="11" font-family="'Inter', sans-serif" font-weight="700" font-size="9" fill="#0f172a">Chronology OK</text>
+      </g>
+
+      <g transform="translate(12, 92)">
+        <circle cx="8" cy="8" r="7" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" />
+        <path d="M5 8 l2 2 l4-4" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <text x="22" y="11" font-family="'Inter', sans-serif" font-weight="700" font-size="9" fill="#0f172a">Currency Uniform</text>
+      </g>
+
+      <line x1="12" y1="120" x2="143" y2="120" stroke="#f1f5f9" stroke-width="1.5" />
+      
+      <!-- Validation Status badge -->
+      <rect x="12" y="126" width="131" height="16" rx="8" fill="#ecfdf5" />
+      <text x="77" y="137" font-family="'Inter', sans-serif" font-weight="800" font-size="8" fill="#059669" text-anchor="middle">VERIFICATION PASSED (100%)</text>
+    </g>
+
+    <!-- Sparkles and connectors decor -->
+    <path d="M 447,215 l2 4 l4 2 l-4 2 l-2 4 l-2-4 l-4-2 l4-2z" fill="#f59e0b" opacity="0.8" />
+    <path d="M 335,115 l1.5 3 l3 1.5 l-3 1.5 l-1.5 3 l-1.5-3 l-3-1.5 l3-1.5z" fill="#3b82f6" opacity="0.6" />
+  </g>
+
+  <!-- ================= BOTTOM BRAND FOOTER / PROOF METRIC ================= -->
+  <g transform="translate(50, 580)">
+    <!-- Trusted badge or simple stat counters -->
+    <g transform="translate(0, 0)">
+      <text x="0" y="15" font-family="'Inter', sans-serif" font-weight="800" font-size="22" fill="#004ac6">99.8%</text>
+      <text x="0" y="32" font-family="'Inter', sans-serif" font-weight="600" font-size="11" fill="#64748b">RELIABILITY INDEX</text>
+    </g>
+
+    <g transform="translate(200, 0)">
+      <text x="0" y="15" font-family="'Inter', sans-serif" font-weight="800" font-size="22" fill="#004ac6">&lt; 3.2s</text>
+      <text x="0" y="32" font-family="'Inter', sans-serif" font-weight="600" font-size="11" fill="#64748b">EXTRACTION SPEED</text>
+    </g>
+
+    <g transform="translate(400, 0)">
+      <text x="0" y="15" font-family="'Inter', sans-serif" font-weight="800" font-size="22" fill="#004ac6">Zero</text>
+      <text x="0" y="32" font-family="'Inter', sans-serif" font-weight="600" font-size="11" fill="#64748b">MANUAL COGNITIVE ENTRY</text>
+    </g>
+  </g>
+</svg>
