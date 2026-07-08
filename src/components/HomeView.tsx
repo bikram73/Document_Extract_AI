@@ -18,7 +18,7 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
             transition={{ duration: 0.6 }}
             className="space-y-6 text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-full border border-blue-100 dark:border-blue-900/40">
               <Sparkles className="w-4 h-4 text-blue-600 fill-blue-600" />
               <span className="text-xs font-bold uppercase tracking-wider">Enterprise AI Extraction</span>
             </div>
@@ -41,7 +41,7 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
               </button>
               <button 
                 onClick={onViewSample}
-                className="bg-white text-primary border border-outline-variant hover:bg-slate-50 font-semibold px-8 py-4 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="bg-surface-container-lowest text-primary border border-outline-variant dark:border-outline-variant/20 hover:bg-surface-container font-semibold px-8 py-4 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Eye className="w-5 h-5" />
                 View Sample
@@ -74,8 +74,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
         </div>
         
         <div className="grid sm:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-outline-variant/30 shadow-sm hover:translate-y-[-4px] hover:shadow-md transition-all duration-300">
-            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4">
+          <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 shadow-sm hover:translate-y-[-4px] hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4">
               <Receipt className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-on-surface">Invoices</h3>
@@ -84,8 +84,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-outline-variant/30 shadow-sm hover:translate-y-[-4px] hover:shadow-md transition-all duration-300">
-            <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4">
+          <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 shadow-sm hover:translate-y-[-4px] hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-4">
               <CreditCard className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-on-surface">Receipts</h3>
@@ -94,8 +94,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-outline-variant/30 shadow-sm hover:translate-y-[-4px] hover:shadow-md transition-all duration-300">
-            <div className="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-4">
+          <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 shadow-sm hover:translate-y-[-4px] hover:shadow-md transition-all duration-300">
+            <div className="w-12 h-12 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 rounded-xl flex items-center justify-center mb-4">
               <ShoppingBag className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-on-surface">Purchase Orders</h3>
@@ -107,7 +107,7 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
       </section>
 
       {/* Feature Grid */}
-      <section className="bg-slate-50 border-y border-outline-variant/30 px-6 md:px-12 py-16" id="features">
+      <section className="bg-surface-container-low border-y border-outline-variant/30 px-6 md:px-12 py-16" id="features">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12 text-left">
             <h2 className="text-2xl font-bold text-on-surface">Powerful AI Extraction</h2>
@@ -115,8 +115,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-6">
                 <Cpu className="w-6 h-6" />
               </div>
               <div>
@@ -127,8 +127,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
               </div>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center mb-6">
                 <Layers className="w-6 h-6" />
               </div>
               <div>
@@ -139,8 +139,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
               </div>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 rounded-xl flex items-center justify-center mb-6">
                 <CodeXml className="w-6 h-6" />
               </div>
               <div>
@@ -151,8 +151,8 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
               </div>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow md:col-span-1">
-              <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow md:col-span-1">
+              <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-6">
                 <Layers className="w-6 h-6" />
               </div>
               <div>
@@ -163,9 +163,9 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
               </div>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow md:col-span-2">
+            <div className="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow md:col-span-2">
               <div className="flex gap-4 mb-6">
-                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
               </div>
@@ -174,15 +174,15 @@ export default function HomeView({ onStartExtract, onViewSample }: HomeViewProps
                 Every extracted field is processed with detailed confidence logs. Set automated quality thresholds to route reviews instantly.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs font-semibold border border-green-200">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 text-xs font-semibold border border-green-200 dark:border-green-900/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                   High (98%)
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-200">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 text-xs font-semibold border border-amber-200 dark:border-amber-900/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                   Medium (82%)
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-700 text-xs font-semibold border border-red-200">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 text-xs font-semibold border border-red-200 dark:border-red-900/40">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
                   Review Required
                 </span>

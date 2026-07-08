@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Sparkles, FileText, ArrowLeft, Heart, Shield, Cpu, ExternalLink } from "lucide-react";
+import { Sparkles, FileText, ArrowLeft, Heart, Shield, Cpu, ExternalLink, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTheme } from "./context/ThemeContext";
 import { 
   ActiveTab, ExtractedData, ActiveFile, SAMPLE_INVOICE_DATA 
 } from "./types";
@@ -93,6 +94,7 @@ const SAMPLE_PO: ExtractedData = {
 };
 
 export default function App() {
+  const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<ActiveTab>("home");
   const [activeFile, setActiveFile] = useState<ActiveFile>({
     name: "Stripe Invoice.pdf",
@@ -331,10 +333,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none">
+    <div className="min-h-screen bg-surface text-on-surface flex flex-col justify-between select-none transition-colors duration-300">
       
       {/* Premium Navigation Header */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/30 px-6 py-4">
+      <header className="sticky top-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 px-6 py-4 transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button 
             onClick={() => setActiveTab("home")}
@@ -376,6 +378,20 @@ export default function App() {
             >
               Features
             </a>
+
+            {/* Premium Theme Switcher Button */}
+            <button
+              onClick={toggleTheme}
+              id="theme-toggle-btn"
+              className="p-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-all cursor-pointer shadow-sm flex items-center justify-center relative group active:scale-95"
+              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            >
+              {theme === "light" ? (
+                <Moon className="w-4 h-4 text-on-surface" />
+              ) : (
+                <Sun className="w-4 h-4 text-amber-400" />
+              )}
+            </button>
           </nav>
         </div>
       </header>
@@ -439,13 +455,13 @@ export default function App() {
       </main>
 
       {/* Humble, Professional Footer */}
-      <footer className="bg-white border-t border-outline-variant/30 py-6 px-6">
+      <footer className="bg-surface-container-lowest border-t border-outline-variant/30 py-6 px-6 transition-colors duration-300">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
           <p>© 2026 DocExtract AI. Cloud Document Intelligence Platform.</p>
           <div className="flex items-center gap-1.5 font-medium">
             <span>Powered by</span>
             <Cpu className="w-3.5 h-3.5 text-blue-600" />
-            <span className="font-bold text-slate-800">AI Document Engine</span>
+            <span className="font-bold text-on-surface">AI Document Engine</span>
           </div>
         </div>
       </footer>

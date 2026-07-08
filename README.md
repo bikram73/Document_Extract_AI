@@ -32,6 +32,11 @@ DocExtract AI is an enterprise-grade web application and intelligent data extrac
   - **Arithmetic Integrity Check**: Performs math assertion loops ($Subtotal + Tax = Total$) and cross-references table records.
   - **Currency Uniformity**: Validates currency types across all itemization blocks.
   - **Duplicate Prevention**: Intelligently flags duplicate line entries.
+- **🌓 Adaptive Global Theme Engine**:
+  - **Context-Powered Toggle**: Global theme state manager powered by a lightweight **React Context Provider** (`ThemeContext`).
+  - **Dynamic Theme Synchronization**: Seamlessly toggles the root interface between high-contrast light and dark UI states.
+  - **Smart Persistence**: Detects and defaults automatically to the user's OS system preferences, with manual selections securely persisted inside `localStorage`.
+  - **Fluid Tokens**: Utilizes custom Tailwind design tokens to guarantee gorgeous color consistency across all views and interactive widgets under both modes.
 
 ---
 
@@ -81,6 +86,9 @@ docextract-ai/
     ├── index.css             # Tailwinds setup, base styles, and animations
     ├── main.tsx              # React mounting file
     ├── types.ts              # Global TypeScript models and structures
+    │
+    ├── context/              # Global state contexts
+    │   └── ThemeContext.tsx  # Dynamic Light/Dark Theme management context
     │
     └── components/           # Modular visual views and cards
         ├── HomeView.tsx      # High-fidelity dashboard, landing and features page

@@ -22,6 +22,27 @@
   --color-outline-variant: #c3c6d7;
 }
 
+@variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --color-primary: #3b82f6;
+  --color-surface: #0a0f1d;
+  --color-surface-dim: #070a14;
+  --color-surface-bright: #121829;
+  --color-surface-container-lowest: #0d1121;
+  --color-surface-container-low: #131a30;
+  --color-surface-container: #1b243e;
+  --color-surface-container-high: #232d4e;
+  --color-surface-container-highest: #2b385e;
+  --color-on-surface: #f1f5f9;
+  --color-on-surface-variant: #94a3b8;
+  --color-inverse-surface: #f8fafc;
+  --color-inverse-on-surface: #0a0f1d;
+  --color-outline: #475569;
+  --color-outline-variant: #1e293b;
+}
+
+
 /* Base style resets */
 body {
   font-family: var(--font-sans);

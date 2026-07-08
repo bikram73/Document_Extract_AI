@@ -115,8 +115,8 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
         onClick={triggerFileInput}
         className={`relative rounded-3xl border-2 border-dashed p-12 text-center transition-all cursor-pointer group ${
           dragActive 
-            ? "border-primary bg-blue-50/40" 
-            : "border-outline-variant hover:border-primary/60 bg-white"
+            ? "border-primary bg-blue-50/10 dark:bg-blue-950/20" 
+            : "border-outline-variant hover:border-primary/60 bg-surface-container-lowest"
         }`}
       >
         <input
@@ -128,7 +128,7 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
         />
 
         <div className="max-w-sm mx-auto space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
             <Upload className="w-8 h-8" />
           </div>
 
@@ -154,14 +154,14 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
         <div className="grid md:grid-cols-3 gap-4">
           <button
             onClick={() => onSelectSample("invoice")}
-            className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all text-left w-full cursor-pointer group"
+            className="flex items-start gap-4 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all text-left w-full cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
               <FileText className="w-5 h-5" />
             </div>
             <div className="space-y-1 w-full">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full uppercase">Invoice</span>
+                <span className="text-xs font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-2 py-0.5 rounded-full uppercase">Invoice</span>
                 <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
               </div>
               <p className="font-semibold text-sm text-on-surface">Stripe Invoice.pdf</p>
@@ -171,14 +171,14 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
 
           <button
             onClick={() => onSelectSample("receipt")}
-            className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all text-left w-full cursor-pointer group"
+            className="flex items-start gap-4 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all text-left w-full cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
               <ImageIcon className="w-5 h-5" />
             </div>
             <div className="space-y-1 w-full">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full uppercase">Receipt</span>
+                <span className="text-xs font-bold text-purple-700 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 px-2 py-0.5 rounded-full uppercase">Receipt</span>
                 <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
               </div>
               <p className="font-semibold text-sm text-on-surface">Uber Taxi Receipt.png</p>
@@ -188,14 +188,14 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
 
           <button
             onClick={() => onSelectSample("po")}
-            className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all text-left w-full cursor-pointer group"
+            className="flex items-start gap-4 p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all text-left w-full cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
               <FileText className="w-5 h-5" />
             </div>
             <div className="space-y-1 w-full">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full uppercase">Purchase Order</span>
+                <span className="text-xs font-bold text-cyan-700 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/40 px-2 py-0.5 rounded-full uppercase">Purchase Order</span>
                 <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
               </div>
               <p className="font-semibold text-sm text-on-surface">Acme Corp Purchase.jpg</p>
