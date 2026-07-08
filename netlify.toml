@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Redirect /api/extract to our Netlify Serverless Function
+[[redirects]]
+  from = "/api/extract"
+  to = "/.netlify/functions/extract"
+  status = 200
+  force = true
+
+# Fallback for React Router / SPA Routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

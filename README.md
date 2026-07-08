@@ -121,6 +121,34 @@ Ensure you have the following installed on your machine:
 
 ---
 
+## ⚡ Netlify Deployment Guide
+
+This project is fully ready for zero-config deployment to **Netlify** with dynamic serverless capability.
+
+### 📦 Automatic Configuration
+The workspace contains a `netlify.toml` file that auto-configures Netlify to:
+- Run the build command (`npm run build`).
+- Host static web assets from the `dist/` folder.
+- Route all `/api/extract` requests directly to a serverless function at `/netlify/functions/extract.ts`.
+- Fall back gracefully to `index.html` for React routing.
+
+### ⚙️ Step-by-Step Netlify Deploy
+
+1. **Push your code** to a Git repository (GitHub, GitLab, or Bitbucket).
+2. Go to your **[Netlify Dashboard](https://app.netlify.com/)** and click **"Add new site" > "Import an existing project"**.
+3. Link your Git repository.
+4. Netlify will auto-detect the configuration from `netlify.toml`:
+   - **Build command**: `npm run build`
+   - **Publish directory**: `dist`
+   - **Functions directory**: `netlify/functions`
+5. **Add Environment Variables**:
+   - In Netlify, go to **Site Settings > Environment variables**.
+   - Click **Add a variable** and add:
+     - `GEMINI_API_KEY` = *[Your Google Gemini API Key]*
+6. Click **Deploy site**. Netlify will build the client and package the serverless function automatically!
+
+---
+
 ## 🔒 Security & Data Compliance
 
 - **No Public API Exposure**: All requests involving cognitive translation or secure keys are proxied safely through Node/Express backend layers. No secrets are ever transmitted to or accessible from browser developer tools.
