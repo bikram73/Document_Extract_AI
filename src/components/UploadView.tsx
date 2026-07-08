@@ -177,7 +177,7 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
           </div>
 
           {/* Selector 6: Presets buttons grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             <button
               onClick={() => onSelectSample("invoice")}
               className="flex items-start gap-3.5 sm:gap-4 p-4.5 sm:p-5 md:p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-lg transition-all text-left w-full cursor-pointer group hover:-translate-y-0.5 duration-300"
@@ -214,7 +214,7 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
 
             <button
               onClick={() => onSelectSample("po")}
-              className="flex items-start gap-3.5 sm:gap-4 p-4.5 sm:p-5 md:p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-lg transition-all text-left w-full cursor-pointer group hover:-translate-y-0.5 duration-300 sm:col-span-2 lg:col-span-1"
+              className="flex items-start gap-3.5 sm:gap-4 p-4.5 sm:p-5 md:p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-lg transition-all text-left w-full cursor-pointer group hover:-translate-y-0.5 duration-300"
             >
               <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
                 <FileText className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
