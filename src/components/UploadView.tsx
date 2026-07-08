@@ -195,7 +195,7 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
             </div>
             <div className="space-y-1 w-full">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full uppercase">PO</span>
+                <span className="text-xs font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full uppercase">Purchase Order</span>
                 <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-primary transition-colors" />
               </div>
               <p className="font-semibold text-sm text-on-surface">Acme Corp Purchase.jpg</p>
