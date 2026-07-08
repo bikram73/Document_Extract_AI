@@ -159,15 +159,15 @@ export default function ResultsView({
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 md:px-8 space-y-6">
       {/* Top action header bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-outline-variant/30 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-outline-variant/30 dark:border-slate-800/85 shadow-sm">
         <div className="flex items-center gap-3 text-left">
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
             <FileCheck className="w-5 h-5" />
           </div>
           <div>
             <h1 className="font-bold text-lg text-on-surface flex flex-wrap items-center gap-2">
               Structured Workbench 
-              <span className="text-xs font-semibold px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full">
+              <span className="text-xs font-semibold px-2 py-0.5 bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 rounded-full">
                 {data.documentType || "Processed Document"}
               </span>
               <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 ${
@@ -222,38 +222,38 @@ export default function ResultsView({
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="bg-slate-100 rounded-3xl p-6 border border-slate-200/50 shadow-inner flex flex-col h-full">
+          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-              <span className="text-xs font-bold text-slate-500 font-mono uppercase tracking-wider">Document Viewer</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Document Viewer</span>
               
-              <div className="flex bg-slate-200/60 p-1 rounded-xl">
+              <div className="flex bg-slate-200/60 dark:bg-slate-950 p-1 rounded-xl">
                 <button
                   onClick={() => setLeftTab("ocr")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     leftTab === "ocr"
-                      ? "bg-white text-blue-700 shadow-sm"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                   }`}
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>OCR Overlays</span>
                 </button>
                 <button
                   onClick={() => setLeftTab("source")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     leftTab === "source"
-                      ? "bg-white text-blue-700 shadow-sm"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                   }`}
                 >
-                  <Eye className="w-3.5 h-3.5 text-blue-600" />
+                  <Eye className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>Source File</span>
                 </button>
               </div>
             </div>
 
             {leftTab === "ocr" ? (
-              <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none">
+              <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none">
               
               {/* Document Header */}
               <div className="space-y-6">
@@ -264,22 +264,22 @@ export default function ResultsView({
                     onMouseLeave={() => setHoveredField(null)}
                     className={`relative p-2 rounded-lg transition-all border ${
                       hoveredField === "vendor" 
-                        ? "bg-blue-100/30 border-blue-600 shadow-md ring-2 ring-blue-400/20" 
-                        : "border-dashed border-slate-300"
+                        ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600 shadow-md ring-2 ring-blue-400/20" 
+                        : "border-dashed border-slate-300 dark:border-slate-800"
                     }`}
                   >
-                    <div className="absolute -top-3.5 left-2 px-1 text-[8px] font-bold text-blue-700 bg-blue-100 rounded-full font-mono">
+                    <div className="absolute -top-3.5 left-2 px-1 text-[8px] font-bold text-blue-700 bg-blue-100 dark:bg-blue-900 rounded-full font-mono">
                       VENDOR
                     </div>
-                    <p className="font-extrabold text-lg text-slate-900 tracking-tight">
+                    <p className="font-extrabold text-lg text-slate-900 dark:text-slate-100 tracking-tight">
                       {data.vendorName || "Stripe Payments UK"}
                     </p>
-                    <p className="text-[10px] text-slate-500 font-mono">Tax ID: {data.vendorTaxId || "GB 123 456 789"}</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Tax ID: {data.vendorTaxId || "GB 123 456 789"}</p>
                   </div>
 
                   {/* Document metadata overlay */}
                   <div className="text-right space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-mono">
+                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-400 bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-full font-mono">
                       {data.documentType?.toUpperCase() || "INVOICE"}
                     </span>
                     
@@ -288,55 +288,55 @@ export default function ResultsView({
                       onMouseLeave={() => setHoveredField(null)}
                       className={`relative p-1 rounded transition-all border ${
                         hoveredField === "invoiceNumber" 
-                          ? "bg-blue-100/30 border-blue-600 shadow" 
+                          ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600 shadow" 
                           : "border-transparent"
                       }`}
                     >
-                      <p className="text-xs font-mono font-bold text-slate-800">
+                      <p className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200">
                         No: {data.invoiceNumber || "INV-2024-88412"}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <hr className="border-slate-100" />
+                <hr className="border-slate-100 dark:border-slate-800" />
 
                 {/* Date & Terms Overlays */}
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
-                    <span className="text-[10px] text-slate-400 block font-mono">DATE OF PURCHASE</span>
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 block font-mono">DATE OF PURCHASE</span>
                     <div 
                       onMouseEnter={() => setHoveredField("issueDate")}
                       onMouseLeave={() => setHoveredField(null)}
                       className={`relative inline-block px-1.5 py-0.5 rounded transition-all border ${
                         hoveredField === "issueDate" 
-                          ? "bg-blue-100/30 border-blue-600" 
+                          ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600" 
                           : "border-transparent"
                       }`}
                     >
-                      <span className="font-semibold text-slate-800">{data.issueDate || "Oct 24, 2024"}</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{data.issueDate || "Oct 24, 2024"}</span>
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-slate-400 block font-mono">PAYMENT TERMS</span>
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 block font-mono">PAYMENT TERMS</span>
                     <div 
                       onMouseEnter={() => setHoveredField("paymentTerms")}
                       onMouseLeave={() => setHoveredField(null)}
                       className={`relative inline-block px-1.5 py-0.5 rounded transition-all border ${
                         hoveredField === "paymentTerms" 
-                          ? "bg-blue-100/30 border-blue-600" 
+                          ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600" 
                           : "border-transparent"
                       }`}
                     >
-                      <span className="font-semibold text-slate-800">{data.paymentTerms || "Net 30"}</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{data.paymentTerms || "Net 30"}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Items Grid Overlay */}
                 <div className="space-y-2 pt-4">
-                  <div className="grid grid-cols-12 text-[10px] font-bold text-slate-400 border-b border-slate-100 pb-1.5 font-mono">
+                  <div className="grid grid-cols-12 text-[10px] font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-1.5 font-mono">
                     <span className="col-span-8">DESCRIPTION</span>
                     <span className="col-span-1 text-center">QTY</span>
                     <span className="col-span-3 text-right">AMOUNT</span>
@@ -350,13 +350,13 @@ export default function ResultsView({
                         onMouseLeave={() => setHoveredField(null)}
                         className={`grid grid-cols-12 text-xs py-1.5 px-1 rounded transition-all border ${
                           hoveredField === `item-${index}` 
-                            ? "bg-blue-50 border-blue-400 shadow-sm" 
+                            ? "bg-blue-50 dark:bg-blue-950/20 border-blue-400 dark:border-blue-850 shadow-sm" 
                             : "border-transparent"
                         }`}
                       >
-                        <span className="col-span-8 font-medium text-slate-700 truncate pr-2">{item.description}</span>
-                        <span className="col-span-1 text-center font-mono text-slate-500">{item.qty}</span>
-                        <span className="col-span-3 text-right font-bold text-slate-800">
+                        <span className="col-span-8 font-medium text-slate-700 dark:text-slate-300 truncate pr-2">{item.description}</span>
+                        <span className="col-span-1 text-center font-mono text-slate-500 dark:text-slate-400">{item.qty}</span>
+                        <span className="col-span-3 text-right font-bold text-slate-800 dark:text-slate-200">
                           {data.currency?.includes("EUR") ? "€" : data.currency?.includes("GBP") ? "£" : "$"}
                           {item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
@@ -367,14 +367,14 @@ export default function ResultsView({
               </div>
 
               {/* Financial Totals Overlays */}
-              <div className="border-t border-slate-100 pt-4 space-y-1.5">
-                <div className="flex justify-between text-xs text-slate-500">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-1.5">
+                <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
                   <span>Subtotal</span>
                   <div 
                     onMouseEnter={() => setHoveredField("subtotal")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`relative px-1 rounded transition-all border ${
-                      hoveredField === "subtotal" ? "bg-blue-100/30 border-blue-600" : "border-transparent"
+                      hoveredField === "subtotal" ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600" : "border-transparent"
                     }`}
                   >
                     <span>
@@ -384,13 +384,13 @@ export default function ResultsView({
                   </div>
                 </div>
 
-                <div className="flex justify-between text-xs text-slate-500">
+                <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
                   <span>Tax Amount</span>
                   <div 
                     onMouseEnter={() => setHoveredField("tax")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`relative px-1 rounded transition-all border ${
-                      hoveredField === "tax" ? "bg-blue-100/30 border-blue-600" : "border-transparent"
+                      hoveredField === "tax" ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600" : "border-transparent"
                     }`}
                   >
                     <span>
@@ -400,18 +400,18 @@ export default function ResultsView({
                   </div>
                 </div>
 
-                <div className="flex justify-between text-sm font-bold text-slate-900 pt-1.5 border-t border-slate-100">
+                <div className="flex justify-between text-sm font-bold text-slate-900 dark:text-slate-100 pt-1.5 border-t border-slate-100 dark:border-slate-800">
                   <span>Total Amount</span>
                   <div 
                     onMouseEnter={() => setHoveredField("total")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`relative px-2 py-0.5 rounded-lg transition-all border ${
                       hoveredField === "total" 
-                        ? "bg-blue-100/30 border-blue-600 shadow font-black" 
+                        ? "bg-blue-100/30 dark:bg-blue-950/20 border-blue-600 shadow font-black" 
                         : "border-transparent"
                     }`}
                   >
-                    <span className="text-blue-700">
+                    <span className="text-blue-700 dark:text-blue-400">
                       {data.currency?.includes("EUR") ? "€" : data.currency?.includes("GBP") ? "£" : "$"}
                       {data.financials.total.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                     </span>
@@ -425,7 +425,7 @@ export default function ResultsView({
               <div className="flex-grow flex flex-col h-full min-h-[440px]">
                 {activeFile?.base64Data ? (
                   activeFile.mimeType === "application/pdf" || activeFile.name.toLowerCase().endsWith(".pdf") ? (
-                    <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-full">
+                    <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col h-full">
                       <object
                         data={`data:application/pdf;base64,${activeFile.base64Data}`}
                         type="application/pdf"
@@ -439,31 +439,31 @@ export default function ResultsView({
                       </object>
                     </div>
                   ) : (
-                    <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 overflow-hidden p-4 flex items-center justify-center bg-slate-50/50 animate-fade-in">
+                    <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-4 flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
                       <img
                         src={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
                         alt="Source Document File"
-                        className="max-w-full max-h-full object-contain rounded-lg border border-slate-200 shadow-md"
+                        className="max-w-full max-h-full object-contain rounded-lg border border-slate-200 dark:border-slate-800 shadow-md"
                         referrerPolicy="no-referrer"
                       />
                     </div>
                   )
                 ) : (
                   /* Elegant placeholder for sample presets with no uploaded base64 data */
-                  <div className="relative bg-white aspect-[3/4] rounded-2xl shadow-xl border border-slate-200/80 p-8 flex flex-col items-center justify-center text-center space-y-6">
-                    <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
-                      <FileText className="w-8 h-8 text-blue-500" />
+                  <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-8 flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
+                      <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
                     </div>
                     <div className="max-w-xs space-y-3">
-                      <h3 className="font-bold text-slate-800 text-sm sm:text-base">Sample Document Canvas</h3>
-                      <p className="text-xs text-slate-500 leading-relaxed">
+                      <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base">Sample Document Canvas</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                         You are currently viewing the default preset <strong>{fileName}</strong> ({fileSize}).
                       </p>
-                      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-150 text-[11px] text-slate-500 leading-normal text-left space-y-1.5 shadow-inner">
-                        <p className="font-bold text-slate-700 flex items-center gap-1">
+                      <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-150 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 leading-normal text-left space-y-1.5 shadow-inner">
+                        <p className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
                           💡 <span>How to preview your own documents:</span>
                         </p>
-                        <ol className="list-decimal pl-4 space-y-1 text-slate-600">
+                        <ol className="list-decimal pl-4 space-y-1 text-slate-600 dark:text-slate-400">
                           <li>Click on <strong>Workspace</strong> in the navigation.</li>
                           <li>Drag and drop or upload your own <strong>PDF</strong> or <strong>Image</strong> file.</li>
                           <li>We will display the full original document side-by-side right here!</li>
@@ -478,15 +478,15 @@ export default function ResultsView({
         </div>
 
         {/* Right Side: Tabbed Structured Workbench Form */}
-        <div className="lg:col-span-7 bg-white rounded-3xl border border-outline-variant/30 shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
           {/* Section Tabs */}
-          <div className="flex border-b border-outline-variant/30 bg-slate-50 overflow-x-auto">
+          <div className="flex border-b border-outline-variant/30 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-x-auto">
             <button
               onClick={() => setActiveSubTab("general")}
               className={`flex-1 min-w-[120px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "general" 
-                  ? "border-primary text-primary bg-white" 
-                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
+                  ? "border-primary text-primary bg-white dark:bg-slate-900" 
+                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
               }`}
             >
               General Info
@@ -495,8 +495,8 @@ export default function ResultsView({
               onClick={() => setActiveSubTab("items")}
               className={`flex-1 min-w-[120px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "items" 
-                  ? "border-primary text-primary bg-white" 
-                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
+                  ? "border-primary text-primary bg-white dark:bg-slate-900" 
+                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
               }`}
             >
               Line Items ({data.lineItems?.length || 0})
@@ -505,8 +505,8 @@ export default function ResultsView({
               onClick={() => setActiveSubTab("json")}
               className={`flex-1 min-w-[100px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "json" 
-                  ? "border-primary text-primary bg-white" 
-                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
+                  ? "border-primary text-primary bg-white dark:bg-slate-900" 
+                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
               }`}
             >
               Raw JSON
@@ -515,8 +515,8 @@ export default function ResultsView({
               onClick={() => setActiveSubTab("fallback")}
               className={`flex-1 min-w-[150px] py-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
                 activeSubTab === "fallback" 
-                  ? "border-primary text-primary bg-white" 
-                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50"
+                  ? "border-primary text-primary bg-white dark:bg-slate-900" 
+                  : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
               }`}
             >
               Fallback Engine
@@ -535,7 +535,7 @@ export default function ResultsView({
                     onMouseEnter={() => setHoveredField("vendor")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`space-y-2 p-3 rounded-xl transition-all ${
-                      hoveredField === "vendor" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                      hoveredField === "vendor" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                     }`}
                   >
                     <label className="text-xs font-bold text-on-surface-variant flex items-center gap-1">
@@ -545,7 +545,7 @@ export default function ResultsView({
                       type="text"
                       value={data.vendorName || ""}
                       onChange={(e) => handleFieldChange("vendorName", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all"
                     />
                   </div>
 
@@ -558,7 +558,7 @@ export default function ResultsView({
                       type="text"
                       value={data.vendorTaxId || ""}
                       onChange={(e) => handleFieldChange("vendorTaxId", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all"
                     />
                   </div>
 
@@ -567,7 +567,7 @@ export default function ResultsView({
                     onMouseEnter={() => setHoveredField("invoiceNumber")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`space-y-2 p-3 rounded-xl transition-all ${
-                      hoveredField === "invoiceNumber" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                      hoveredField === "invoiceNumber" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                     }`}
                   >
                     <label className="text-xs font-bold text-on-surface-variant flex items-center gap-1">
@@ -577,7 +577,7 @@ export default function ResultsView({
                       type="text"
                       value={data.invoiceNumber || ""}
                       onChange={(e) => handleFieldChange("invoiceNumber", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all font-mono"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all font-mono"
                     />
                   </div>
 
@@ -586,7 +586,7 @@ export default function ResultsView({
                     onMouseEnter={() => setHoveredField("paymentTerms")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`space-y-2 p-3 rounded-xl transition-all ${
-                      hoveredField === "paymentTerms" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                      hoveredField === "paymentTerms" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                     }`}
                   >
                     <label className="text-xs font-bold text-on-surface-variant flex items-center gap-1">
@@ -596,7 +596,7 @@ export default function ResultsView({
                       type="text"
                       value={data.paymentTerms || ""}
                       onChange={(e) => handleFieldChange("paymentTerms", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all"
                     />
                   </div>
 
@@ -605,7 +605,7 @@ export default function ResultsView({
                     onMouseEnter={() => setHoveredField("issueDate")}
                     onMouseLeave={() => setHoveredField(null)}
                     className={`space-y-2 p-3 rounded-xl transition-all ${
-                      hoveredField === "issueDate" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                      hoveredField === "issueDate" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                     }`}
                   >
                     <label className="text-xs font-bold text-on-surface-variant flex items-center gap-1">
@@ -615,7 +615,7 @@ export default function ResultsView({
                       type="text"
                       value={data.issueDate || ""}
                       onChange={(e) => handleFieldChange("issueDate", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all"
                     />
                   </div>
 
@@ -628,7 +628,7 @@ export default function ResultsView({
                       type="text"
                       value={data.dueDate || ""}
                       onChange={(e) => handleFieldChange("dueDate", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all"
                     />
                   </div>
 
@@ -641,7 +641,7 @@ export default function ResultsView({
                       type="text"
                       value={data.currency || ""}
                       onChange={(e) => handleFieldChange("currency", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all"
                     />
                   </div>
 
@@ -653,7 +653,7 @@ export default function ResultsView({
                     <select
                       value={data.documentType || ""}
                       onChange={(e) => handleFieldChange("documentType", e.target.value)}
-                      className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer"
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-4 py-2.5 rounded-xl text-sm font-medium text-on-surface transition-all cursor-pointer"
                     >
                       <option value="Invoice">Invoice</option>
                       <option value="Service Invoice">Service Invoice</option>
@@ -665,7 +665,7 @@ export default function ResultsView({
                 </div>
 
                 {/* Financial Totals form section */}
-                <div className="border-t border-slate-100 pt-6 mt-6">
+                <div className="border-t border-slate-100 dark:border-slate-800 pt-6 mt-6">
                   <h3 className="text-sm font-bold text-on-surface mb-4">Financial Breakdown</h3>
                   
                   <div className="grid md:grid-cols-3 gap-4">
@@ -674,7 +674,7 @@ export default function ResultsView({
                       onMouseEnter={() => setHoveredField("subtotal")}
                       onMouseLeave={() => setHoveredField(null)}
                       className={`space-y-1.5 p-3 rounded-xl transition-all ${
-                        hoveredField === "subtotal" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                        hoveredField === "subtotal" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                       }`}
                     >
                       <label className="text-xs font-semibold text-on-surface-variant">Subtotal</label>
@@ -683,7 +683,7 @@ export default function ResultsView({
                         step="0.01"
                         value={data.financials.subtotal || 0}
                         onChange={(e) => handleFinancialChange("subtotal", parseFloat(e.target.value) || 0)}
-                        className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-3 py-2 rounded-xl text-sm font-bold transition-all"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-3 py-2 rounded-xl text-sm font-bold text-on-surface transition-all"
                       />
                     </div>
 
@@ -692,7 +692,7 @@ export default function ResultsView({
                       onMouseEnter={() => setHoveredField("tax")}
                       onMouseLeave={() => setHoveredField(null)}
                       className={`space-y-1.5 p-3 rounded-xl transition-all ${
-                        hoveredField === "tax" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                        hoveredField === "tax" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                       }`}
                     >
                       <label className="text-xs font-semibold text-on-surface-variant">Tax Amount</label>
@@ -701,7 +701,7 @@ export default function ResultsView({
                         step="0.01"
                         value={data.financials.tax || 0}
                         onChange={(e) => handleFinancialChange("tax", parseFloat(e.target.value) || 0)}
-                        className="w-full bg-slate-50 border border-outline-variant/50 focus:border-primary focus:bg-white px-3 py-2 rounded-xl text-sm font-bold transition-all"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-outline-variant/50 dark:border-slate-800 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-3 py-2 rounded-xl text-sm font-bold text-on-surface transition-all"
                       />
                     </div>
 
@@ -710,7 +710,7 @@ export default function ResultsView({
                       onMouseEnter={() => setHoveredField("total")}
                       onMouseLeave={() => setHoveredField(null)}
                       className={`space-y-1.5 p-3 rounded-xl transition-all ${
-                        hoveredField === "total" ? "bg-blue-50/50 ring-1 ring-blue-200" : ""
+                        hoveredField === "total" ? "bg-blue-50/50 dark:bg-blue-950/20 ring-1 ring-blue-200 dark:ring-blue-800/60" : ""
                       }`}
                     >
                       <label className="text-xs font-semibold text-primary font-bold">Total Amount</label>
@@ -719,7 +719,7 @@ export default function ResultsView({
                         step="0.01"
                         value={data.financials.total}
                         onChange={(e) => handleFinancialChange("total", parseFloat(e.target.value) || 0)}
-                        className="w-full bg-blue-50/30 border border-blue-200 focus:border-primary focus:bg-white px-3 py-2 rounded-xl text-sm font-bold text-blue-700 transition-all"
+                        className="w-full bg-blue-50/30 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 focus:border-primary focus:bg-white dark:focus:bg-slate-900 px-3 py-2 rounded-xl text-sm font-bold text-blue-700 dark:text-blue-400 transition-all"
                       />
                     </div>
                   </div>
@@ -737,7 +737,7 @@ export default function ResultsView({
                   
                   <button
                     onClick={handleAddLineItem}
-                    className="bg-blue-50 text-primary border border-blue-100 hover:bg-blue-100/50 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition-all"
+                    className="bg-blue-50 dark:bg-blue-950/40 text-primary dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 hover:bg-blue-100/50 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition-all"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     Add Row
@@ -745,11 +745,11 @@ export default function ResultsView({
                 </div>
 
                 {/* Responsive spreadsheet-like table */}
-                <div className="border border-outline-variant/30 rounded-2xl overflow-hidden shadow-sm">
+                <div className="border border-outline-variant/30 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
                   <div className="overflow-x-auto custom-scrollbar">
                     <table className="w-full border-collapse text-left text-xs">
                       <thead>
-                        <tr className="bg-slate-50 border-b border-outline-variant/30 text-on-surface-variant font-bold">
+                        <tr className="bg-slate-50 dark:bg-slate-950 border-b border-outline-variant/30 dark:border-slate-800 text-on-surface-variant font-bold">
                           <th className="py-3 px-4 w-10">#</th>
                           <th className="py-3 px-4 min-w-[200px]">Description</th>
                           <th className="py-3 px-4 w-16 text-center">Qty</th>
@@ -758,15 +758,15 @@ export default function ResultsView({
                           <th className="py-3 px-4 w-12 text-center"></th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100">
+                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {data.lineItems && data.lineItems.length > 0 ? (
                           data.lineItems.map((item, index) => (
                             <tr 
                               key={index}
                               onMouseEnter={() => setHoveredField(`item-${index}`)}
                               onMouseLeave={() => setHoveredField(null)}
-                              className={`transition-all hover:bg-slate-50/50 ${
-                                hoveredField === `item-${index}` ? "bg-blue-50/30" : ""
+                              className={`transition-all hover:bg-slate-50/50 dark:hover:bg-slate-900/30 ${
+                                hoveredField === `item-${index}` ? "bg-blue-50/30 dark:bg-blue-950/10" : ""
                               }`}
                             >
                               <td className="py-2.5 px-4 font-bold text-on-surface-variant">{index + 1}</td>
@@ -776,7 +776,7 @@ export default function ResultsView({
                                   type="text"
                                   value={item.description}
                                   onChange={(e) => handleLineItemChange(index, "description", e.target.value)}
-                                  className="w-full bg-transparent border-b border-transparent hover:border-slate-300 focus:border-primary focus:bg-white px-1.5 py-1 rounded text-on-surface font-medium transition-all"
+                                  className="w-full bg-transparent border-b border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-950 px-1.5 py-1 rounded text-on-surface font-medium transition-all"
                                 />
                               </td>
 
@@ -785,19 +785,19 @@ export default function ResultsView({
                                   type="number"
                                   value={item.qty}
                                   onChange={(e) => handleLineItemChange(index, "qty", parseInt(e.target.value) || 0)}
-                                  className="w-12 bg-transparent text-center border-b border-transparent hover:border-slate-300 focus:border-primary focus:bg-white py-1 rounded font-mono"
+                                  className="w-12 bg-transparent text-center border-b border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-950 py-1 rounded font-mono text-on-surface"
                                 />
                               </td>
 
                               <td className="py-2.5 px-4 text-right">
-                                <div className="inline-flex items-center gap-1 text-right">
+                                <div className="inline-flex items-center gap-1 text-right text-on-surface">
                                   <span>{data.currency?.includes("EUR") ? "€" : data.currency?.includes("GBP") ? "£" : "$"}</span>
                                   <input
                                     type="number"
                                     step="0.01"
                                     value={item.unitPrice}
                                     onChange={(e) => handleLineItemChange(index, "unitPrice", parseFloat(e.target.value) || 0)}
-                                    className="w-20 bg-transparent text-right border-b border-transparent hover:border-slate-300 focus:border-primary focus:bg-white py-1 rounded font-mono font-semibold"
+                                    className="w-20 bg-transparent text-right border-b border-transparent hover:border-slate-300 dark:hover:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-950 py-1 rounded font-mono font-semibold text-on-surface"
                                   />
                                 </div>
                               </td>
@@ -812,7 +812,7 @@ export default function ResultsView({
                               <td className="py-2.5 px-4 text-center">
                                 <button
                                   onClick={() => handleDeleteLineItem(index)}
-                                  className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-colors cursor-pointer"
+                                  className="text-red-500 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 p-1.5 rounded-lg transition-colors cursor-pointer"
                                   title="Delete item"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -844,12 +844,12 @@ export default function ResultsView({
                   
                   <button
                     onClick={handleCopyJSON}
-                    className="bg-blue-50 text-primary hover:bg-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+                    className="bg-blue-50 dark:bg-blue-950/40 text-primary dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
                   >
                     {copied ? (
                       <>
-                        <Check className="w-4 h-4 text-green-600" />
-                        <span className="text-green-700 font-bold">Copied!</span>
+                        <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
+                        <span className="text-green-700 dark:text-green-400 font-bold">Copied!</span>
                       </>
                     ) : (
                       <>
@@ -873,53 +873,53 @@ export default function ResultsView({
             {/* SUBTAB 4: FALLBACK ENGINE DIAGNOSTICS */}
             {activeSubTab === "fallback" && (
               <div className="space-y-6">
-                <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-4 text-xs space-y-3 text-left">
+                <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-4 text-xs space-y-3 text-left">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-700 uppercase tracking-wide">Fallback Engine Blueprint</span>
-                    <span className="px-2 py-0.5 font-bold text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full flex items-center gap-1">
+                    <span className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">Fallback Engine Blueprint</span>
+                    <span className="px-2 py-0.5 font-bold text-[10px] text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 rounded-full flex items-center gap-1">
                       <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
                       SYSTEM ONLINE
                     </span>
                   </div>
                   <div className="grid grid-cols-3 gap-3 text-center text-[11px] pt-1">
-                    <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-1">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase">Primary</span>
-                      <span className="font-semibold text-slate-800">Google Gemini</span>
-                      <span className="text-[9px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full font-bold">Priority 1</span>
+                    <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-1">
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Primary</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">Google Gemini</span>
+                      <span className="text-[9px] text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded-full font-bold">Priority 1</span>
                     </div>
-                    <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-1">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase">Fallback</span>
-                      <span className="font-semibold text-slate-800">OpenRouter</span>
-                      <span className="text-[9px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full font-bold">Priority 2</span>
+                    <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-1">
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Fallback</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">OpenRouter</span>
+                      <span className="text-[9px] text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 px-1.5 py-0.5 rounded-full font-bold">Priority 2</span>
                     </div>
-                    <div className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-col items-center gap-1">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase">Final Fallback</span>
-                      <span className="font-semibold text-slate-800">Groq Engine</span>
-                      <span className="text-[9px] text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded-full font-bold">Priority 3</span>
+                    <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-1">
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Final Fallback</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">Groq Engine</span>
+                      <span className="text-[9px] text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/20 px-1.5 py-0.5 rounded-full font-bold">Priority 3</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white border border-slate-150 rounded-2xl p-5 shadow-sm text-xs space-y-3 text-left">
-                  <h4 className="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-800 rounded-2xl p-5 shadow-sm text-xs space-y-3 text-left">
+                  <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-1.5">
                     Orchestrator Decision
                   </h4>
                   <div className="grid grid-cols-2 gap-4 pt-1">
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 block uppercase">Selected Provider</span>
-                      <span className="text-xs font-semibold text-blue-700 capitalize">{providerUsed}</span>
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block uppercase">Selected Provider</span>
+                      <span className="text-xs font-semibold text-blue-700 dark:text-blue-400 capitalize">{providerUsed}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-400 block uppercase">Failover Reason</span>
-                      <span className="text-xs font-medium text-slate-600">{providerReason}</span>
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block uppercase">Failover Reason</span>
+                      <span className="text-xs font-medium text-slate-600 dark:text-slate-400">{providerReason}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-4 text-left">
-                  <h4 className="font-bold text-slate-800 text-sm">Execution Traces &amp; Memory Logs</h4>
+                  <h4 className="font-bold text-slate-800 dark:text-slate-200 text-sm">Execution Traces &amp; Memory Logs</h4>
                   
-                  <div className="relative border-l-2 border-slate-150 ml-4 pl-6 space-y-5">
+                  <div className="relative border-l-2 border-slate-150 dark:border-slate-850 ml-4 pl-6 space-y-5">
                     {providerLogs && providerLogs.length > 0 ? (
                       providerLogs.map((log: any, idx: number) => {
                         const isSuccess = log.event === "SUCCESS";
@@ -929,7 +929,7 @@ export default function ResultsView({
                         return (
                           <div key={idx} className="relative">
                             {/* Dot */}
-                            <span className={`absolute -left-[33px] top-1 w-4 h-4 rounded-full border-2 bg-white flex items-center justify-center ${
+                            <span className={`absolute -left-[33px] top-1 w-4 h-4 rounded-full border-2 bg-white dark:bg-slate-900 flex items-center justify-center ${
                               isSuccess 
                                 ? "border-emerald-500" 
                                 : isFailed 
@@ -951,15 +951,15 @@ export default function ResultsView({
 
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <span className="font-bold text-xs text-slate-800 capitalize">{log.provider}</span>
+                                <span className="font-bold text-xs text-slate-800 dark:text-slate-200 capitalize">{log.provider}</span>
                                 <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded-full ${
                                   isSuccess 
-                                    ? "bg-emerald-50 text-emerald-700" 
+                                    ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400" 
                                     : isFailed 
-                                    ? "bg-rose-50 text-rose-700" 
+                                    ? "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400" 
                                     : isSkipped
-                                    ? "bg-amber-50 text-amber-700"
-                                    : "bg-blue-50 text-blue-700"
+                                    ? "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400"
+                                    : "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400"
                                 }`}>
                                   {log.event}
                                 </span>
@@ -972,13 +972,13 @@ export default function ResultsView({
                                   {new Date(log.timestamp).toLocaleTimeString()}
                                 </span>
                               </div>
-                              <p className="text-slate-600 text-xs leading-relaxed">{log.message}</p>
+                              <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">{log.message}</p>
                             </div>
                           </div>
                         );
                       })
                     ) : (
-                      <p className="text-slate-400 italic text-xs">No diagnostics traces available for this session.</p>
+                      <p className="text-slate-400 dark:text-slate-500 italic text-xs">No diagnostics traces available for this session.</p>
                     )}
                   </div>
                 </div>
