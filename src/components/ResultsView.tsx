@@ -456,28 +456,282 @@ export default function ResultsView({
                     </div>
                   )
                 ) : (
-                  /* Elegant placeholder for sample presets with no uploaded base64 data */
-                  <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-8 flex flex-col items-center justify-center text-center space-y-6">
-                    <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
-                      <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
-                    </div>
-                    <div className="max-w-xs space-y-3">
-                      <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base">Sample Document Canvas</h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                        You are currently viewing the default preset <strong>{fileName}</strong> ({fileSize}).
-                      </p>
-                      <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-150 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 leading-normal text-left space-y-1.5 shadow-inner">
-                        <p className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
-                          💡 <span>How to preview your own documents:</span>
-                        </p>
-                        <ol className="list-decimal pl-4 space-y-1 text-slate-600 dark:text-slate-400">
-                          <li>Click on <strong>Workspace</strong> in the navigation.</li>
-                          <li>Drag and drop or upload your own <strong>PDF</strong> or <strong>Image</strong> file.</li>
-                          <li>We will display the full original document side-by-side right here!</li>
-                        </ol>
+                  /* Elegant rendering for preloaded presets with no uploaded base64 data */
+                  fileName.toLowerCase().includes("stripe") ? (
+                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col h-full text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                      {/* PDF Header Simulation */}
+                      <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
+                        <div>
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <div className="w-5 h-5 rounded-md bg-[#635bff] flex items-center justify-center text-white font-extrabold text-[10px]">S</div>
+                            <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">stripe</span>
+                          </div>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Stripe Payments UK Limited</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">107 Cheapside, London EC2V 6DN, UK</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">VAT Reg: GB 123 456 789</p>
+                        </div>
+                        <div className="text-right">
+                          <h1 className="text-lg font-black text-[#635bff] tracking-wider">INVOICE</h1>
+                          <p className="font-mono text-[10px] font-bold text-slate-700 dark:text-slate-300">INV-2024-88412</p>
+                          <div className="mt-2 space-y-0.5 text-[10px] text-slate-500 dark:text-slate-400">
+                            <p><span className="font-semibold">Invoice Date:</span> Oct 24, 2024</p>
+                            <p><span className="font-semibold">Due Date:</span> Nov 23, 2024</p>
+                            <p><span className="font-semibold">Terms:</span> Net 30</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bill To Info */}
+                      <div className="my-5 grid grid-cols-2 gap-4">
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider">BILL TO</span>
+                          <p className="font-bold text-slate-850 dark:text-slate-200 mt-1">Acme Corporation</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Enterprise Solutions Division</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">120 Spear St, San Francisco, CA 94105</p>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider">PAYMENT DETAILS</span>
+                          <p className="font-semibold text-slate-850 dark:text-slate-200 mt-1">Bank Wire Transfer</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Account: *******1244</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Currency: USD ($)</p>
+                        </div>
+                      </div>
+
+                      {/* Table of items */}
+                      <div className="flex-grow mt-2">
+                        <div className="grid grid-cols-12 font-bold text-[9px] text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2">
+                          <span className="col-span-6">Description</span>
+                          <span className="col-span-2 text-center">Qty</span>
+                          <span className="col-span-2 text-right">Unit Price</span>
+                          <span className="col-span-2 text-right">Amount</span>
+                        </div>
+                        <div className="divide-y divide-slate-100 dark:divide-slate-900">
+                          <div className="grid grid-cols-12 py-3 text-[11px]">
+                            <span className="col-span-6 font-medium text-slate-800 dark:text-slate-250">AI Document Processing (Enterprise)</span>
+                            <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">1</span>
+                            <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$1,200.00</span>
+                            <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$1,200.00</span>
+                          </div>
+                          <div className="grid grid-cols-12 py-3 text-[11px]">
+                            <span className="col-span-6 font-medium text-slate-800 dark:text-slate-250">Custom API Integration Support</span>
+                            <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">5</span>
+                            <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$150.00</span>
+                            <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$750.00</span>
+                          </div>
+                          <div className="grid grid-cols-12 py-3 text-[11px]">
+                            <span className="col-span-6 font-medium text-slate-800 dark:text-slate-250">Monthly Cloud Storage Surcharge</span>
+                            <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">1</span>
+                            <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$45.00</span>
+                            <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$45.00</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* PDF Footer Subtotal & Totals block */}
+                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 space-y-1.5 self-end w-1/2">
+                        <div className="flex justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                          <span>Subtotal</span>
+                          <span className="font-mono font-medium">$1,995.00</span>
+                        </div>
+                        <div className="flex justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                          <span>Tax (20.0%)</span>
+                          <span className="font-mono font-medium">$399.00</span>
+                        </div>
+                        <div className="flex justify-between text-xs font-bold text-slate-900 dark:text-white pt-1.5 border-t border-slate-200 dark:border-slate-850">
+                          <span>TOTAL DUE</span>
+                          <span className="font-mono text-[#635bff] font-black">$2,394.00</span>
+                        </div>
+                      </div>
+
+                      {/* Brand Note */}
+                      <div className="mt-8 text-center text-[9px] text-slate-400 dark:text-slate-500 pt-4 border-t border-dashed border-slate-200 dark:border-slate-800">
+                        Thank you for your business. For billing queries, please contact billing@stripe.com.
                       </div>
                     </div>
-                  </div>
+                  ) : fileName.toLowerCase().includes("uber") ? (
+                    <div className="relative bg-[#ffffff] dark:bg-[#121212] aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col h-full text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                      {/* Thermal Receipt Style Frame */}
+                      <div className="flex flex-col items-center pb-4 border-b border-dashed border-slate-200 dark:border-slate-800 text-center">
+                        <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-black text-sm mb-1.5">U</div>
+                        <h1 className="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white uppercase font-mono">Uber London</h1>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">RECEIPT NO: UBR-998341-UK</p>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">DATE: Nov 14, 2024, 08:32 PM</p>
+                      </div>
+
+                      {/* Travel Route Animation/SVG */}
+                      <div className="my-4 bg-slate-50 dark:bg-slate-900/60 p-3 rounded-xl border border-slate-100 dark:border-slate-800/80 space-y-2 text-left">
+                        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 font-mono uppercase tracking-wider block">ROUTE PROFILE</span>
+                        <div className="flex items-center gap-3 py-1">
+                          {/* Simulated mini SVG Map */}
+                          <div className="w-14 h-14 rounded-lg bg-slate-200 dark:bg-slate-800 overflow-hidden relative border border-slate-300/45 dark:border-slate-700 shrink-0">
+                            {/* SVG grid patterns simulating roads */}
+                            <svg className="w-full h-full stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]" viewBox="0 0 50 50">
+                              <line x1="0" y1="10" x2="50" y2="10" />
+                              <line x1="0" y1="35" x2="50" y2="35" />
+                              <line x1="15" y1="0" x2="15" y2="50" />
+                              <line x1="40" y1="0" x2="40" y2="50" />
+                              {/* Travel route path */}
+                              <path d="M 15 35 Q 25 25 40 10" fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" />
+                              <circle cx="15" cy="35" r="3.5" fill="#10b981" />
+                              <circle cx="40" cy="10" r="3.5" fill="#ef4444" />
+                            </svg>
+                          </div>
+                          <div className="space-y-1 text-[10px] leading-tight text-left">
+                            <p className="font-bold flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                              <span className="truncate max-w-[120px] text-slate-800 dark:text-slate-200">Paddington Station</span>
+                            </p>
+                            <p className="font-bold flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0"></span>
+                              <span className="truncate max-w-[120px] text-slate-800 dark:text-slate-200">Shoreditch High St</span>
+                            </p>
+                            <p className="text-slate-500 dark:text-slate-400 text-[9px] font-mono">5.8 miles • 24 min</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Ride Charge Details */}
+                      <div className="flex-grow my-3 space-y-3">
+                        <div className="border-b border-dashed border-slate-200 dark:border-slate-800 pb-2">
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 font-mono uppercase tracking-wider block mb-1">RIDE CHARGES</span>
+                          <div className="flex justify-between items-center text-[11px] font-mono">
+                            <span className="font-medium text-slate-800 dark:text-slate-200">Business Class Ride</span>
+                            <span className="font-bold text-slate-850 dark:text-slate-100">£35.42</span>
+                          </div>
+                        </div>
+
+                        {/* Financial blocks */}
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between items-center text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                            <span>Subtotal</span>
+                            <span>£35.42</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                            <span>VAT (20.0%)</span>
+                            <span>£7.08</span>
+                          </div>
+                          <div className="flex justify-between items-center text-xs font-mono font-black text-slate-900 dark:text-white pt-2 border-t border-dashed border-slate-200 dark:border-slate-800">
+                            <span>TOTAL PAID</span>
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">£42.50</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Driver Badge */}
+                      <div className="mt-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 flex items-center gap-2 text-[10px]">
+                        <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 font-bold font-mono">AP</div>
+                        <div className="text-left">
+                          <p className="font-bold text-slate-800 dark:text-slate-200">Driver Arthur P. (★★★★★)</p>
+                          <p className="text-[9px] text-slate-500 dark:text-slate-400 font-mono">Lic: PHV-118491 • Tesla Model 3</p>
+                        </div>
+                      </div>
+
+                      {/* Bottom Note */}
+                      <div className="mt-6 text-center text-[9px] text-slate-400 dark:text-slate-500 pt-3 border-t border-dashed border-slate-200 dark:border-slate-800 font-mono">
+                        Uber London Ltd • Thank you for riding with us.
+                      </div>
+                    </div>
+                  ) : fileName.toLowerCase().includes("acme") || fileName.toLowerCase().includes("purchase") ? (
+                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col h-full text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                      {/* PO Form Layout */}
+                      <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
+                        <div>
+                          <h1 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">PURCHASE ORDER</h1>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Acme Hardware Corp</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">100 Industrial Parkway, Austin, TX 78744</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Tax ID: US 112 233 445</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-200/50 dark:border-slate-800 font-mono text-right inline-block">
+                            <p className="text-[8px] font-bold text-slate-400 dark:text-slate-500">P.O. NUMBER</p>
+                            <p className="font-extrabold text-xs text-slate-900 dark:text-white">PO-883921</p>
+                          </div>
+                          <div className="mt-2 text-[10px] text-slate-500 dark:text-slate-400 space-y-0.5">
+                            <p><span className="font-semibold">P.O. Date:</span> Dec 01, 2024</p>
+                            <p><span className="font-semibold">Terms:</span> Net 30</p>
+                            <p><span className="font-semibold">Currency:</span> USD ($)</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Ship To / Vendor Info */}
+                      <div className="my-5 grid grid-cols-2 gap-4">
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider">VENDOR</span>
+                          <p className="font-bold text-slate-850 dark:text-slate-200 mt-1">Lenovo Services</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">550 Lenovo Way</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Morrisville, NC 27560</p>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider">DELIVER TO</span>
+                          <p className="font-bold text-slate-850 dark:text-slate-200 mt-1">Acme Hardware Corp</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">Building 4, Dock C</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400">100 Industrial Parkway, Austin, TX 78744</p>
+                        </div>
+                      </div>
+
+                      {/* PO Lines */}
+                      <div className="flex-grow mt-2">
+                        <div className="grid grid-cols-12 font-bold text-[9px] text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2">
+                          <span className="col-span-6">Item &amp; Description</span>
+                          <span className="col-span-2 text-center">Qty</span>
+                          <span className="col-span-2 text-right">Price</span>
+                          <span className="col-span-2 text-right">Total</span>
+                        </div>
+                        <div className="py-3.5 grid grid-cols-12 text-[11px] border-b border-slate-100 dark:border-slate-900">
+                          <div className="col-span-6 text-left">
+                            <p className="font-bold text-slate-850 dark:text-slate-200">ThinkStation Workstation P3 Dual GPU</p>
+                            <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">High-end Engineering Workstation Spec</p>
+                          </div>
+                          <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">5</span>
+                          <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$1,700.00</span>
+                          <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$8,500.00</span>
+                        </div>
+                      </div>
+
+                      {/* Financial Sum */}
+                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 space-y-1.5 self-end w-1/2">
+                        <div className="flex justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                          <span>Subtotal</span>
+                          <span className="font-mono font-medium">$8,500.00</span>
+                        </div>
+                        <div className="flex justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                          <span>Tax Amount</span>
+                          <span className="font-mono font-medium">$0.00</span>
+                        </div>
+                        <div className="flex justify-between text-xs font-bold text-slate-900 dark:text-white pt-1.5 border-t border-slate-200 dark:border-slate-850">
+                          <span>TOTAL ORDER</span>
+                          <span className="font-mono text-blue-600 dark:text-blue-400 font-black">$8,500.00</span>
+                        </div>
+                      </div>
+
+                      {/* Approval Section */}
+                      <div className="mt-8 flex justify-between items-end border-t border-dashed border-slate-200 dark:border-slate-800 pt-4 text-left">
+                        <div className="text-[9px] text-slate-400 dark:text-slate-500">
+                          <p>Authorized Procurement Seal</p>
+                          <p className="font-mono font-bold text-slate-600 dark:text-slate-400 mt-1 uppercase">★ APPROVED VIA SYSTEM AUTH ★</p>
+                        </div>
+                        <div className="text-right">
+                          <span className="font-serif italic text-sm text-blue-600 dark:text-blue-400 pr-2">C. H. Henderson</span>
+                          <div className="w-24 border-t border-slate-300 dark:border-slate-700 mt-1"></div>
+                          <p className="text-[8px] text-slate-400 dark:text-slate-500 mt-1">Procurement Committee Chair</p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Default generic preview fallback for other uploads */
+                    <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-8 flex flex-col items-center justify-center text-center space-y-6">
+                      <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
+                        <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+                      </div>
+                      <div className="max-w-xs space-y-3">
+                        <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base">Sample Document Canvas</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                          You are currently viewing the default preset <strong>{fileName}</strong> ({fileSize}).
+                        </p>
+                      </div>
+                    </div>
+                  )
                 )}
               </div>
             )}
