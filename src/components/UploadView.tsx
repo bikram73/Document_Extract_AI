@@ -120,97 +120,45 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
         </div>
       )}
 
-      {/* Main Grid: Upload Area on Left, Guidelines on Right */}
-      <div className="grid md:grid-cols-5 gap-8 items-start">
-        {/* Left Drag & Drop Block */}
-        <div className="md:col-span-3 space-y-4">
-          <div
-            onDragEnter={handleDrag}
-            onDragOver={handleDrag}
-            onDragLeave={handleDrag}
-            onDrop={handleDrop}
-            onClick={triggerFileInput}
-            className={`relative rounded-3xl border-2 border-dashed p-10 text-center transition-all cursor-pointer group ${
-              dragActive 
-                ? "border-primary bg-blue-50/10 dark:bg-blue-950/20" 
-                : "border-outline-variant hover:border-primary/60 bg-surface-container-lowest"
-            }`}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              accept=".pdf,image/png,image/jpeg,image/webp"
-              onChange={handleChange}
-            />
+      {/* Centered Upload Block */}
+      <div className="w-full max-w-2xl mx-auto">
+        <div
+          onDragEnter={handleDrag}
+          onDragOver={handleDrag}
+          onDragLeave={handleDrag}
+          onDrop={handleDrop}
+          onClick={triggerFileInput}
+          className={`relative rounded-3xl border-2 border-dashed p-12 text-center transition-all cursor-pointer group ${
+            dragActive 
+              ? "border-primary bg-blue-50/10 dark:bg-blue-950/20" 
+              : "border-outline-variant hover:border-primary/60 bg-surface-container-lowest"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            accept=".pdf,image/png,image/jpeg,image/webp"
+            onChange={handleChange}
+          />
 
-            <div className="max-w-xs mx-auto space-y-4">
-              <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
-                <Upload className="w-8 h-8" />
-              </div>
+          <div className="max-w-xs mx-auto space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
+              <Upload className="w-8 h-8" />
+            </div>
 
-              <div className="space-y-1">
-                <p className="font-bold text-on-surface text-base">
-                  Drag &amp; drop document files
-                </p>
-                <p className="text-xs text-on-surface-variant">
-                  or <span className="text-primary font-semibold underline">browse files</span> from your device
-                </p>
-              </div>
-
-              <p className="text-xs text-on-surface-variant/70 bg-surface-container-low dark:bg-slate-900 px-3 py-1.5 rounded-full inline-block">
-                PDF, PNG, JPG, or WEBP up to 10MB
+            <div className="space-y-1">
+              <p className="font-bold text-on-surface text-base">
+                Drag &amp; drop document files
+              </p>
+              <p className="text-xs text-on-surface-variant">
+                or <span className="text-primary font-semibold underline">browse files</span> from your device
               </p>
             </div>
-          </div>
-        </div>
 
-        {/* Right Details/Guidelines Sidebar */}
-        <div className="md:col-span-2 space-y-6 bg-surface-container-lowest border border-outline-variant/30 p-6 rounded-3xl">
-          <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-on-surface flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-primary" /> Extraction Capabilities
-            </h3>
-            <p className="text-xs text-on-surface-variant">
-              Our extraction system is designed to identify key data elements automatically:
+            <p className="text-xs text-on-surface-variant/70 bg-surface-container-low dark:bg-slate-900 px-3 py-1.5 rounded-full inline-block">
+              PDF, PNG, JPG, or WEBP up to 10MB
             </p>
-          </div>
-
-          <div className="space-y-3.5 text-xs">
-            <div className="flex gap-2.5 items-start">
-              <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                <Check className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <span className="font-bold text-on-surface">Metadata Keys</span>
-                <p className="text-on-surface-variant">Merchant/Supplier name, date, invoice numbers, tax IDs, and billing addresses.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-2.5 items-start">
-              <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                <Check className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <span className="font-bold text-on-surface">Tabular Line Items</span>
-                <p className="text-on-surface-variant">Automatic extraction of nested tables, including description, quantity, unit price, tax, and item totals.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-2.5 items-start">
-              <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                <Check className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <span className="font-bold text-on-surface">Financial Integrity</span>
-                <p className="text-on-surface-variant">Net amounts, currency identification, applicable tax details, and total balance due calculations.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-outline-variant/30 pt-4 text-[11px] text-on-surface-variant flex items-center gap-2 leading-relaxed">
-            <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-            <span>Files are processed in-memory. Zero retention storage is utilized for security.</span>
           </div>
         </div>
       </div>
