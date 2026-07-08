@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import { 
   FileText, Copy, Check, Save, Plus, Trash2, Edit2, Info, ListCollapse, 
-  HelpCircle, Sparkles, Building, Calendar, DollarSign, Percent, ShieldCheck, FileCheck
+  HelpCircle, Sparkles, Building, Calendar, DollarSign, Percent, ShieldCheck, FileCheck,
+  Download, FileSpreadsheet
 } from "lucide-react";
 import { ExtractedData, LineItem } from "../types";
 
@@ -35,6 +36,58 @@ export default function ResultsView({
     navigator.clipboard.writeText(JSON.stringify(data, null, 2));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Download JSON helper
+  const handleDownloadJSON = () => {
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${fileName.replace(/\.[^/.]+$/, "")}_extracted.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Export CSV helper
+  const handleExportCSV = () => {
+    let csvContent = "";
+    
+    // Document Summary Metadata
+    csvContent += "METADATA CATEGORY,VALUE\r\n";
+    csvContent += `Document Type,${data.documentType || ""}\r\n`;
+    csvContent += `Vendor Name,"${(data.vendorName || "").replace(/"/g, '""')}"\r\n`;
+    csvContent += `Vendor Tax ID,${data.vendorTaxId || ""}\r\n`;
+    csvContent += `Invoice/Document ID,${data.invoiceNumber || ""}\r\n`;
+    csvContent += `Issue Date,${data.issueDate || ""}\r\n`;
+    csvContent += `Due Date,${data.dueDate || ""}\r\n`;
+    csvContent += `Currency,${data.currency || ""}\r\n`;
+    csvContent += `Payment Terms,${data.paymentTerms || ""}\r\n`;
+    csvContent += `Financial Subtotal,${data.financials?.subtotal || 0}\r\n`;
+    csvContent += `Financial Tax,${data.financials?.tax || 0}\r\n`;
+    csvContent += `Financial Total,${data.financials?.total || 0}\r\n\r\n`;
+
+    // Line Items Section
+    csvContent += "LINE ITEM DESCRIPTION,QTY,UNIT PRICE,TOTAL AMOUNT\r\n";
+    if (data.lineItems && data.lineItems.length > 0) {
+      data.lineItems.forEach((item) => {
+        const desc = (item.description || "").replace(/"/g, '""');
+        csvContent += `"${desc}",${item.qty || 1},${item.unitPrice || 0},${item.amount || 0}\r\n`;
+      });
+    }
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${fileName.replace(/\.[^/.]+$/, "")}_ledger.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Field change handlers
@@ -137,10 +190,26 @@ export default function ResultsView({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+          <button
+            onClick={handleDownloadJSON}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all border border-slate-200 cursor-pointer active:scale-[0.98] shadow-sm"
+            title="Download extracted schema as a JSON file"
+          >
+            <Download className="w-4 h-4 text-slate-500 shrink-0" />
+            <span>Download JSON</span>
+          </button>
+          <button
+            onClick={handleExportCSV}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all border border-slate-200 cursor-pointer active:scale-[0.98] shadow-sm"
+            title="Export extracted ledger data to CSV"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Export CSV</span>
+          </button>
           <button
             onClick={onGoToAnalytics}
-            className="w-full sm:w-auto bg-primary text-white hover:bg-blue-700 px-6 py-3 rounded-xl font-bold transition-all shadow-md active:scale-[0.98] cursor-pointer"
+            className="w-full sm:w-auto bg-primary text-white hover:bg-blue-700 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md active:scale-[0.98] cursor-pointer"
           >
             Run Integrity &amp; Metrics &rarr;
           </button>
