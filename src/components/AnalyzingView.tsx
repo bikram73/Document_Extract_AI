@@ -76,12 +76,12 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
         {/* Big percentage counter */}
         <div className="space-y-2">
           {errorMsg ? (
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 rounded-full border border-red-100 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 rounded-full border border-red-100 dark:border-red-900/40 text-xs font-semibold">
               <ShieldAlert className="w-4 h-4" />
               <span>Extraction Suspended</span>
             </div>
           ) : (
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 rounded-full border border-blue-100 dark:border-blue-900/40 text-xs font-semibold">
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
               <span>Running AI Extraction Pipeline</span>
             </div>
@@ -96,44 +96,44 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
         </div>
 
         {errorMsg ? (
-          <div className="bg-red-50 text-red-800 border border-red-200 rounded-2xl p-6 text-left max-w-md mx-auto space-y-3 shadow-sm">
+          <div className="bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-900/40 rounded-2xl p-6 text-left max-w-md mx-auto space-y-3 shadow-sm">
             <p className="font-bold text-sm">Failed to extract structured data:</p>
-            <p className="text-xs font-mono break-all leading-relaxed bg-white p-3 rounded-xl border border-red-100">{errorMsg}</p>
-            <p className="text-xs text-red-600">Please check that your GEMINI_API_KEY is configured in your project Secrets panel.</p>
+            <p className="text-xs font-mono break-all leading-relaxed bg-white dark:bg-slate-950 p-3 rounded-xl border border-red-100 dark:border-red-900/30 text-slate-800 dark:text-slate-200">{errorMsg}</p>
+            <p className="text-xs text-red-600 dark:text-red-400">Please check that your GEMINI_API_KEY is configured in your project Secrets panel.</p>
           </div>
         ) : (
           /* Process steps list */
-          <div className="max-w-md mx-auto bg-white border border-outline-variant/30 rounded-2xl p-6 text-left shadow-sm space-y-4">
+          <div className="max-w-md mx-auto bg-white dark:bg-slate-900 border border-outline-variant/30 dark:border-slate-800 rounded-2xl p-6 text-left shadow-sm space-y-4">
             <h3 className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Analysis Logs</h3>
             
             <div className="space-y-4">
               {/* Step 1 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 fill-green-50 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
                   <span className="text-sm text-on-surface font-semibold">OCR Layer Recognition</span>
                 </div>
-                <span className="text-xs text-green-600 font-bold font-mono">100% Ready</span>
+                <span className="text-xs text-green-600 dark:text-green-400 font-bold font-mono">100% Ready</span>
               </div>
 
               {/* Step 2 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 fill-green-50 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
                   <span className="text-sm text-on-surface font-semibold">Structure Mapping &amp; Alignment</span>
                 </div>
-                <span className="text-xs text-green-600 font-bold font-mono">100% Ready</span>
+                <span className="text-xs text-green-600 dark:text-green-400 font-bold font-mono">100% Ready</span>
               </div>
 
               {/* Step 3 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {currentStep > 2 ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-500 fill-green-50 shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
                   ) : (
-                    <Loader2 className="w-5 h-5 text-blue-600 animate-spin shrink-0" />
+                    <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin shrink-0" />
                   )}
-                  <span className={`text-sm font-semibold ${currentStep > 2 ? "text-on-surface" : "text-blue-600 animate-pulse"}`}>
+                  <span className={`text-sm font-semibold ${currentStep > 2 ? "text-on-surface" : "text-blue-600 dark:text-blue-400 animate-pulse"}`}>
                     LLM Field Categorization
                   </span>
                 </div>
@@ -146,17 +146,17 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {currentStep === 4 ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-500 fill-green-50 shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
                   ) : currentStep === 3 ? (
-                    <Loader2 className="w-5 h-5 text-blue-600 animate-spin shrink-0" />
+                    <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin shrink-0" />
                   ) : (
-                    <div className="w-5 h-5 rounded-full border-2 border-slate-200 shrink-0"></div>
+                    <div className="w-5 h-5 rounded-full border-2 border-slate-200 dark:border-slate-800 shrink-0"></div>
                   )}
                   <span className={`text-sm font-semibold ${
                     currentStep === 4 
                       ? "text-on-surface" 
                       : currentStep === 3 
-                        ? "text-blue-600 animate-pulse" 
+                        ? "text-blue-600 dark:text-blue-400 animate-pulse" 
                         : "text-on-surface-variant"
                   }`}>
                     Arithmetic Integrity Check

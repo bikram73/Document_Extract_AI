@@ -85,7 +85,7 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
 
         <div className="flex items-center gap-2 text-xs font-mono text-on-surface-variant">
           <span>PIPELINE ENGINE:</span>
-          <span className="bg-slate-200 px-2.5 py-1 rounded-full font-bold">COGNITIVE AI</span>
+          <span className="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-2.5 py-1 rounded-full font-bold">COGNITIVE AI</span>
         </div>
       </div>
 
@@ -94,9 +94,9 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
         <div className="lg:col-span-7 space-y-6">
           
           {/* Section: Confidence Gauges */}
-          <div className="bg-white p-6 rounded-3xl border border-outline-variant/30 shadow-sm text-left">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm text-left">
             <h2 className="text-base font-bold text-on-surface flex items-center gap-2 mb-6">
-              <Brain className="w-5 h-5 text-blue-600" />
+              <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               Extraction Confidence Profile
             </h2>
 
@@ -105,9 +105,9 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
               <div className="flex flex-col items-center text-center space-y-2">
                 <div className="relative w-20 h-20 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="40" cy="40" r="34" stroke="#f1f5f9" strokeWidth="6" fill="transparent" />
+                    <circle cx="40" cy="40" r="34" className="stroke-slate-100 dark:stroke-slate-800" strokeWidth="6" fill="transparent" />
                     <circle 
-                      cx="40" cy="40" r="34" stroke="#004ac6" strokeWidth="6" fill="transparent" 
+                      cx="40" cy="40" r="34" className="stroke-blue-600 dark:stroke-blue-400" strokeWidth="6" fill="transparent" 
                       strokeDasharray="213.6"
                       strokeDashoffset={213.6 - (213.6 * (data.confidence.vendor || 95)) / 100}
                       strokeLinecap="round"
@@ -124,9 +124,9 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
               <div className="flex flex-col items-center text-center space-y-2">
                 <div className="relative w-20 h-20 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="40" cy="40" r="34" stroke="#f1f5f9" strokeWidth="6" fill="transparent" />
+                    <circle cx="40" cy="40" r="34" className="stroke-slate-100 dark:stroke-slate-800" strokeWidth="6" fill="transparent" />
                     <circle 
-                      cx="40" cy="40" r="34" stroke="#712ae2" strokeWidth="6" fill="transparent" 
+                      cx="40" cy="40" r="34" className="stroke-purple-600 dark:stroke-purple-400" strokeWidth="6" fill="transparent" 
                       strokeDasharray="213.6"
                       strokeDashoffset={213.6 - (213.6 * (data.confidence.date || 95)) / 100}
                       strokeLinecap="round"
@@ -143,9 +143,9 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
               <div className="flex flex-col items-center text-center space-y-2">
                 <div className="relative w-20 h-20 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="40" cy="40" r="34" stroke="#f1f5f9" strokeWidth="6" fill="transparent" />
+                    <circle cx="40" cy="40" r="34" className="stroke-slate-100 dark:stroke-slate-800" strokeWidth="6" fill="transparent" />
                     <circle 
-                      cx="40" cy="40" r="34" stroke="#0ea5e9" strokeWidth="6" fill="transparent" 
+                      cx="40" cy="40" r="34" className="stroke-sky-500 dark:stroke-sky-400" strokeWidth="6" fill="transparent" 
                       strokeDasharray="213.6"
                       strokeDashoffset={213.6 - (213.6 * (data.confidence.lineItems || 85)) / 100}
                       strokeLinecap="round"
@@ -162,9 +162,9 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
               <div className="flex flex-col items-center text-center space-y-2">
                 <div className="relative w-20 h-20 flex items-center justify-center">
                   <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="40" cy="40" r="34" stroke="#f1f5f9" strokeWidth="6" fill="transparent" />
+                    <circle cx="40" cy="40" r="34" className="stroke-slate-100 dark:stroke-slate-800" strokeWidth="6" fill="transparent" />
                     <circle 
-                      cx="40" cy="40" r="34" stroke="#10b981" strokeWidth="6" fill="transparent" 
+                      cx="40" cy="40" r="34" className="stroke-emerald-500 dark:stroke-emerald-400" strokeWidth="6" fill="transparent" 
                       strokeDasharray="213.6"
                       strokeDashoffset={213.6 - (213.6 * (data.confidence.currency || 100)) / 100}
                       strokeLinecap="round"
@@ -180,25 +180,27 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
           </div>
 
           {/* Section: Clinical Validation Checks */}
-          <div className="bg-white p-6 rounded-3xl border border-outline-variant/30 shadow-sm text-left space-y-5">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm text-left space-y-5">
             <h2 className="text-base font-bold text-on-surface flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-emerald-600" />
+              <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               Arithmetic &amp; Integrity Checklist
             </h2>
 
             <div className="space-y-3.5">
               {/* Check 1: Date Logic */}
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60">
                 {dateValidationStatus === "PASSED" ? (
-                  <CheckCircle className="w-6 h-6 text-emerald-600 fill-emerald-50 shrink-0 mt-0.5" />
+                  <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400 fill-emerald-50 dark:fill-emerald-950/20 shrink-0 mt-0.5" />
                 ) : (
-                  <XCircle className="w-6 h-6 text-rose-500 fill-rose-50 shrink-0 mt-0.5" />
+                  <XCircle className="w-6 h-6 text-rose-500 dark:text-rose-400 fill-rose-50 dark:fill-rose-950/20 shrink-0 mt-0.5" />
                 )}
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-on-surface">Date Chronology Check</h4>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      dateValidationStatus === "PASSED" ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"
+                      dateValidationStatus === "PASSED" 
+                        ? "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300" 
+                        : "bg-red-100 dark:bg-red-950/40 text-red-800 dark:text-red-300"
                     }`}>
                       {dateValidationStatus}
                     </span>
@@ -210,17 +212,19 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
               </div>
 
               {/* Check 2: Arithmetic Totals */}
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60">
                 {arithmeticStatus === "PASSED" ? (
-                  <CheckCircle className="w-6 h-6 text-emerald-600 fill-emerald-50 shrink-0 mt-0.5" />
+                  <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400 fill-emerald-50 dark:fill-emerald-950/20 shrink-0 mt-0.5" />
                 ) : (
-                  <XCircle className="w-6 h-6 text-rose-500 fill-rose-50 shrink-0 mt-0.5" />
+                  <XCircle className="w-6 h-6 text-rose-500 dark:text-rose-400 fill-rose-50 dark:fill-rose-950/20 shrink-0 mt-0.5" />
                 )}
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-on-surface">Arithmetic Total Verification</h4>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      arithmeticStatus === "PASSED" ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"
+                      arithmeticStatus === "PASSED" 
+                        ? "bg-emerald-100 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300" 
+                        : "bg-red-100 dark:bg-red-950/40 text-red-800 dark:text-red-300"
                     }`}>
                       {arithmeticStatus}
                     </span>
@@ -235,12 +239,12 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
               </div>
 
               {/* Check 3: Currency Consistency */}
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <CheckCircle className="w-6 h-6 text-emerald-600 fill-emerald-50 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/60">
+                <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400 fill-emerald-50 dark:fill-emerald-950/20 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-on-surface">Currency Code Consistency</h4>
-                    <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">PASSED</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 rounded-full">PASSED</span>
                   </div>
                   <p className="text-xs text-on-surface-variant">
                     Verifies that the currency indicator ({data.currency || "USD"}) remains uniform across all financial blocks.
@@ -251,10 +255,10 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
           </div>
 
           {/* Section: Systemic Alerts */}
-          <div className="bg-white p-6 rounded-3xl border border-outline-variant/30 shadow-sm text-left space-y-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm text-left space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-bold text-on-surface flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-amber-500" />
+                <AlertTriangle className="w-5 h-5 text-amber-500 dark:text-amber-400" />
                 System Alerts ({visibleAlertsCount})
               </h2>
             </div>
@@ -264,14 +268,14 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
                 {data.alerts.map((alert, index) => {
                   if (resolvedAlerts[index]) return null;
                   return (
-                    <div key={index} className="flex items-start justify-between p-4 rounded-2xl bg-amber-50/50 border border-amber-200/40 gap-4">
+                    <div key={index} className="flex items-start justify-between p-4 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/40 dark:border-amber-900/30 gap-4">
                       <div className="space-y-1">
-                        <p className="text-sm font-bold text-amber-900">{alert.title}</p>
-                        <p className="text-xs text-amber-800/80 leading-relaxed">{alert.message}</p>
+                        <p className="text-sm font-bold text-amber-900 dark:text-amber-200">{alert.title}</p>
+                        <p className="text-xs text-amber-800/80 dark:text-amber-300/80 leading-relaxed">{alert.message}</p>
                       </div>
                       <button
                         onClick={() => handleResolveAlert(index)}
-                        className="bg-white text-amber-900 border border-amber-200 hover:bg-amber-100/30 text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 cursor-pointer transition-colors"
+                        className="bg-white dark:bg-slate-950 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-900/50 hover:bg-amber-100/30 dark:hover:bg-amber-900/20 text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 cursor-pointer transition-colors"
                       >
                         Acknowledge
                       </button>
@@ -280,10 +284,10 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
                 })}
               </div>
             ) : (
-              <div className="p-8 text-center text-on-surface-variant bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                <CheckCircle className="w-10 h-10 text-emerald-500 fill-emerald-50 mx-auto mb-2" />
-                <p className="text-sm font-bold">No outstanding warnings</p>
-                <p className="text-xs">All extracted values correspond with database and arithmetic models.</p>
+              <div className="p-8 text-center text-on-surface-variant bg-slate-50 dark:bg-slate-950 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
+                <CheckCircle className="w-10 h-10 text-emerald-500 dark:text-emerald-400 fill-emerald-50 dark:fill-emerald-950/20 mx-auto mb-2" />
+                <p className="text-sm font-bold text-on-surface">No outstanding warnings</p>
+                <p className="text-xs text-on-surface-variant">All extracted values correspond with database and arithmetic models.</p>
               </div>
             )}
           </div>
@@ -311,16 +315,16 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
           </div>
 
           {/* Export card with live code snippet */}
-          <div className="bg-white p-6 rounded-3xl border border-outline-variant/30 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-on-surface flex items-center gap-1.5">
-                <FileCode className="w-4 h-4 text-slate-500" />
+                <FileCode className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                 JSON Payload Export
               </h3>
 
               <button
                 onClick={handleCopy}
-                className="bg-slate-100 text-slate-800 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+                className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
               >
                 {copied ? (
                   <>
