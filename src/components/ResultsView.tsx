@@ -35,7 +35,6 @@ export default function ResultsView({
   const [copied, setCopied] = useState(false);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
   const [leftTab, setLeftTab] = useState<"ocr" | "source">("source");
-  const [mobileTab, setMobileTab] = useState<"document" | "editor">("document");
   const [pdfViewMode, setPdfViewMode] = useState<"embed" | "simulation">("embed");
 
   // Copy helper
@@ -228,35 +227,11 @@ export default function ResultsView({
         </div>
       </div>
 
-      {/* Device Tab Selector (Visible on Mobile/Tablet only, hidden on Desktop) */}
-      <div className="lg:hidden flex bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-2xl border border-slate-200/30 dark:border-slate-800/50 mb-4 shadow-sm">
-        <button
-          onClick={() => setMobileTab("document")}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
-            mobileTab === "document"
-              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
-          }`}
-        >
-          <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          <span>📄 Document View</span>
-        </button>
-        <button
-          onClick={() => setMobileTab("editor")}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
-            mobileTab === "editor"
-              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
-          }`}
-        >
-          <Edit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          <span>✍️ Form Editor ({data.lineItems?.length || 0})</span>
-        </button>
-      </div>
+      {/* No device tabs needed - structured layout fits all screens as a single page */}
 
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
-        <div className={`lg:col-span-5 space-y-4 ${mobileTab === "document" ? "block" : "hidden lg:block"}`}>
+        <div className="lg:col-span-5 space-y-4 w-full">
           <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full lg:h-[750px] min-h-[660px] lg:min-h-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Document Viewer</span>
@@ -923,7 +898,7 @@ export default function ResultsView({
         </div>
 
         {/* Right Side: Tabbed Structured Workbench Form */}
-        <div className={`lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col lg:h-[750px] ${mobileTab === "editor" ? "block" : "hidden lg:block"}`}>
+        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col lg:h-[750px] w-full">
           {/* Section Tabs */}
           <div className="flex border-b border-outline-variant/30 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-x-auto">
             <button
