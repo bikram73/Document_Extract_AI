@@ -105,6 +105,7 @@ export default function App() {
   
   const [extractedData, setExtractedData] = useState<ExtractedData>(SAMPLE_INVOICE_DATA);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // Fallback Engine state
   const [providerUsed, setProviderUsed] = useState<string>("gemini");
@@ -158,132 +159,138 @@ export default function App() {
     setErrorMsg(null);
     setActiveTab("results");
   };
-
   // Sample presets trigger
   const handleSelectSample = (sampleType: "invoice" | "receipt" | "po") => {
     setErrorMsg(null);
-    if (sampleType === "invoice") {
-      setActiveFile({
-        name: "Stripe Invoice.pdf",
-        size: "1.24 MB",
-        base64Data: "",
-        mimeType: "application/pdf"
-      });
-      setExtractedData(SAMPLE_INVOICE_DATA);
-      setProviderUsed("gemini");
-      setProviderReason("Primary Provider");
-      setProviderLogs([
-        {
-          provider: "gemini",
-          event: "STARTED",
-          message: "Attempting document extraction using GEMINI (Primary)...",
-          timestamp: new Date(Date.now() - 4000).toISOString(),
-        },
-        {
-          provider: "gemini",
-          event: "SUCCESS",
-          message: "Successfully extracted structured data in 452ms.",
-          timestamp: new Date().toISOString(),
-          latencyMs: 452,
-        },
-      ]);
-    } else if (sampleType === "receipt") {
-      setActiveFile({
-        name: "Uber Taxi Receipt.png",
-        size: "420 KB",
-        base64Data: "",
-        mimeType: "image/png"
-      });
-      setExtractedData(SAMPLE_RECEIPT);
-      setProviderUsed("openrouter");
-      setProviderReason("Primary provider rate-limited (429); automatically failed over to OpenRouter");
-      setProviderLogs([
-        {
-          provider: "gemini",
-          event: "STARTED",
-          message: "Attempting document extraction using GEMINI (Primary)...",
-          timestamp: new Date(Date.now() - 6000).toISOString(),
-        },
-        {
-          provider: "gemini",
-          event: "FAILED",
-          message: "API request failed with status 429: Too Many Requests. Rate limit exceeded.",
-          timestamp: new Date(Date.now() - 4500).toISOString(),
-          latencyMs: 1500,
-        },
-        {
-          provider: "openrouter",
-          event: "STARTED",
-          message: "Initiating primary fallback via OpenRouter (google/gemini-2.5-flash)...",
-          timestamp: new Date(Date.now() - 4500).toISOString(),
-        },
-        {
-          provider: "openrouter",
-          event: "SUCCESS",
-          message: "Successfully extracted structured data using OpenRouter in 980ms.",
-          timestamp: new Date().toISOString(),
-          latencyMs: 980,
-        },
-      ]);
-    } else {
-      setActiveFile({
-        name: "Acme Corp Purchase.jpg",
-        size: "950 KB",
-        base64Data: "",
-        mimeType: "image/jpeg"
-      });
-      setExtractedData(SAMPLE_PO);
-      setProviderUsed("groq");
-      setProviderReason("Primary provider rate-limited (429) and secondary OpenRouter timed out; emergency failover to Groq");
-      setProviderLogs([
-        {
-          provider: "gemini",
-          event: "STARTED",
-          message: "Attempting document extraction using GEMINI (Primary)...",
-          timestamp: new Date(Date.now() - 10000).toISOString(),
-        },
-        {
-          provider: "gemini",
-          event: "FAILED",
-          message: "API request failed with status 429: Too Many Requests.",
-          timestamp: new Date(Date.now() - 8500).toISOString(),
-          latencyMs: 1500,
-        },
-        {
-          provider: "openrouter",
-          event: "STARTED",
-          message: "Initiating fallback extraction using OpenRouter...",
-          timestamp: new Date(Date.now() - 8500).toISOString(),
-        },
-        {
-          provider: "openrouter",
-          event: "FAILED",
-          message: "API request failed with status 503: Service Temporarily Unavailable.",
-          timestamp: new Date(Date.now() - 4000).toISOString(),
-          latencyMs: 4500,
-        },
-        {
-          provider: "groq",
-          event: "STARTED",
-          message: "Initiating emergency fallback using Groq (llama-3.2-11b-vision-preview)...",
-          timestamp: new Date(Date.now() - 4000).toISOString(),
-        },
-        {
-          provider: "groq",
-          event: "SUCCESS",
-          message: "Successfully extracted structured data using Groq in 610ms.",
-          timestamp: new Date().toISOString(),
-          latencyMs: 610,
-        },
-      ]);
-    }
+    setIsAnalyzing(true);
     setActiveTab("analyzing");
+
+    // Super fast 300ms simulated extraction for instant, premium response
+    setTimeout(() => {
+      if (sampleType === "invoice") {
+        setActiveFile({
+          name: "Stripe Invoice.pdf",
+          size: "1.24 MB",
+          base64Data: "",
+          mimeType: "application/pdf"
+        });
+        setExtractedData(SAMPLE_INVOICE_DATA);
+        setProviderUsed("gemini");
+        setProviderReason("Primary Provider");
+        setProviderLogs([
+          {
+            provider: "gemini",
+            event: "STARTED",
+            message: "Attempting document extraction using GEMINI (Primary)...",
+            timestamp: new Date(Date.now() - 4000).toISOString(),
+          },
+          {
+            provider: "gemini",
+            event: "SUCCESS",
+            message: "Successfully extracted structured data in 452ms.",
+            timestamp: new Date().toISOString(),
+            latencyMs: 452,
+          },
+        ]);
+      } else if (sampleType === "receipt") {
+        setActiveFile({
+          name: "Uber Taxi Receipt.png",
+          size: "420 KB",
+          base64Data: "",
+          mimeType: "image/png"
+        });
+        setExtractedData(SAMPLE_RECEIPT);
+        setProviderUsed("openrouter");
+        setProviderReason("Primary provider rate-limited (429); automatically failed over to OpenRouter");
+        setProviderLogs([
+          {
+            provider: "gemini",
+            event: "STARTED",
+            message: "Attempting document extraction using GEMINI (Primary)...",
+            timestamp: new Date(Date.now() - 6000).toISOString(),
+          },
+          {
+            provider: "gemini",
+            event: "FAILED",
+            message: "API request failed with status 429: Too Many Requests. Rate limit exceeded.",
+            timestamp: new Date(Date.now() - 4500).toISOString(),
+            latencyMs: 1500,
+          },
+          {
+            provider: "openrouter",
+            event: "STARTED",
+            message: "Initiating primary fallback via OpenRouter (google/gemini-2.5-flash)...",
+            timestamp: new Date(Date.now() - 4500).toISOString(),
+          },
+          {
+            provider: "openrouter",
+            event: "SUCCESS",
+            message: "Successfully extracted structured data using OpenRouter in 980ms.",
+            timestamp: new Date().toISOString(),
+            latencyMs: 980,
+          },
+        ]);
+      } else {
+        setActiveFile({
+          name: "Acme Corp Purchase.jpg",
+          size: "950 KB",
+          base64Data: "",
+          mimeType: "image/jpeg"
+        });
+        setExtractedData(SAMPLE_PO);
+        setProviderUsed("groq");
+        setProviderReason("Primary provider rate-limited (429) and secondary OpenRouter timed out; emergency failover to Groq");
+        setProviderLogs([
+          {
+            provider: "gemini",
+            event: "STARTED",
+            message: "Attempting document extraction using GEMINI (Primary)...",
+            timestamp: new Date(Date.now() - 10000).toISOString(),
+          },
+          {
+            provider: "gemini",
+            event: "FAILED",
+            message: "API request failed with status 429: Too Many Requests.",
+            timestamp: new Date(Date.now() - 8500).toISOString(),
+            latencyMs: 1500,
+          },
+          {
+            provider: "openrouter",
+            event: "STARTED",
+            message: "Initiating fallback extraction using OpenRouter...",
+            timestamp: new Date(Date.now() - 8500).toISOString(),
+          },
+          {
+            provider: "openrouter",
+            event: "FAILED",
+            message: "API request failed with status 503: Service Temporarily Unavailable.",
+            timestamp: new Date(Date.now() - 4000).toISOString(),
+            latencyMs: 4500,
+          },
+          {
+            provider: "groq",
+            event: "STARTED",
+            message: "Initiating emergency fallback using Groq (llama-3.2-11b-vision-preview)...",
+            timestamp: new Date(Date.now() - 4000).toISOString(),
+          },
+          {
+            provider: "groq",
+            event: "SUCCESS",
+            message: "Successfully extracted structured data using Groq in 610ms.",
+            timestamp: new Date().toISOString(),
+            latencyMs: 610,
+          },
+        ]);
+      }
+      setIsAnalyzing(false);
+    }, 300);
   };
 
   // Custom User File selected -> process via actual server-side API endpoint
   const handleFileSelected = async (file: ActiveFile) => {
     setActiveFile(file);
     setErrorMsg(null);
+    setIsAnalyzing(true);
     setActiveTab("analyzing");
 
     try {
@@ -311,6 +318,8 @@ export default function App() {
     } catch (err: any) {
       console.error(err);
       setErrorMsg(err.message || "Could not connect to the extraction service.");
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -438,6 +447,7 @@ export default function App() {
               <AnalyzingView 
                 fileName={activeFile.name} 
                 fileSize={activeFile.size} 
+                isAnalyzing={isAnalyzing}
                 errorMsg={errorMsg}
                 onAnalysisComplete={handleAnalysisComplete} 
               />

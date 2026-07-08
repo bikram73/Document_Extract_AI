@@ -1,49 +1,65 @@
 import { useEffect, useState } from "react";
-import { Loader2, CheckCircle2, ShieldAlert, FileText, Cpu, Calculator, RefreshCw } from "lucide-react";
-import { motion } from "motion/react";
+import { Loader2, CheckCircle2, ShieldAlert, FileText, RefreshCw } from "lucide-react";
 
 interface AnalyzingViewProps {
   fileName: string;
   fileSize: string;
+  isAnalyzing: boolean;
   onAnalysisComplete: () => void;
   errorMsg?: string | null;
 }
 
-export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, errorMsg }: AnalyzingViewProps) {
-  const [progress, setProgress] = useState(74);
-  const [currentStep, setCurrentStep] = useState(2); // 0: OCR, 1: Parser, 2: LLM, 3: Validation, 4: Done
+export default function AnalyzingView({ fileName, fileSize, isAnalyzing, onAnalysisComplete, errorMsg }: AnalyzingViewProps) {
+  const [progress, setProgress] = useState(12);
+  const [currentStep, setCurrentStep] = useState(0); // 0: OCR, 1: Parser, 2: LLM, 3: Validation, 4: Done
 
+  // Smooth, dynamic simulated progress up to 92%
   useEffect(() => {
     if (errorMsg) return;
 
     const timer = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          // Allow a brief delay at 100% before transition
-          setTimeout(() => {
-            onAnalysisComplete();
-          }, 800);
-          return 100;
+        if (prev >= 92) {
+          // Creep up extremely slowly so it doesn't stay static
+          return Math.min(prev + 0.2, 96);
         }
         
-        const nextVal = prev + Math.floor(Math.random() * 4) + 1;
-        
-        // Update current step based on percentage thresholds
-        if (nextVal < 82) {
-          setCurrentStep(2); // LLM categorization
-        } else if (nextVal < 94) {
-          setCurrentStep(3); // Arithmetic & Validation
-        } else {
-          setCurrentStep(4); // All done
-        }
-
-        return Math.min(nextVal, 100);
+        // Random natural-feeling increments
+        const increment = Math.floor(Math.random() * 5) + 3;
+        const nextVal = prev + increment;
+        return Math.min(nextVal, 92);
       });
-    }, 450);
+    }, 200);
 
     return () => clearInterval(timer);
-  }, [onAnalysisComplete, errorMsg]);
+  }, [errorMsg]);
+
+  // Map progress value to active steps for visual log updates
+  useEffect(() => {
+    if (progress < 25) {
+      setCurrentStep(0);
+    } else if (progress < 55) {
+      setCurrentStep(1);
+    } else if (progress < 80) {
+      setCurrentStep(2);
+    } else {
+      setCurrentStep(3);
+    }
+  }, [progress]);
+
+  // When backend analysis finishes successfully, fast-forward to 100% and transition
+  useEffect(() => {
+    if (!isAnalyzing && !errorMsg) {
+      setProgress(100);
+      setCurrentStep(4);
+      
+      const transitionTimer = setTimeout(() => {
+        onAnalysisComplete();
+      }, 350); // Small delay to let user see 100% success state
+      
+      return () => clearTimeout(transitionTimer);
+    }
+  }, [isAnalyzing, errorMsg, onAnalysisComplete]);
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 text-center">
@@ -69,7 +85,7 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
 
           <div className="flex justify-between items-center text-slate-400 text-[9px] font-mono">
             <span>OCR ACTIVE</span>
-            <span>{progress}%</span>
+            <span>{Math.floor(progress)}%</span>
           </div>
         </div>
 
@@ -88,7 +104,7 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
           )}
 
           <h2 className="text-6xl font-black text-on-surface font-mono tracking-tighter">
-            {errorMsg ? "Error" : `${progress}%`}
+            {errorMsg ? "Error" : `${Math.floor(progress)}%`}
           </h2>
           <p className="text-sm font-semibold text-on-surface">
             {errorMsg ? "Something went wrong" : `Analyzing "${fileName}" (${fileSize})`}
@@ -110,42 +126,74 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
               {/* Step 1 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
-                  <span className="text-sm text-on-surface font-semibold">OCR Layer Recognition</span>
+                  {currentStep >= 1 ? (
+                    <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
+                  ) : (
+                    <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin shrink-0" />
+                  )}
+                  <span className={`text-sm font-semibold ${currentStep >= 1 ? "text-on-surface" : "text-blue-600 dark:text-blue-400 animate-pulse"}`}>
+                    OCR Layer Recognition
+                  </span>
                 </div>
-                <span className="text-xs text-green-600 dark:text-green-400 font-bold font-mono">100% Ready</span>
+                <span className={`text-xs font-bold font-mono ${currentStep >= 1 ? "text-green-600 dark:text-green-400" : "text-on-surface-variant"}`}>
+                  {currentStep >= 1 ? "100% Ready" : "Recognizing..."}
+                </span>
               </div>
 
               {/* Step 2 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
-                  <span className="text-sm text-on-surface font-semibold">Structure Mapping &amp; Alignment</span>
+                  {currentStep >= 2 ? (
+                    <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
+                  ) : currentStep === 1 ? (
+                    <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin shrink-0" />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full border-2 border-slate-200 dark:border-slate-800 shrink-0"></div>
+                  )}
+                  <span className={`text-sm font-semibold ${
+                    currentStep >= 2 
+                      ? "text-on-surface" 
+                      : currentStep === 1 
+                        ? "text-blue-600 dark:text-blue-400 animate-pulse" 
+                        : "text-on-surface-variant"
+                  }`}>
+                    Structure Mapping &amp; Alignment
+                  </span>
                 </div>
-                <span className="text-xs text-green-600 dark:text-green-400 font-bold font-mono">100% Ready</span>
+                <span className={`text-xs font-bold font-mono ${currentStep >= 2 ? "text-green-600 dark:text-green-400" : "text-on-surface-variant"}`}>
+                  {currentStep >= 2 ? "100% Ready" : currentStep === 1 ? "Mapping..." : "Queued"}
+                </span>
               </div>
 
               {/* Step 3 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  {currentStep > 2 ? (
+                  {currentStep >= 3 ? (
                     <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
-                  ) : (
+                  ) : currentStep === 2 ? (
                     <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin shrink-0" />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full border-2 border-slate-200 dark:border-slate-800 shrink-0"></div>
                   )}
-                  <span className={`text-sm font-semibold ${currentStep > 2 ? "text-on-surface" : "text-blue-600 dark:text-blue-400 animate-pulse"}`}>
+                  <span className={`text-sm font-semibold ${
+                    currentStep >= 3 
+                      ? "text-on-surface" 
+                      : currentStep === 2 
+                        ? "text-blue-600 dark:text-blue-400 animate-pulse" 
+                        : "text-on-surface-variant"
+                  }`}>
                     LLM Field Categorization
                   </span>
                 </div>
-                <span className="text-xs font-bold font-mono text-on-surface-variant">
-                  {currentStep > 2 ? "Done" : "In Progress"}
+                <span className={`text-xs font-bold font-mono ${currentStep >= 3 ? "text-green-600 dark:text-green-400" : "text-on-surface-variant"}`}>
+                  {currentStep >= 3 ? "100% Ready" : currentStep === 2 ? "Categorizing..." : "Queued"}
                 </span>
               </div>
 
               {/* Step 4 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  {currentStep === 4 ? (
+                  {currentStep >= 4 ? (
                     <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 fill-green-50 dark:fill-green-950/20 shrink-0" />
                   ) : currentStep === 3 ? (
                     <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin shrink-0" />
@@ -153,7 +201,7 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
                     <div className="w-5 h-5 rounded-full border-2 border-slate-200 dark:border-slate-800 shrink-0"></div>
                   )}
                   <span className={`text-sm font-semibold ${
-                    currentStep === 4 
+                    currentStep >= 4 
                       ? "text-on-surface" 
                       : currentStep === 3 
                         ? "text-blue-600 dark:text-blue-400 animate-pulse" 
@@ -162,8 +210,8 @@ export default function AnalyzingView({ fileName, fileSize, onAnalysisComplete, 
                     Arithmetic Integrity Check
                   </span>
                 </div>
-                <span className="text-xs font-bold font-mono text-on-surface-variant">
-                  {currentStep === 4 ? "Done" : currentStep === 3 ? "Verifying..." : "Queued"}
+                <span className={`text-xs font-bold font-mono ${currentStep >= 4 ? "text-green-600 dark:text-green-400" : "text-on-surface-variant"}`}>
+                  {currentStep >= 4 ? "Done" : currentStep === 3 ? "Verifying..." : "Queued"}
                 </span>
               </div>
             </div>

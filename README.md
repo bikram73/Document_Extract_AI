@@ -1,16 +1,10 @@
 # 📄 DocExtract AI — Document Data Extraction Engine
 
----
-
-![DocExtract AI](public/dashboard.png)
-
 <div align="center">
   <a href="https://doc-extract-ai.netlify.app/" target="_blank" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/🌐_LIVE_DEMO-doc--extract--ai.netlify.app-004ac6?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" />
   </a>
 </div>
-
----
 
 DocExtract AI is a full-stack web application designed to convert unstructured business documents—such as invoices, receipts, and purchase orders—into validated, structured JSON payloads. The system couples client-side parsing (digital PDF text extraction and optical character recognition) with cognitive language models to automate data extraction.
 
@@ -384,31 +378,6 @@ The Express server exposes the following API endpoints to handle document operat
     "timestamp": "2026-07-08T05:31:15.000Z"
   }
   ```
-
----
-
-# 📄 Sample Documents & Extraction Results
-
-To help reviewers quickly evaluate the AI Document Data Extractor, a complete set of sample documents and their corresponding structured JSON outputs are included in this repository.
-
-### Included Samples
-
-- 📄 Invoice → PDF + Extracted JSON
-- 🧾 Receipt → Image + Extracted JSON
-- 📦 Purchase Order → PDF + Extracted JSON
-
-👉 **View all sample documents and outputs here:**
-
-## **➡️ [Sample Documents & Extraction Results](./SAMPLE_RESULTS.md)**
-
-This page includes:
-
-- Original input documents
-- Generated JSON outputs
-- Validation summary
-- OCR and AI extraction results
-- Confidence scores
-- AI provider information
 
 ---
 
