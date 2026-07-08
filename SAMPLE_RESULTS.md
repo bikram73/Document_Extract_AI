@@ -10,7 +10,7 @@ This document contains sample inputs and their corresponding AI-generated struct
 sample-documents/
 ├── Invoice.pdf
 ├── receipt.jpg
-└── Purchase_order.pdf
+└── Purchase_order.png
 
 sample-output/
 ├── invoice.json
@@ -59,10 +59,6 @@ assets/Purchase_order.png
 Then display it like this:
 
 <img src="sample-documents/Purchase_order.png" width="700"/>
-
-Or simply provide the PDF link:
-
-[📄 View Purchase Order](sample-documents/Purchase_order.pdf)
 
 ---
 
