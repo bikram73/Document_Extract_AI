@@ -1,5 +1,5 @@
 {
-  "name": "DocExtract AI",
+  "name": "DocExtract AI - AI Extraction Engine",
   "description": "Extract structured data from invoices, receipts, and purchase orders into validated JSON instantly using Gemini AI.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

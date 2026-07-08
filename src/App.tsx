@@ -342,8 +342,12 @@ export default function App() {
             onClick={() => setActiveTab("home")}
             className="flex items-center gap-2.5 cursor-pointer text-left"
           >
-            <div className="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-blue-600/20">
-              <Sparkles className="w-5 h-5 fill-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/30 relative overflow-hidden group-hover:scale-110 transition-transform duration-300 border border-white/25">
+              <FileText className="w-5.5 h-5.5 text-white" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-300/40 to-transparent animate-[pulse_1.5s_infinite]" />
+              <div className="absolute bottom-0 right-0 bg-indigo-500 p-0.5 rounded-tl-lg shadow border-l border-t border-white/20">
+                <Sparkles className="w-2.5 h-2.5 text-white fill-white animate-pulse" />
+              </div>
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight text-on-surface">DocExtract <span className="text-primary">AI</span></span>
