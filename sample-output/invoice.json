@@ -1,0 +1,41 @@
+{
+  "documentType": "Invoice",
+  "vendorName": "Innovative Retail Concepts Pvt Ltd",
+  "financials": {
+    "total": 455,
+    "subtotal": 385.6,
+    "tax": 69.4
+  },
+  "confidence": {
+    "overall": 98,
+    "currency": 100,
+    "date": 100,
+    "lineItems": 95,
+    "vendor": 100
+  },
+  "insights": "This document is an Invoice from Innovative Retail Concepts Pvt Ltd, issued on February 15, 2026. The total amount due is Rs. 455.00. The invoice details two line items, including a pTron Wireless Neckband, which accounts for the entire billed amount after a significant discount. GST taxes total Rs. 69.40. The arithmetic total has been validated.",
+  "integrityCheck": {
+    "dateValidation": "PASSED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [],
+  "currency": "Rs.",
+  "invoiceNumber": "IEXKA25IFDB50343",
+  "issueDate": "2026-02-15",
+  "lineItems": [
+    {
+      "description": "bigbasket CafÃ© Flyer Qmin 1 pc",
+      "qty": 1,
+      "unitPrice": 0,
+      "amount": 0
+    },
+    {
+      "description": "pTron Tangent Evolve Wireless Neckband, HD Mic, 34Hr Playtime, Dual Pairing - Black 1 pc",
+      "qty": 1,
+      "unitPrice": 455,
+      "amount": 455
+    }
+  ],
+  "vendorTaxId": "29AACCI2053A1Z3"
+}
