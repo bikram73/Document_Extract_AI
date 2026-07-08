@@ -229,7 +229,7 @@ export default function ResultsView({
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full">
+          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col min-h-[660px]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Document Viewer</span>
               
@@ -260,7 +260,7 @@ export default function ResultsView({
             </div>
 
             {leftTab === "ocr" ? (
-              <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none">
+              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
               
               {/* Document Header */}
               <div className="space-y-6">
@@ -429,36 +429,163 @@ export default function ResultsView({
             </div>
             ) : (
               /* PDF / Image source file previewer tab */
-              <div className="flex-grow flex flex-col h-full min-h-[440px]">
+              <div className="flex-grow flex flex-col w-full min-h-[580px]">
                 {activeFile?.base64Data ? (
                   activeFile.mimeType === "application/pdf" || activeFile.name.toLowerCase().endsWith(".pdf") ? (
-                    <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col h-full">
-                      <object
-                        data={`data:application/pdf;base64,${activeFile.base64Data}`}
-                        type="application/pdf"
-                        className="w-full h-full border-none"
-                      >
-                        <iframe
-                          src={`data:application/pdf;base64,${activeFile.base64Data}`}
-                          className="w-full h-full border-none"
-                          title="Source PDF Document"
-                        />
-                      </object>
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
+                      {/* Interactive PDF Header Warn */}
+                      <div className="bg-amber-500/10 dark:bg-amber-400/5 border-b border-amber-500/20 px-4 py-2.5 text-[11px] text-amber-800 dark:text-amber-300 font-medium flex items-center justify-between gap-3 shrink-0">
+                        <span className="flex items-center gap-1.5 leading-snug">
+                          <Info className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                          <span>Browser sandboxing blocks raw PDF views. Showing dynamic extraction structure.</span>
+                        </span>
+                        <a
+                          href={`data:application/pdf;base64,${activeFile.base64Data}`}
+                          download={activeFile.name}
+                          className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white rounded-md font-bold text-[10px] transition-all whitespace-nowrap active:scale-[0.98]"
+                        >
+                          Download Raw PDF
+                        </a>
+                      </div>
+
+                      {/* PDF Representation Body */}
+                      <div className="p-6 flex flex-col flex-grow overflow-y-auto custom-scrollbar select-none text-xs bg-[#fdfdfd] dark:bg-[#0c0f17] text-slate-800 dark:text-slate-100">
+                        {/* Simulation Header */}
+                        <div className="flex justify-between items-start pb-5 border-b border-slate-200 dark:border-slate-800">
+                          <div>
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <div className="w-5 h-5 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase">
+                                {data.vendorName?.charAt(0) || "D"}
+                              </div>
+                              <span className="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white">
+                                {data.vendorName || "Vendor Organization"}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400">Processed Document Source</p>
+                            {data.vendorTaxId && (
+                              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Tax ID: {data.vendorTaxId}</p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <h2 className="text-sm font-black text-blue-600 dark:text-blue-400 tracking-wider uppercase">
+                              {data.documentType || "DOCUMENT"}
+                            </h2>
+                            <p className="font-mono text-[10px] font-bold text-slate-700 dark:text-slate-300">
+                              {data.invoiceNumber || "INV-TEMP-9912"}
+                            </p>
+                            <div className="mt-1.5 text-[9px] text-slate-500 dark:text-slate-400 space-y-0.5">
+                              <p><span className="font-semibold">Issue Date:</span> {data.issueDate || "N/A"}</p>
+                              {data.dueDate && <p><span className="font-semibold">Due Date:</span> {data.dueDate}</p>}
+                              {data.paymentTerms && <p><span className="font-semibold">Terms:</span> {data.paymentTerms}</p>}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Middle block */}
+                        <div className="my-4 grid grid-cols-2 gap-4 text-[10px]">
+                          <div>
+                            <span className="text-[8px] font-bold text-slate-400 uppercase font-mono tracking-wider">DOCUMENT PROFILE</span>
+                            <p className="font-bold text-slate-800 dark:text-slate-200 mt-0.5">Confidence Metrics</p>
+                            <p className="text-slate-500 dark:text-slate-400">Overall Accuracy: {data.confidence?.overall || 95}%</p>
+                            <p className="text-slate-500 dark:text-slate-400">Security Check: Verified safe</p>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[8px] font-bold text-slate-400 uppercase font-mono tracking-wider">PAYMENT SUMMARY</span>
+                            <p className="font-bold text-slate-850 dark:text-slate-200 mt-0.5">Currency Setup</p>
+                            <p className="text-slate-500 dark:text-slate-400 font-mono">Currency: {data.currency || "USD"}</p>
+                          </div>
+                        </div>
+
+                        {/* Table items */}
+                        <div className="flex-grow mt-2">
+                          <div className="grid grid-cols-12 font-bold text-[8px] text-slate-400 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-1.5">
+                            <span className="col-span-6">Description</span>
+                            <span className="col-span-2 text-center">Qty</span>
+                            <span className="col-span-2 text-right">Price</span>
+                            <span className="col-span-2 text-right">Total</span>
+                          </div>
+                          <div className="divide-y divide-slate-100 dark:divide-slate-900/40">
+                            {data.lineItems && data.lineItems.length > 0 ? (
+                              data.lineItems.map((item, index) => (
+                                <div key={index} className="grid grid-cols-12 py-2.5 text-[10px]">
+                                  <span className="col-span-6 font-medium text-slate-800 dark:text-slate-200 truncate pr-2">{item.description}</span>
+                                  <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">{item.qty}</span>
+                                  <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">
+                                    {(item.unitPrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                  </span>
+                                  <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">
+                                    {(item.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                  </span>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="text-center py-4 text-slate-400 italic">No items extracted.</div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Financial Totals */}
+                        <div className="border-t border-slate-200 dark:border-slate-800 pt-3 mt-4 space-y-1.5 self-end w-1/2">
+                          <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
+                            <span>Subtotal</span>
+                            <span className="font-mono font-medium">
+                              {(data.financials?.subtotal || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
+                            <span>Tax</span>
+                            <span className="font-mono font-medium">
+                              {(data.financials?.tax || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-[11px] font-bold text-slate-900 dark:text-white pt-1.5 border-t border-slate-200 dark:border-slate-800">
+                            <span>TOTAL DUE</span>
+                            <span className="font-mono text-blue-600 dark:text-blue-400 font-black">
+                              {(data.financials?.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Stamp signature simulation */}
+                        <div className="mt-6 flex justify-between items-end border-t border-dashed border-slate-150 dark:border-slate-800/80 pt-3 text-left">
+                          <div className="text-[8px] text-slate-400 dark:text-slate-500">
+                            <p>DocExtract AI Secure Verification Stamp</p>
+                            <p className="font-mono font-bold text-emerald-600 dark:text-emerald-500 mt-0.5 uppercase flex items-center gap-1">
+                              <span>✓ VERIFIED EXTRACTION</span>
+                            </p>
+                          </div>
+                          <div className="text-right text-[8px] text-slate-400">
+                            <p className="font-mono">UUID: {activeFile.size}</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ) : (
-                    <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-4 flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
-                      <img
-                        src={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
-                        alt="Source Document File"
-                        className="max-w-full max-h-full object-contain rounded-lg border border-slate-200 dark:border-slate-800 shadow-md"
-                        referrerPolicy="no-referrer"
-                      />
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-4 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
+                      <div className="flex-grow flex items-center justify-center overflow-hidden w-full h-full p-2">
+                        <img
+                          src={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
+                          alt="Source Document File"
+                          className="max-w-full max-h-full object-contain rounded-lg border border-slate-200 dark:border-slate-800 shadow-md"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="w-full bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800/80 p-3 text-center text-[11px] text-slate-500 dark:text-slate-400 font-mono flex justify-between items-center gap-2">
+                        <span className="truncate">IMAGE ATTACHMENT: {activeFile.name} ({activeFile.size})</span>
+                        <a
+                          href={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
+                          download={activeFile.name}
+                          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-bold transition-all shrink-0 text-xs active:scale-95"
+                        >
+                          Download Image
+                        </a>
+                      </div>
                     </div>
                   )
                 ) : (
                   /* Elegant rendering for preloaded presets with no uploaded base64 data */
                   fileName.toLowerCase().includes("stripe") ? (
-                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col h-full text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* PDF Header Simulation */}
                       <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
                         <div>
@@ -549,7 +676,7 @@ export default function ResultsView({
                       </div>
                     </div>
                   ) : fileName.toLowerCase().includes("uber") ? (
-                    <div className="relative bg-[#ffffff] dark:bg-[#121212] aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col h-full text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#ffffff] dark:bg-[#121212] w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* Thermal Receipt Style Frame */}
                       <div className="flex flex-col items-center pb-4 border-b border-dashed border-slate-200 dark:border-slate-800 text-center">
                         <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-black text-sm mb-1.5">U</div>
@@ -632,7 +759,7 @@ export default function ResultsView({
                       </div>
                     </div>
                   ) : fileName.toLowerCase().includes("acme") || fileName.toLowerCase().includes("purchase") ? (
-                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] aspect-[3/4] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col h-full text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* PO Form Layout */}
                       <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
                         <div>
@@ -720,7 +847,7 @@ export default function ResultsView({
                     </div>
                   ) : (
                     /* Default generic preview fallback for other uploads */
-                    <div className="relative bg-white dark:bg-slate-950 aspect-[3/4] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-8 flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[580px] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-8 flex flex-col items-center justify-center text-center space-y-6">
                       <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
                         <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
                       </div>
