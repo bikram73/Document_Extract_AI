@@ -5,6 +5,7 @@ import {
   Download, FileSpreadsheet, Eye
 } from "lucide-react";
 import { ExtractedData, LineItem, ActiveFile } from "../types";
+import { useToast } from "../context/ToastContext";
 
 interface ResultsViewProps {
   data: ExtractedData;
@@ -29,6 +30,7 @@ export default function ResultsView({
   providerLogs = [],
   activeFile
 }: ResultsViewProps) {
+  const { showToast } = useToast();
   const [activeSubTab, setActiveSubTab] = useState<"general" | "items" | "json" | "fallback">("general");
   const [copied, setCopied] = useState(false);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
@@ -38,6 +40,7 @@ export default function ResultsView({
   const handleCopyJSON = () => {
     navigator.clipboard.writeText(JSON.stringify(data, null, 2));
     setCopied(true);
+    showToast("JSON payload copied to clipboard!", "success");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -53,6 +56,7 @@ export default function ResultsView({
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    showToast("JSON schema downloaded successfully!", "success");
   };
 
   // Export CSV helper
@@ -91,6 +95,7 @@ export default function ResultsView({
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    showToast("CSV ledger exported successfully!", "success");
   };
 
   // Field change handlers
@@ -145,6 +150,7 @@ export default function ResultsView({
       ...data,
       lineItems: items
     });
+    showToast("Added new ledger line item.", "info");
   };
 
   const handleDeleteLineItem = (index: number) => {
@@ -154,6 +160,7 @@ export default function ResultsView({
       ...data,
       lineItems: items
     });
+    showToast("Removed ledger line item.", "info");
   };
 
   return (

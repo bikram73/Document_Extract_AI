@@ -37,6 +37,13 @@ DocExtract AI is an enterprise-grade web application and intelligent data extrac
   - **Dynamic Theme Synchronization**: Seamlessly toggles the root interface between high-contrast light and dark UI states.
   - **Smart Persistence**: Detects and defaults automatically to the user's OS system preferences, with manual selections securely persisted inside `localStorage`.
   - **Fluid Tokens**: Utilizes custom Tailwind design tokens to guarantee gorgeous color consistency across all views and interactive widgets under both modes.
+- **🔔 Interactive Toast Notification System**:
+  - **Action Acknowledgements**: Displays beautiful, non-blocking floating notifications when downloading JSON configurations, exporting CSV ledgers, copying payloads, or updating ledger items.
+  - **Custom Animation Curves**: Utilizes smooth micro-motion and responsive cubic-bezier scales/slides to slide toast bubbles gracefully on screen.
+  - **Multi-Type States**: Supports adaptive `success`, `info`, and `error` styles designed to blend perfectly with Light and Dark aesthetics.
+- **✨ Premium View Entrance Transitions**:
+  - **Dynamic Entrance**: Applies an ultra-premium slide-and-scale entrance animation to active workspaces and dashboard panels during system mounting.
+  - **Visual Continuity**: Smoothes out screen-routing transitions using custom physics curves (`[0.16, 1, 0.3, 1]`) to match native desktop interfaces.
 
 ---
 
@@ -88,7 +95,8 @@ docextract-ai/
     ├── types.ts              # Global TypeScript models and structures
     │
     ├── context/              # Global state contexts
-    │   └── ThemeContext.tsx  # Dynamic Light/Dark Theme management context
+    │   ├── ThemeContext.tsx  # Dynamic Light/Dark Theme management context
+    │   └── ToastContext.tsx  # Premium Toast notification service context
     │
     └── components/           # Modular visual views and cards
         ├── HomeView.tsx      # High-fidelity dashboard, landing and features page

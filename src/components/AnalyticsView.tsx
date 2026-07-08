@@ -4,6 +4,7 @@ import {
   Sparkles, CodeXml, Copy, Check, Info, FileCode
 } from "lucide-react";
 import { ExtractedData } from "../types";
+import { useToast } from "../context/ToastContext";
 
 interface AnalyticsViewProps {
   data: ExtractedData;
@@ -12,6 +13,7 @@ interface AnalyticsViewProps {
 }
 
 export default function AnalyticsView({ data, onGoBack, onUpdateData }: AnalyticsViewProps) {
+  const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
   const [resolvedAlerts, setResolvedAlerts] = useState<Record<number, boolean>>({});
 
@@ -56,6 +58,7 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
   const handleCopy = () => {
     navigator.clipboard.writeText(JSON.stringify(data, null, 2));
     setCopied(true);
+    showToast("JSON payload copied to clipboard!", "success");
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -64,6 +67,7 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
       ...prev,
       [index]: true
     }));
+    showToast("System warning acknowledged.", "info");
   };
 
   const visibleAlertsCount = useMemo(() => {
