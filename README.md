@@ -397,7 +397,7 @@ To help reviewers quickly evaluate the AI Document Data Extractor, a complete se
 
 👉 **View all sample documents and outputs here:**
 
-## ➡️ [Sample Documents & Extraction Results](./SAMPLE_RESULTS.md) ⬅️
+➡️ [Sample Documents & Extraction Results](./SAMPLE_RESULTS.md) ⬅️
 
 This page includes:
 
