@@ -29,7 +29,7 @@ export const handler: Handler = async (event, context) => {
       };
     }
 
-    const result = await fallbackManager.extractWithFallback(base64Data, mimeType);
+    const result = await fallbackManager.extractWithFallback(base64Data, mimeType, fileName);
 
     return {
       statusCode: 200,
