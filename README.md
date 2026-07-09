@@ -16,14 +16,23 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 
 ## 📑 Table of Contents
 
-- [✨ Features](#-features)
-- [🚀 Installation & Setup](#-installation--setup)
-- [🏗️ Architecture](#-architecture)
-- [🌐 API Endpoints](#-api-endpoints)
-- [📄 Sample Documents & Results](./SAMPLE_RESULTS.md)
-- [🛡️ License](#️-license)
+- [✨ Features](#features)
+- [🛠️ Tech Stack & Languages](#tech-stack)
+- [📂 File Structure](#file-structure)
+- [🚀 Installation & Local Setup](#installation)
+- [🏗️ Architecture Pipeline](#architecture)
+- [🧠 AI Prompt Strategy & Anti-Hallucination Guardrails](#prompt-strategy)
+- [📊 Confidence Scores Explanation](#confidence)
+- [📄 Challenge Deliverables](#deliverables)
+- [🖨️ Sample JSON Payload](#sample-json)
+- [🌐 API Documentation](#api)
+- [📄 Sample Documents & Extraction Results](./SAMPLE_RESULTS.md)
+- [⚡ Performance Notes](#performance)
+- [⚠️ Known Limitations](#limitations)
+- [📄 License](#license)
 
 ---
+<a id="features"></a>
 
 ## ✨ Features
 
@@ -67,6 +76,7 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
   - **Visual Continuity**: Smoothes out screen-routing transitions using custom physics curves (`[0.16, 1, 0.3, 1]`) to match native desktop interfaces.
 
 ---
+<a id="tech-stack"></a>
 
 ## 🛠️ Tech Stack & Languages
 
