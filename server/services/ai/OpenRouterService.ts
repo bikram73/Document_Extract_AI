@@ -1,6 +1,7 @@
 import { AIService } from "./ProviderInterface";
 import { ExtractedData, validateResponse } from "./ResponseValidator";
 import { buildPrompt } from "./PromptBuilder";
+import { extractTextFromPdf } from "./PdfParser";
 
 export class OpenRouterService implements AIService {
   name = "openrouter";
@@ -15,19 +16,40 @@ export class OpenRouterService implements AIService {
       throw new Error("OPENROUTER_API_KEY is not configured.");
     }
 
-    const model = process.env.OPENROUTER_MODEL || "google/gemini-2.5-flash";
-    const promptText = buildPrompt();
+    const customModel = process.env.OPENROUTER_MODEL;
+    const defaultCandidates = [
+      "deepseek/deepseek-chat-v3-0324",
+      "google/gemini-2.5-flash",
+      "google/gemini-flash-1.5",
+      "meta-llama/llama-3.2-11b-vision-instruct",
+      "qwen/qwen-2-vl-7b-instruct",
+    ];
+
+    const candidates = customModel
+      ? [customModel, ...defaultCandidates.filter(m => m !== customModel)]
+      : defaultCandidates;
+
+    let promptText = buildPrompt();
+
+    // If it's a PDF, extract the text and append it to the prompt
+    if (mimeType === "application/pdf") {
+      try {
+        console.log("[OpenRouterService] PDF detected. Extracting raw text to process with fallback.");
+        const pdfText = await extractTextFromPdf(base64Data);
+        promptText += `\n\n--- START OF EXTRACTED PDF TEXT CONTENT ---\n${pdfText}\n--- END OF EXTRACTED PDF TEXT CONTENT ---`;
+      } catch (err: any) {
+        console.error("[OpenRouterService] Failed to extract text from PDF:", err);
+        throw new Error(`OpenRouter does not support native PDF inputs, and PDF text extraction failed: ${err.message || err}`);
+      }
+    }
+
+    const hasImage = mimeType.startsWith("image/");
 
     // Prepare content payload
     const content: any[] = [{ type: "text", text: promptText }];
 
-    // OpenRouter's standard chat completions image_url does not natively support PDF binary inputs.
-    if (mimeType === "application/pdf") {
-      throw new Error("OpenRouter does not support native PDF inputs via image_url. Please use Google Gemini or upload an image format (PNG, JPEG, WEBP).");
-    }
-
     // If it's an image, we send it as an image_url (OpenRouter supports standard OpenAI format)
-    if (mimeType.startsWith("image/")) {
+    if (hasImage) {
       content.push({
         type: "image_url",
         image_url: {
@@ -36,39 +58,103 @@ export class OpenRouterService implements AIService {
       });
     }
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-        "HTTP-Referer": "https://docextract-ai.netlify.app", // Optional header
-        "X-Title": "DocExtract AI", // Optional header
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          {
-            role: "user",
-            content: content,
-          },
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.1,
-      }),
-    });
+    let lastError: any = null;
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`OpenRouter API failed with status ${response.status}: ${errText}`);
+    for (const model of candidates) {
+      // We will try JSON mode first, and if that fails, we try standard mode
+      for (const useJsonFormat of [true, false]) {
+        try {
+          console.log(`[OpenRouterService] Attempting extraction with model: ${model} (JSON mode: ${useJsonFormat})`);
+          
+          const bodyPayload: any = {
+            model: model,
+            messages: [
+              {
+                role: "user",
+                content: content,
+              },
+            ],
+            temperature: 0.1,
+          };
+
+          if (useJsonFormat) {
+            bodyPayload.response_format = { type: "json_object" };
+          }
+
+          let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${apiKey}`,
+              "HTTP-Referer": "https://docextract-ai.netlify.app", // Optional header
+              "X-Title": "DocExtract AI", // Optional header
+            },
+            body: JSON.stringify(bodyPayload),
+          });
+
+          if (!response.ok) {
+            const errText = await response.text();
+            
+            // Check if it failed due to image/vision support. If so, and we provided an image, retry as text-only!
+            if (hasImage && (response.status === 400 || response.status === 404 || errText.toLowerCase().includes("image") || errText.toLowerCase().includes("endpoint") || errText.toLowerCase().includes("vision"))) {
+              console.warn(`[OpenRouterService] Model ${model} failed with image input. Retrying as text-only.`);
+              const retryBodyPayload: any = {
+                model: model,
+                messages: [
+                  {
+                    role: "user",
+                    content: [{ type: "text", text: promptText }],
+                  },
+                ],
+                temperature: 0.1,
+              };
+              if (useJsonFormat) {
+                retryBodyPayload.response_format = { type: "json_object" };
+              }
+
+              const retryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${apiKey}`,
+                  "HTTP-Referer": "https://docextract-ai.netlify.app",
+                  "X-Title": "DocExtract AI",
+                },
+                body: JSON.stringify(retryBodyPayload),
+              });
+
+              if (!retryResponse.ok) {
+                const retryErrText = await retryResponse.text();
+                throw new Error(`OpenRouter API failed with status ${retryResponse.status}: ${retryErrText}`);
+              }
+              response = retryResponse;
+            } else {
+              throw new Error(`OpenRouter API failed with status ${response.status}: ${errText}`);
+            }
+          }
+
+          const payload: any = await response.json();
+          if (payload.error) {
+            throw new Error(`OpenRouter API Error: ${payload.error.message || JSON.stringify(payload.error)}`);
+          }
+          const rawText = payload.choices?.[0]?.message?.content;
+
+          if (!rawText) {
+            throw new Error("No response text found in OpenRouter choices payload.");
+          }
+
+          console.log(`[OpenRouterService] Successfully extracted data using model: ${model}`);
+          return validateResponse(rawText);
+        } catch (err: any) {
+          lastError = err;
+          console.warn(`[OpenRouterService] Model ${model} (JSON mode: ${useJsonFormat}) failed:`, err.message || err);
+          
+          // If JSON mode was true and it failed, we'll try false in the next iteration of the inner loop
+          // If JSON mode was already false, we'll break and try the next model
+        }
+      }
     }
 
-    const payload: any = await response.json();
-    const rawText = payload.choices?.[0]?.message?.content;
-
-    if (!rawText) {
-      throw new Error("No response text found in OpenRouter choices payload.");
-    }
-
-    return validateResponse(rawText);
+    throw lastError || new Error("All candidate OpenRouter models failed to process the request.");
   }
 }

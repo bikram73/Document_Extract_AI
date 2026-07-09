@@ -54,8 +54,12 @@ export class GeminiService implements AIService {
 
     const promptText = buildPrompt();
     let lastError: any = null;
+    let quotaExceededEncountered = false;
 
     for (const model of candidateModels) {
+      if (quotaExceededEncountered) {
+        break;
+      }
       // Guard: If we've already spent more than 8 seconds, don't try any more models
       const totalElapsedMs = Date.now() - serviceStartTime;
       if (totalElapsedMs > 8000) {
@@ -210,7 +214,8 @@ export class GeminiService implements AIService {
           console.warn(`[GeminiService] Model ${model} attempt ${attempt} failed:`, err.message || err);
 
           if (isQuotaExceeded) {
-            console.log(`[GeminiService] Quota or rate limit exceeded on ${model}. Skipping retries for this model.`);
+            console.log(`[GeminiService] Quota or rate limit exceeded on ${model}. Skipping all other Gemini models to fail fast.`);
+            quotaExceededEncountered = true;
             // Break the retry loop immediately for 429 quota errors to let other models / sandbox handle it
             break;
           }

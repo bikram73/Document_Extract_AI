@@ -1,6 +1,7 @@
 import { AIService } from "./ProviderInterface";
 import { ExtractedData, validateResponse } from "./ResponseValidator";
 import { buildPrompt } from "./PromptBuilder";
+import { extractTextFromPdf } from "./PdfParser";
 
 export class GroqService implements AIService {
   name = "groq";
@@ -15,19 +16,28 @@ export class GroqService implements AIService {
       throw new Error("GROQ_API_KEY is not configured.");
     }
 
-    const model = process.env.GROQ_MODEL || "llama-3.2-11b-vision-preview";
-    const promptText = buildPrompt();
+    const model = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+    let promptText = buildPrompt();
+
+    // If it's a PDF, extract the text and append it to the prompt
+    if (mimeType === "application/pdf") {
+      try {
+        console.log("[GroqService] PDF detected. Extracting raw text to process with fallback.");
+        const pdfText = await extractTextFromPdf(base64Data);
+        promptText += `\n\n--- START OF EXTRACTED PDF TEXT CONTENT ---\n${pdfText}\n--- END OF EXTRACTED PDF TEXT CONTENT ---`;
+      } catch (err: any) {
+        console.error("[GroqService] Failed to extract text from PDF:", err);
+        throw new Error(`Groq does not support native PDF inputs, and PDF text extraction failed: ${err.message || err}`);
+      }
+    }
+
+    const hasImage = mimeType.startsWith("image/");
 
     // Prepare content payload
     const content: any[] = [{ type: "text", text: promptText }];
 
-    // Groq's standard chat completions image_url does not natively support PDF binary inputs.
-    if (mimeType === "application/pdf") {
-      throw new Error("Groq does not support native PDF inputs via image_url. Please use Google Gemini or upload an image format (PNG, JPEG, WEBP).");
-    }
-
-    // If it's an image, we send it as an image_url (Groq vision model format)
-    if (mimeType.startsWith("image/")) {
+    // If it's an image, we send it as an image_url
+    if (hasImage) {
       content.push({
         type: "image_url",
         image_url: {
@@ -36,37 +46,95 @@ export class GroqService implements AIService {
       });
     }
 
-    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          {
-            role: "user",
-            content: content,
+    let lastError: any = null;
+
+    // We will try JSON mode first, and if that fails, we try standard mode
+    for (const useJsonFormat of [true, false]) {
+      try {
+        console.log(`[GroqService] Attempting extraction with model: ${model} (JSON mode: ${useJsonFormat})`);
+        
+        const bodyPayload: any = {
+          model: model,
+          messages: [
+            {
+              role: "user",
+              content: content,
+            },
+          ],
+          temperature: 0.1,
+        };
+
+        if (useJsonFormat) {
+          bodyPayload.response_format = { type: "json_object" };
+        }
+
+        let response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`,
           },
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.1,
-      }),
-    });
+          body: JSON.stringify(bodyPayload),
+        });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`Groq API failed with status ${response.status}: ${errText}`);
+        if (!response.ok) {
+          const errText = await response.text();
+          
+          // Check if it failed due to image/vision support. If so, and we provided an image, retry as text-only!
+          if (hasImage && (response.status === 400 || response.status === 404 || errText.toLowerCase().includes("image") || errText.toLowerCase().includes("vision") || errText.toLowerCase().includes("multimodal"))) {
+            console.warn(`[GroqService] Model ${model} failed with image input. Retrying as text-only.`);
+            const retryBodyPayload: any = {
+              model: model,
+              messages: [
+                {
+                  role: "user",
+                  content: [{ type: "text", text: promptText }],
+                },
+              ],
+              temperature: 0.1,
+            };
+            if (useJsonFormat) {
+              retryBodyPayload.response_format = { type: "json_object" };
+            }
+
+            const retryResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apiKey}`,
+              },
+              body: JSON.stringify(retryBodyPayload),
+            });
+
+            if (!retryResponse.ok) {
+              const retryErrText = await retryResponse.text();
+              throw new Error(`Groq API failed with status ${retryResponse.status}: ${retryErrText}`);
+            }
+            response = retryResponse;
+          } else {
+            throw new Error(`Groq API failed with status ${response.status}: ${errText}`);
+          }
+        }
+
+        const payload: any = await response.json();
+        if (payload.error) {
+          throw new Error(`Groq API Error: ${payload.error.message || JSON.stringify(payload.error)}`);
+        }
+        const rawText = payload.choices?.[0]?.message?.content;
+
+        if (!rawText) {
+          throw new Error("No response text found in Groq choices payload.");
+        }
+
+        console.log(`[GroqService] Successfully extracted data using model: ${model}`);
+        return validateResponse(rawText);
+      } catch (err: any) {
+        lastError = err;
+        console.warn(`[GroqService] Model ${model} (JSON mode: ${useJsonFormat}) failed:`, err.message || err);
+      }
     }
 
-    const payload: any = await response.json();
-    const rawText = payload.choices?.[0]?.message?.content;
-
-    if (!rawText) {
-      throw new Error("No response text found in Groq choices payload.");
-    }
-
-    return validateResponse(rawText);
+    throw lastError || new Error("Groq model failed to process the request.");
   }
 }
+
