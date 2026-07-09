@@ -26,7 +26,7 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 - [📄 Challenge Deliverables](#deliverables)
 - [🖨️ Sample JSON Payload](#sample-json)
 - [🌐 API Documentation](#api)
-- [📄 Sample Documents & Extraction Results](#SAMPLE_RESULTS.md) (  [📄 Go To The Document Page](./SAMPLE_RESULTS.md) )
+- [📄 Sample Documents & Extraction Results](#SAMPLE_RESULTS.md) (  [📄 Go To The Sample Documents Page](./SAMPLE_RESULTS.md) )
 - [⚡ Performance Notes](#performance)
 - [⚠️ Known Limitations](#limitations)
 - [📄 License](#license)
