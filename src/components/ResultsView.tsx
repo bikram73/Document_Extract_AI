@@ -36,6 +36,7 @@ export default function ResultsView({
   const [hoveredField, setHoveredField] = useState<string | null>(null);
   const [leftTab, setLeftTab] = useState<"ocr" | "source">("source");
   const [pdfViewMode, setPdfViewMode] = useState<"embed" | "simulation">("embed");
+  const [mobileTab, setMobileTab] = useState<"document" | "workbench">("document");
 
   // Copy helper
   const handleCopyJSON = () => {
@@ -227,12 +228,36 @@ export default function ResultsView({
         </div>
       </div>
 
-      {/* No device tabs needed - structured layout fits all screens as a single page */}
+      {/* Mobile Tab Switcher - only visible on small screens to show elements one-by-one */}
+      <div className="flex md:hidden bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 shadow-sm gap-1">
+        <button
+          onClick={() => setMobileTab("document")}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            mobileTab === "document"
+              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-slate-700"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+          }`}
+        >
+          <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <span>Document Viewer</span>
+        </button>
+        <button
+          onClick={() => setMobileTab("workbench")}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            mobileTab === "workbench"
+              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-slate-700"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+          }`}
+        >
+          <FileCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <span>Workbench Form</span>
+        </button>
+      </div>
 
-      <div className="grid lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Left Side: Scanned Document Visualization */}
-        <div className="lg:col-span-5 space-y-4 w-full">
-          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-4 sm:p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-full lg:h-[750px] min-h-[360px] sm:min-h-[520px] lg:min-h-0">
+        <div className={`${mobileTab === "document" ? "block" : "hidden"} md:block md:col-span-5 space-y-4 w-full`}>
+          <div className="bg-slate-100 dark:bg-slate-900/50 rounded-3xl p-3 sm:p-6 border border-slate-200/50 dark:border-slate-850 shadow-inner flex flex-col h-[480px] md:h-[650px] lg:h-[780px] w-full">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono uppercase tracking-wider">Document Viewer</span>
               
@@ -263,11 +288,11 @@ export default function ResultsView({
             </div>
 
             {leftTab === "ocr" ? (
-              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-4 sm:p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
+              <div className="relative bg-white dark:bg-slate-950 w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 p-4 sm:p-8 flex flex-col justify-between overflow-y-auto custom-scrollbar text-left document-canvas select-none animate-fade-in">
               
               {/* Document Header */}
               <div className="space-y-6">
-                <div className="flex justify-between items-start">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                   {/* Vendor Overlay */}
                   <div 
                     onMouseEnter={() => setHoveredField("vendor")}
@@ -346,30 +371,35 @@ export default function ResultsView({
 
                 {/* Items Grid Overlay */}
                 <div className="space-y-2 pt-4">
-                  <div className="grid grid-cols-12 text-[10px] font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-1.5 font-mono">
+                  <div className="hidden sm:grid grid-cols-12 text-[10px] font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-1.5 font-mono">
                     <span className="col-span-8">DESCRIPTION</span>
                     <span className="col-span-1 text-center">QTY</span>
                     <span className="col-span-3 text-right">AMOUNT</span>
                   </div>
 
-                  <div className="space-y-2 max-h-[160px] overflow-y-auto custom-scrollbar">
+                  <div className="space-y-2 max-h-[180px] overflow-y-auto custom-scrollbar">
                     {data.lineItems?.map((item, index) => (
                       <div 
                         key={index}
                         onMouseEnter={() => setHoveredField(`item-${index}`)}
                         onMouseLeave={() => setHoveredField(null)}
-                        className={`grid grid-cols-12 text-xs py-1.5 px-1 rounded transition-all border ${
+                        className={`flex flex-col sm:grid sm:grid-cols-12 gap-1 sm:gap-0 text-xs py-2 sm:py-1.5 px-2 rounded transition-all border ${
                           hoveredField === `item-${index}` 
                             ? "bg-blue-50 dark:bg-blue-950/20 border-blue-400 dark:border-blue-850 shadow-sm" 
                             : "border-transparent"
                         }`}
                       >
-                        <span className="col-span-8 font-medium text-slate-700 dark:text-slate-300 truncate pr-2">{item.description}</span>
-                        <span className="col-span-1 text-center font-mono text-slate-500 dark:text-slate-400">{item.qty}</span>
-                        <span className="col-span-3 text-right font-bold text-slate-800 dark:text-slate-200">
-                          {data.currency?.includes("EUR") ? "€" : data.currency?.includes("GBP") ? "£" : "$"}
-                          {item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </span>
+                        <span className="sm:col-span-8 font-medium text-slate-700 dark:text-slate-300 truncate pr-2">{item.description}</span>
+                        <div className="flex sm:contents justify-between text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-mono">
+                          <span className="sm:col-span-1 sm:text-center">
+                            <span className="sm:hidden text-slate-400 font-sans mr-1">Qty:</span>{item.qty}
+                          </span>
+                          <span className="sm:col-span-3 sm:text-right font-bold text-slate-800 dark:text-slate-200">
+                            <span className="sm:hidden text-slate-400 font-sans mr-1">Amount:</span>
+                            {data.currency?.includes("EUR") ? "€" : data.currency?.includes("GBP") ? "£" : "$"}
+                            {item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -432,10 +462,10 @@ export default function ResultsView({
             </div>
             ) : (
               /* PDF / Image source file previewer tab */
-              <div className="flex-grow flex flex-col w-full min-h-[300px] sm:min-h-[460px]">
+              <div className="flex-grow flex flex-col w-full h-full min-h-0">
                 {activeFile?.base64Data ? (
                   activeFile.mimeType === "application/pdf" || activeFile.name.toLowerCase().endsWith(".pdf") ? (
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow lg:h-[630px] lg:min-h-0 min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden flex flex-col animate-fade-in text-left">
                       {/* PDF Representation / IFrame view modes */}
                       <div className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 flex items-center justify-between gap-3 shrink-0">
                         <div className="flex bg-slate-200/60 dark:bg-slate-950 p-1 rounded-lg">
@@ -482,7 +512,7 @@ export default function ResultsView({
                       {pdfViewMode === "simulation" && (
                         <div className="p-6 flex flex-col flex-grow overflow-y-auto custom-scrollbar select-none text-xs bg-[#fdfdfd] dark:bg-[#0c0f17] text-slate-800 dark:text-slate-100">
                         {/* Simulation Header */}
-                        <div className="flex justify-between items-start pb-5 border-b border-slate-200 dark:border-slate-800">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-5 border-b border-slate-200 dark:border-slate-800">
                           <div>
                             <div className="flex items-center gap-1.5 mb-1">
                               <div className="w-5 h-5 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold text-xs uppercase">
@@ -529,7 +559,7 @@ export default function ResultsView({
 
                         {/* Table items */}
                         <div className="flex-grow mt-2">
-                          <div className="grid grid-cols-12 font-bold text-[8px] text-slate-400 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-1.5">
+                          <div className="hidden sm:grid grid-cols-12 font-bold text-[8px] text-slate-400 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-1.5">
                             <span className="col-span-6">Description</span>
                             <span className="col-span-2 text-center">Qty</span>
                             <span className="col-span-2 text-right">Price</span>
@@ -538,15 +568,21 @@ export default function ResultsView({
                           <div className="divide-y divide-slate-100 dark:divide-slate-900/40">
                             {data.lineItems && data.lineItems.length > 0 ? (
                               data.lineItems.map((item, index) => (
-                                <div key={index} className="grid grid-cols-12 py-2.5 text-[10px]">
-                                  <span className="col-span-6 font-medium text-slate-800 dark:text-slate-200 truncate pr-2">{item.description}</span>
-                                  <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">{item.qty}</span>
-                                  <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">
-                                    {(item.unitPrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                  </span>
-                                  <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">
-                                    {(item.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                  </span>
+                                <div key={index} className="flex flex-col sm:grid sm:grid-cols-12 gap-1 sm:gap-0 py-2 sm:py-2.5 text-[10px]">
+                                  <span className="sm:col-span-6 font-medium text-slate-800 dark:text-slate-200 truncate pr-2">{item.description}</span>
+                                  <div className="flex sm:contents justify-between text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                                    <span className="sm:col-span-2 sm:text-center">
+                                      <span className="sm:hidden text-slate-400 font-sans mr-1">Qty:</span>{item.qty}
+                                    </span>
+                                    <span className="sm:col-span-2 sm:text-right">
+                                      <span className="sm:hidden text-slate-400 font-sans mr-1">Price:</span>
+                                      {(item.unitPrice || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                    </span>
+                                    <span className="sm:col-span-2 sm:text-right font-bold text-slate-800 dark:text-slate-200">
+                                      <span className="sm:hidden text-slate-400 font-sans mr-1">Total:</span>
+                                      {(item.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                    </span>
+                                  </div>
                                 </div>
                               ))
                             ) : (
@@ -556,7 +592,7 @@ export default function ResultsView({
                         </div>
 
                         {/* Financial Totals */}
-                        <div className="border-t border-slate-200 dark:border-slate-800 pt-3 mt-4 space-y-1.5 self-end w-1/2">
+                        <div className="border-t border-slate-200 dark:border-slate-800 pt-3 mt-4 space-y-1.5 self-end w-full sm:w-1/2">
                           <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
                             <span>Subtotal</span>
                             <span className="font-mono font-medium">
@@ -593,8 +629,8 @@ export default function ResultsView({
                     )}
                   </div>
                   ) : (
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-3 sm:p-4 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
-                      <div className="flex-grow flex items-center justify-center overflow-hidden w-full h-full p-2">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-850 overflow-hidden p-3 sm:p-4 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 animate-fade-in">
+                      <div className="flex-grow flex items-center justify-center overflow-hidden w-full h-full max-h-[220px] sm:max-h-[380px] lg:max-h-none p-2">
                         <img
                           src={`data:${activeFile.mimeType || "image/png"};base64,${activeFile.base64Data}`}
                           alt="Source Document File"
@@ -617,7 +653,7 @@ export default function ResultsView({
                 ) : (
                   /* Elegant rendering for preloaded presets with no uploaded base64 data */
                   fileName.toLowerCase().includes("stripe") ? (
-                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#f8f9fc] dark:bg-[#0b0f19] w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* PDF Header Simulation */}
                       <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
                         <div>
@@ -658,36 +694,60 @@ export default function ResultsView({
 
                       {/* Table of items */}
                       <div className="flex-grow mt-2">
-                        <div className="grid grid-cols-12 font-bold text-[9px] text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2">
+                        <div className="hidden sm:grid grid-cols-12 font-bold text-[9px] text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2">
                           <span className="col-span-6">Description</span>
                           <span className="col-span-2 text-center">Qty</span>
                           <span className="col-span-2 text-right">Unit Price</span>
                           <span className="col-span-2 text-right">Amount</span>
                         </div>
                         <div className="divide-y divide-slate-100 dark:divide-slate-900">
-                          <div className="grid grid-cols-12 py-3 text-[11px]">
-                            <span className="col-span-6 font-medium text-slate-800 dark:text-slate-250">AI Document Processing (Enterprise)</span>
-                            <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">1</span>
-                            <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$1,200.00</span>
-                            <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$1,200.00</span>
+                          <div className="py-2.5 sm:py-3 text-[11px] flex flex-col sm:grid sm:grid-cols-12 gap-1 sm:gap-0">
+                            <span className="sm:col-span-6 font-medium text-slate-800 dark:text-slate-200">AI Document Processing (Enterprise)</span>
+                            <div className="flex sm:contents justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                              <span className="sm:col-span-2 sm:text-center">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Qty:</span>1
+                              </span>
+                              <span className="sm:col-span-2 sm:text-right">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Unit:</span>$1,200.00
+                              </span>
+                              <span className="sm:col-span-2 sm:text-right font-bold text-slate-800 dark:text-slate-200">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Total:</span>$1,200.00
+                              </span>
+                            </div>
                           </div>
-                          <div className="grid grid-cols-12 py-3 text-[11px]">
-                            <span className="col-span-6 font-medium text-slate-800 dark:text-slate-250">Custom API Integration Support</span>
-                            <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">5</span>
-                            <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$150.00</span>
-                            <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$750.00</span>
+                          <div className="py-2.5 sm:py-3 text-[11px] flex flex-col sm:grid sm:grid-cols-12 gap-1 sm:gap-0">
+                            <span className="sm:col-span-6 font-medium text-slate-800 dark:text-slate-200">Custom API Integration Support</span>
+                            <div className="flex sm:contents justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                              <span className="sm:col-span-2 sm:text-center">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Qty:</span>5
+                              </span>
+                              <span className="sm:col-span-2 sm:text-right">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Unit:</span>$150.00
+                              </span>
+                              <span className="sm:col-span-2 sm:text-right font-bold text-slate-800 dark:text-slate-200">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Total:</span>$750.00
+                              </span>
+                            </div>
                           </div>
-                          <div className="grid grid-cols-12 py-3 text-[11px]">
-                            <span className="col-span-6 font-medium text-slate-800 dark:text-slate-250">Monthly Cloud Storage Surcharge</span>
-                            <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">1</span>
-                            <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$45.00</span>
-                            <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$45.00</span>
+                          <div className="py-2.5 sm:py-3 text-[11px] flex flex-col sm:grid sm:grid-cols-12 gap-1 sm:gap-0">
+                            <span className="sm:col-span-6 font-medium text-slate-800 dark:text-slate-250">Monthly Cloud Storage Surcharge</span>
+                            <div className="flex sm:contents justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                              <span className="sm:col-span-2 sm:text-center">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Qty:</span>1
+                              </span>
+                              <span className="sm:col-span-2 sm:text-right">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Unit:</span>$45.00
+                              </span>
+                              <span className="sm:col-span-2 sm:text-right font-bold text-slate-800 dark:text-slate-200">
+                                <span className="sm:hidden text-slate-400 font-sans mr-1">Total:</span>$45.00
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
 
                       {/* PDF Footer Subtotal & Totals block */}
-                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 space-y-1.5 self-end w-1/2">
+                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 space-y-1.5 self-end w-full sm:w-1/2">
                         <div className="flex justify-between text-[11px] text-slate-500 dark:text-slate-400">
                           <span>Subtotal</span>
                           <span className="font-mono font-medium">$1,995.00</span>
@@ -708,7 +768,7 @@ export default function ResultsView({
                       </div>
                     </div>
                   ) : fileName.toLowerCase().includes("uber") ? (
-                    <div className="relative bg-[#ffffff] dark:bg-[#121212] w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#ffffff] dark:bg-[#121212] w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* Thermal Receipt Style Frame */}
                       <div className="flex flex-col items-center pb-4 border-b border-dashed border-slate-200 dark:border-slate-800 text-center">
                         <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-black text-sm mb-1.5">U</div>
@@ -791,7 +851,7 @@ export default function ResultsView({
                       </div>
                     </div>
                   ) : fileName.toLowerCase().includes("acme") || fileName.toLowerCase().includes("purchase") ? (
-                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
+                    <div className="relative bg-[#ffffff] dark:bg-[#0c101c] w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col text-slate-800 dark:text-slate-100 overflow-y-auto select-none custom-scrollbar text-xs animate-fade-in">
                       {/* PO Form Layout */}
                       <div className="flex justify-between items-start pb-6 border-b border-slate-200 dark:border-slate-800">
                         <div>
@@ -831,25 +891,33 @@ export default function ResultsView({
 
                       {/* PO Lines */}
                       <div className="flex-grow mt-2">
-                        <div className="grid grid-cols-12 font-bold text-[9px] text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2">
+                        <div className="hidden sm:grid grid-cols-12 font-bold text-[9px] text-slate-400 dark:text-slate-500 uppercase font-mono tracking-wider border-b border-slate-200 dark:border-slate-800 pb-2">
                           <span className="col-span-6">Item &amp; Description</span>
                           <span className="col-span-2 text-center">Qty</span>
                           <span className="col-span-2 text-right">Price</span>
                           <span className="col-span-2 text-right">Total</span>
                         </div>
-                        <div className="py-3.5 grid grid-cols-12 text-[11px] border-b border-slate-100 dark:border-slate-900">
-                          <div className="col-span-6 text-left">
+                        <div className="py-2.5 sm:py-3.5 flex flex-col sm:grid sm:grid-cols-12 gap-1 sm:gap-0 border-b border-slate-100 dark:border-slate-900">
+                          <div className="sm:col-span-6 text-left">
                             <p className="font-bold text-slate-850 dark:text-slate-200">ThinkStation Workstation P3 Dual GPU</p>
                             <p className="text-[9px] text-slate-400 dark:text-slate-500 mt-0.5">High-end Engineering Workstation Spec</p>
                           </div>
-                          <span className="col-span-2 text-center font-mono text-slate-500 dark:text-slate-400">5</span>
-                          <span className="col-span-2 text-right font-mono text-slate-500 dark:text-slate-400">$1,700.00</span>
-                          <span className="col-span-2 text-right font-mono font-bold text-slate-800 dark:text-slate-200">$8,500.00</span>
+                          <div className="flex sm:contents justify-between text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                            <span className="sm:col-span-2 sm:text-center">
+                              <span className="sm:hidden text-slate-400 font-sans mr-1">Qty:</span>5
+                            </span>
+                            <span className="sm:col-span-2 sm:text-right">
+                              <span className="sm:hidden text-slate-400 font-sans mr-1">Price:</span>$1,700.00
+                            </span>
+                            <span className="sm:col-span-2 sm:text-right font-bold text-slate-800 dark:text-slate-200">
+                              <span className="sm:hidden text-slate-400 font-sans mr-1">Total:</span>$8,500.00
+                            </span>
+                          </div>
                         </div>
                       </div>
 
                       {/* Financial Sum */}
-                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 space-y-1.5 self-end w-1/2">
+                      <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-6 space-y-1.5 self-end w-full sm:w-1/2">
                         <div className="flex justify-between text-[11px] text-slate-500 dark:text-slate-400">
                           <span>Subtotal</span>
                           <span className="font-mono font-medium">$8,500.00</span>
@@ -879,7 +947,7 @@ export default function ResultsView({
                     </div>
                   ) : (
                     /* Default generic preview fallback for other uploads */
-                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow min-h-[300px] sm:min-h-[460px] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-4 sm:p-8 flex flex-col items-center justify-center text-center space-y-6">
+                    <div className="relative bg-white dark:bg-slate-950 w-full flex-grow h-full min-h-0 rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-850 p-4 sm:p-8 flex flex-col items-center justify-center text-center space-y-6">
                       <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 shadow-sm animate-pulse">
                         <FileText className="w-8 h-8 text-blue-500 dark:text-blue-400" />
                       </div>
@@ -898,7 +966,7 @@ export default function ResultsView({
         </div>
 
         {/* Right Side: Tabbed Structured Workbench Form */}
-        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col lg:h-[750px] w-full">
+        <div className={`${mobileTab === "workbench" ? "flex" : "hidden"} md:flex md:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm overflow-hidden flex-col md:h-[650px] lg:h-[780px] w-full`}>
           {/* Section Tabs */}
           <div className="flex border-b border-outline-variant/30 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 overflow-x-auto">
             <button
@@ -944,7 +1012,7 @@ export default function ResultsView({
           </div>
 
           {/* Tab Body */}
-          <div className="p-4 sm:p-6 text-left flex-grow overflow-y-auto custom-scrollbar lg:h-[650px] lg:min-h-0 min-h-[300px] sm:min-h-[400px]">
+          <div className="p-4 sm:p-6 text-left flex-grow overflow-y-auto custom-scrollbar h-full min-h-0">
             
             {/* SUBTAB 1: GENERAL INFO */}
             {activeSubTab === "general" && (
@@ -1301,7 +1369,7 @@ export default function ResultsView({
                       SYSTEM ONLINE
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-3 text-center text-[11px] pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-[11px] pt-1">
                     <div className="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center gap-1">
                       <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Primary</span>
                       <span className="font-semibold text-slate-800 dark:text-slate-200">Google Gemini</span>

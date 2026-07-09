@@ -220,8 +220,8 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
                 <FileText className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
               </div>
               <div className="space-y-0.5 sm:space-y-1 w-full min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="text-[9px] sm:text-xs font-bold text-cyan-700 dark:text-cyan-400 bg-cyan-50/70 dark:bg-cyan-950/40 px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">PO</span>
+                <div className="flex items-center justify-between gap-1 min-w-0">
+                  <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-cyan-700 dark:text-cyan-400 bg-cyan-50/70 dark:bg-cyan-950/40 px-1.5 sm:px-2 py-0.5 rounded-full uppercase tracking-wider truncate min-w-0" title="Purchase Order">Purchase Order</span>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-350 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
                 </div>
                 <p className="font-bold text-xs sm:text-sm md:text-base text-on-surface truncate">Acme Corp Purchase.jpg</p>

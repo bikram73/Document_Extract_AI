@@ -30,7 +30,7 @@ app.post("/api/extract", async (req, res) => {
       return res.status(400).json({ error: "Missing document data or mimeType" });
     }
 
-    const result = await fallbackManager.extractWithFallback(base64Data, mimeType);
+    const result = await fallbackManager.extractWithFallback(base64Data, mimeType, fileName);
     return res.json({
       success: true,
       data: result.data,

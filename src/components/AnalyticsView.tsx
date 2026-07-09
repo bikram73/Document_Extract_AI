@@ -16,6 +16,7 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
   const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
   const [resolvedAlerts, setResolvedAlerts] = useState<Record<number, boolean>>({});
+  const [mobileTab, setMobileTab] = useState<"metrics" | "insights">("metrics");
 
   // Dynamic calculations for clinical validation checks
   const calculatedLineItemsSum = useMemo(() => {
@@ -76,7 +77,7 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
   }, [data.alerts, resolvedAlerts]);
 
   return (
-    <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 md:px-8 space-y-6 sm:space-y-8">
+    <div className="w-full max-w-7xl mx-auto py-4 sm:py-6 px-4 md:px-8 space-y-6 sm:space-y-8 overflow-x-hidden">
       {/* Back nav & top metadata bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <button
@@ -93,9 +94,35 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-8 items-start">
+      {/* Mobile Tab Switcher - only visible on small screens to show elements one-by-one */}
+      <div className="flex lg:hidden bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/80 shadow-sm gap-1 w-full">
+        <button
+          onClick={() => setMobileTab("metrics")}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            mobileTab === "metrics"
+              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-slate-700"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+          }`}
+        >
+          <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <span>Metrics &amp; Integrity</span>
+        </button>
+        <button
+          onClick={() => setMobileTab("insights")}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            mobileTab === "insights"
+              ? "bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-slate-700"
+              : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+          }`}
+        >
+          <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <span>Insights &amp; Export</span>
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full max-w-full overflow-hidden min-w-0">
         {/* Left Columns (7/12): Confidence metrics, validation logs, alerts */}
-        <div className="lg:col-span-7 space-y-6">
+        <div className={`${mobileTab === "metrics" ? "block" : "hidden"} lg:block lg:col-span-7 space-y-6 w-full max-w-full overflow-hidden min-w-0`}>
           
           {/* Section: Confidence Gauges */}
           <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm text-left">
@@ -298,55 +325,85 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
         </div>
 
         {/* Right Column (5/12): Contextual AI Insights and Export Payload */}
-        <div className="lg:col-span-5 space-y-6 text-left">
+        <div className={`${mobileTab === "insights" ? "block" : "hidden"} lg:block lg:col-span-5 w-full max-w-full overflow-hidden min-w-0 space-y-6 text-left`}>
           
           {/* AI Contextual Insight Card */}
-          <div className="bg-primary text-white p-4 sm:p-6 rounded-3xl shadow-lg relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8 opacity-10">
+          <div className="bg-gradient-to-br from-indigo-600 via-blue-600 to-indigo-700 dark:from-slate-950 dark:via-indigo-950 dark:to-slate-950 border border-indigo-500/20 dark:border-indigo-500/30 rounded-3xl p-5 sm:p-7 shadow-xl shadow-blue-500/5 dark:shadow-none relative overflow-hidden transition-all duration-300 w-full max-w-full min-w-0">
+            {/* Decorative background quote mark */}
+            <div className="absolute -bottom-8 -right-3 text-white/5 dark:text-blue-500/5 font-serif text-[180px] leading-none pointer-events-none select-none">
+              ”
+            </div>
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
               <Sparkles className="w-32 h-32 text-white" />
             </div>
             
-            <div className="relative z-10 space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider flex items-center gap-1.5 text-blue-100">
-                <Sparkles className="w-4 h-4 fill-blue-200 text-blue-200" />
-                AI Contextual Summary
-              </h3>
-              
-              <p className="text-sm leading-relaxed text-blue-50 font-medium">
-                "{data.insights || "No insight has been populated for this template. Fill in data to generate insights."}"
-              </p>
+            <div className="relative z-10 space-y-4 w-full">
+              <span className="px-2.5 py-0.5 bg-white/10 dark:bg-blue-500/20 text-white dark:text-blue-300 rounded-full text-[10px] font-bold tracking-wider font-mono uppercase flex items-center gap-1.5 w-fit">
+                <Sparkles className="w-3.5 h-3.5 animate-pulse text-amber-300 fill-amber-300 shrink-0" />
+                AI Insight Generated
+              </span>
+
+              <div className="border-l-2 border-white/30 dark:border-blue-500/50 pl-4 py-1 w-full max-w-full overflow-hidden">
+                <p className="text-sm sm:text-[15px] leading-relaxed italic text-white/95 dark:text-blue-100 font-medium break-words [overflow-wrap:anywhere] [word-break:break-word] whitespace-normal">
+                  "{data.insights || "No insight has been populated for this template. Fill in data to generate insights."}"
+                </p>
+              </div>
+
+              <div className="pt-2 text-[10px] font-mono text-white/70 dark:text-blue-300/60 flex items-center gap-1.5 w-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span className="truncate">DocExtract Engine v1.4 • Integrity score verified</span>
+              </div>
             </div>
           </div>
 
           {/* Export card with live code snippet */}
-          <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-on-surface flex items-center gap-1.5">
-                <FileCode className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-                JSON Payload Export
-              </h3>
+          <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm space-y-4 transition-all duration-300 w-full max-w-full min-w-0 overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+              <div className="space-y-1 text-left min-w-0 flex-1">
+                <h3 className="text-sm font-bold text-on-surface flex items-center gap-1.5 truncate">
+                  <FileCode className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                  JSON Payload Export
+                </h3>
+                <p className="text-xs text-on-surface-variant font-mono">schema.json</p>
+              </div>
 
               <button
                 onClick={handleCopy}
-                className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
+                className="w-full sm:w-auto bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors border border-slate-200/40 dark:border-slate-700/60 shrink-0"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-green-600" />
-                    <span className="text-green-700">Copied!</span>
+                    <Check className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+                    <span className="text-green-700 dark:text-green-400 font-bold">Copied!</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3 h-3" />
-                    <span>Copy</span>
+                    <Copy className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                    <span>Copy JSON</span>
                   </>
                 )}
               </button>
             </div>
 
-            <pre className="p-4 bg-slate-900 text-slate-100 text-[10px] font-mono rounded-2xl overflow-x-auto max-h-[300px] custom-scrollbar border border-slate-800 leading-relaxed">
-              <code>{JSON.stringify(data, null, 2)}</code>
-            </pre>
+            <div className="flex flex-col rounded-2xl overflow-hidden shadow-inner border border-slate-800/25 dark:border-slate-800/80 w-full max-w-full min-w-0">
+              {/* Mock Code Editor Header */}
+              <div className="flex items-center justify-between px-4 py-2 bg-slate-950/95 dark:bg-slate-950/80 border-b border-slate-800/60 w-full max-w-full">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span className="text-[10px] font-mono text-slate-500 ml-1.5 truncate">schema.json</span>
+                </div>
+                <div className="text-[10px] font-mono text-slate-500 font-semibold uppercase tracking-wider shrink-0 ml-2">
+                  {JSON.stringify(data, null, 2).length} B • {JSON.stringify(data, null, 2).split('\n').length} Lines
+                </div>
+              </div>
+
+              {/* Monospace Code Editor Area */}
+              <pre className="p-4 bg-slate-900 dark:bg-slate-950/55 text-slate-100 text-[11px] font-mono max-h-[300px] md:max-h-[450px] overflow-y-auto overflow-x-auto custom-scrollbar leading-relaxed text-left select-text w-full max-w-full min-w-0">
+                <code>{JSON.stringify(data, null, 2)}</code>
+              </pre>
+            </div>
           </div>
 
         </div>
