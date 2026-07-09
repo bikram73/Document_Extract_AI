@@ -110,7 +110,7 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 ## 📂 File Structure
 
 ```text
-docextract-ai/
+Document_Extract_AI/
 ├── .env.example              # Environment variables template
 ├── .gitignore                # Production untracked files setup
 ├── index.html                # Entry points for Vite SPA mounting
