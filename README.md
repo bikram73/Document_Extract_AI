@@ -26,7 +26,7 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 - [📄 Challenge Deliverables](#deliverables)
 - [🖨️ Sample JSON Payload](#sample-json)
 - [🌐 API Documentation](#api)
-- [📄 Sample Documents & Extraction Results](./SAMPLE_RESULTS.md)
+- [📄 Sample Documents & Extraction Results](#SAMPLE_RESULTS.md) [📄 Go To The Document Page](./SAMPLE_RESULTS.md)
 - [⚡ Performance Notes](#performance)
 - [⚠️ Known Limitations](#limitations)
 - [📄 License](#license)
@@ -413,7 +413,7 @@ The Express server exposes the following API endpoints to handle document operat
   ```
 
 ---
-<a id="./SAMPLE_RESULTS.md"></a>
+<a id="SAMPLE_RESULTS.md"></a>
 
 # 📄 Sample Documents & Extraction Results
 
@@ -449,7 +449,7 @@ This page includes:
 - **OCR Processing Time**: Tesseract.js client OCR processes document text in **1 to 2 seconds** locally before transporting data to the server, ensuring quick frontend feedback.
 
 ---
-<a id="#limitations"></a>
+<a id="limitations"></a>
 
 ## ⚠️ Known Limitations
 
@@ -459,7 +459,7 @@ This page includes:
 4. **Foreign Language Currencies**: Standard processing maps USD, EUR, GBP, and major currency formats accurately. Highly exotic or regional currency symbols might fallback to default representation string formats.
 
 ---
-<a id="#license"></a>
+<a id="license"></a>
 
 ## 📄 License
 
