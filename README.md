@@ -393,7 +393,8 @@ To help reviewers quickly evaluate the AI Document Data Extractor, a complete se
 
 - 📄 Invoice → PDF + Extracted JSON
 - 🧾 Receipt → Image + Extracted JSON
-- 📦 Purchase Order → PDF + Extracted JSON
+- 🧾 Receipt 2 → Image + Extracted JSON
+- 📦 Purchase Order → Image + Extracted JSON
 
 👉 **View all sample documents and outputs here:**
 
