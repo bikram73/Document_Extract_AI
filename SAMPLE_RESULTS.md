@@ -10,11 +10,13 @@ This document contains sample inputs and their corresponding AI-generated struct
 sample-documents/
 ├── Invoice.pdf
 ├── receipt.jpg
+├── receipt2.png
 └── Purchase_order.png
 
 sample-output/
 ├── invoice.json
 ├── receipt.json
+├── receipt2.json
 └── purchase_order.json
 ```
 
@@ -36,6 +38,7 @@ sample-output/
 
 📄 **File:** `sample-output/invoice.json`
 
+```json
 {
   "documentType": "Invoice",
   "vendorName": "Innovative Retail Concepts Pvt Ltd",
@@ -105,7 +108,47 @@ Then display it like this:
 
 ```json
 {
-  "... purchase order json here ..."
+  "documentType": "Purchase Order",
+  "vendorName": "Ellington Wood Decor",
+  "financials": {
+    "total": 600,
+    "subtotal": 600,
+    "tax": 0
+  },
+  "confidence": {
+    "overall": 98,
+    "currency": 100,
+    "date": 99,
+    "lineItems": 97,
+    "vendor": 99
+  },
+  "insights": "This document is a Purchase Order issued by Ellington Wood Decor on 30/04/2022. The total amount for the order is £600.00, which includes two sample wood decoration services. There is no explicit tax or payment terms specified on the document.",
+  "integrityCheck": {
+    "dateValidation": "PASSED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [],
+  "currency": "GBP",
+  "dueDate": "null",
+  "invoiceNumber": "PO0012022",
+  "issueDate": "30/04/2022",
+  "lineItems": [
+    {
+      "description": "Sample service Sample wood decoration service",
+      "qty": 1,
+      "unitPrice": 400,
+      "amount": 400
+    },
+    {
+      "description": "Sample service 1 Sample wood decoration service 1",
+      "qty": 1,
+      "unitPrice": 200,
+      "amount": 200
+    }
+  ],
+  "paymentTerms": "null",
+  "vendorTaxId": "null"
 }
 ```
 
@@ -127,7 +170,79 @@ Since this is already a JPG image, GitHub will display it directly.
 
 ```json
 {
-  "... receipt json here ..."
+  "documentType": "Receipt",
+  "vendorName": "SUPERMARKET",
+  "financials": {
+    "total": 107.6,
+    "subtotal": 107.6,
+    "tax": 0
+  },
+  "confidence": {
+    "overall": 85,
+    "currency": 95,
+    "date": 0,
+    "lineItems": 90,
+    "vendor": 95
+  },
+  "insights": "This document is a retail receipt from SUPERMARKET. It details a purchase with a subtotal of $107.60. No specific issue date was found on the document. The total amount matches the sum of the line items.",
+  "integrityCheck": {
+    "dateValidation": "FAILED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [
+    {
+      "title": "Missing Issue Date",
+      "message": "The document does not contain an identifiable issue or purchase date."
+    }
+  ],
+  "currency": "$",
+  "invoiceNumber": "",
+  "issueDate": "",
+  "lineItems": [
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 9.2,
+      "amount": 9.2
+    },
+    {
+      "description": "Lorem ipsum dolor sit",
+      "qty": 1,
+      "unitPrice": 19.2,
+      "amount": 19.2
+    },
+    {
+      "description": "Lorem ipsum dolor sit amet",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum dolor sit",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 19.2,
+      "amount": 19.2
+    }
+  ]
 }
 ```
 
@@ -149,7 +264,58 @@ Since this is already a PNG image, GitHub will display it directly.
 
 ```json
 {
-  "... receipt json here ..."
+  "documentType": "Receipt",
+  "vendorName": "East Repair Inc.",
+  "financials": {
+    "total": 154.06,
+    "subtotal": 145,
+    "tax": 9.06
+  },
+  "confidence": {
+    "overall": 98,
+    "currency": 100,
+    "date": 95,
+    "lineItems": 98,
+    "vendor": 100
+  },
+  "insights": "This document is a receipt from East Repair Inc. dated 11/02/2019 for automotive-related repairs, including brake cables, pedal arms, and labor. The total amount is $154.06, and it includes payment terms of 15 days.",
+  "integrityCheck": {
+    "dateValidation": "PASSED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [
+    {
+      "title": "Date Discrepancy",
+      "message": "The document is titled as a 'Receipt' but contains a 'Due Date', which is typically a feature of an 'Invoice'."
+    }
+  ],
+  "currency": "$",
+  "dueDate": "26/02/2019",
+  "invoiceNumber": "US-001",
+  "issueDate": "11/02/2019",
+  "lineItems": [
+    {
+      "description": "Front and rear brake cables",
+      "qty": 1,
+      "unitPrice": 100,
+      "amount": 100
+    },
+    {
+      "description": "New set of pedal arms",
+      "qty": 2,
+      "unitPrice": 15,
+      "amount": 30
+    },
+    {
+      "description": "Labor 3hrs",
+      "qty": 3,
+      "unitPrice": 5,
+      "amount": 15
+    }
+  ],
+  "paymentTerms": "Payment is due within 15 days",
+  "vendorTaxId": "null"
 }
 ```
 
