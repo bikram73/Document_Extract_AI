@@ -30,7 +30,7 @@ sample-output/
 
 > Click below to download/view the sample invoice.
 
-[📄 View Invoice](sample-documents/Invoice.pdf)
+[📄 View Invoice PDF](sample-documents/Invoice.pdf)
 
 ---
 
@@ -93,7 +93,7 @@ sample-output/
 > If you have exported this PDF as an image, place it inside:
 
 ```text
-assets/Purchase_order.png
+sample-documents/Purchase_order.png
 ```
 
 Then display it like this:
