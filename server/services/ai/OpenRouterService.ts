@@ -18,11 +18,13 @@ export class OpenRouterService implements AIService {
 
     const customModel = process.env.OPENROUTER_MODEL;
     const defaultCandidates = [
-      "deepseek/deepseek-chat-v3-0324",
+      "deepseek/deepseek-chat",
+      "deepseek/deepseek-chat:free",
       "google/gemini-2.5-flash",
-      "google/gemini-flash-1.5",
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "meta-llama/llama-3.3-70b-instruct",
+      "qwen/qwen-2.5-coder-32b-instruct",
       "meta-llama/llama-3.2-11b-vision-instruct",
-      "qwen/qwen-2-vl-7b-instruct",
     ];
 
     const candidates = customModel
@@ -75,6 +77,7 @@ export class OpenRouterService implements AIService {
               },
             ],
             temperature: 0.1,
+            max_tokens: 1500,
           };
 
           if (useJsonFormat) {
@@ -107,6 +110,7 @@ export class OpenRouterService implements AIService {
                   },
                 ],
                 temperature: 0.1,
+                max_tokens: 1500,
               };
               if (useJsonFormat) {
                 retryBodyPayload.response_format = { type: "json_object" };
