@@ -2,8 +2,6 @@
 
 ---
 
-## 🎥 Demo
-
 <p align="center">
   <img src="public/demo.gif" alt="Document Extract AI Demo" width="900">
 </p>
