@@ -1,0 +1,54 @@
+{
+  "documentType": "Receipt",
+  "vendorName": "East Repair Inc.",
+  "financials": {
+    "total": 154.06,
+    "subtotal": 145,
+    "tax": 9.06
+  },
+  "confidence": {
+    "overall": 98,
+    "currency": 100,
+    "date": 95,
+    "lineItems": 98,
+    "vendor": 100
+  },
+  "insights": "This document is a receipt from East Repair Inc. dated 11/02/2019 for automotive-related repairs, including brake cables, pedal arms, and labor. The total amount is $154.06, and it includes payment terms of 15 days.",
+  "integrityCheck": {
+    "dateValidation": "PASSED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [
+    {
+      "title": "Date Discrepancy",
+      "message": "The document is titled as a 'Receipt' but contains a 'Due Date', which is typically a feature of an 'Invoice'."
+    }
+  ],
+  "currency": "$",
+  "dueDate": "26/02/2019",
+  "invoiceNumber": "US-001",
+  "issueDate": "11/02/2019",
+  "lineItems": [
+    {
+      "description": "Front and rear brake cables",
+      "qty": 1,
+      "unitPrice": 100,
+      "amount": 100
+    },
+    {
+      "description": "New set of pedal arms",
+      "qty": 2,
+      "unitPrice": 15,
+      "amount": 30
+    },
+    {
+      "description": "Labor 3hrs",
+      "qty": 3,
+      "unitPrice": 5,
+      "amount": 15
+    }
+  ],
+  "paymentTerms": "Payment is due within 15 days",
+  "vendorTaxId": "null"
+}

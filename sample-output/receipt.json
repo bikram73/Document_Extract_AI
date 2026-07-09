@@ -1,0 +1,75 @@
+{
+  "documentType": "Receipt",
+  "vendorName": "SUPERMARKET",
+  "financials": {
+    "total": 107.6,
+    "subtotal": 107.6,
+    "tax": 0
+  },
+  "confidence": {
+    "overall": 85,
+    "currency": 95,
+    "date": 0,
+    "lineItems": 90,
+    "vendor": 95
+  },
+  "insights": "This document is a retail receipt from SUPERMARKET. It details a purchase with a subtotal of $107.60. No specific issue date was found on the document. The total amount matches the sum of the line items.",
+  "integrityCheck": {
+    "dateValidation": "FAILED",
+    "arithmeticTotal": "PASSED",
+    "currencyConsistency": "PASSED"
+  },
+  "alerts": [
+    {
+      "title": "Missing Issue Date",
+      "message": "The document does not contain an identifiable issue or purchase date."
+    }
+  ],
+  "currency": "$",
+  "invoiceNumber": "",
+  "issueDate": "",
+  "lineItems": [
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 9.2,
+      "amount": 9.2
+    },
+    {
+      "description": "Lorem ipsum dolor sit",
+      "qty": 1,
+      "unitPrice": 19.2,
+      "amount": 19.2
+    },
+    {
+      "description": "Lorem ipsum dolor sit amet",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum dolor sit",
+      "qty": 1,
+      "unitPrice": 15,
+      "amount": 15
+    },
+    {
+      "description": "Lorem ipsum",
+      "qty": 1,
+      "unitPrice": 19.2,
+      "amount": 19.2
+    }
+  ]
+}
