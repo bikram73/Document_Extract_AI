@@ -1,9 +1,7 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const pdfModule = require("pdf-parse");
+import pdfModule from "pdf-parse";
 
 // Robustly resolve the main pdf-parse function depending on ES/CommonJS interop wrapper
-const pdf = typeof pdfModule === "function" ? pdfModule : (pdfModule.default || pdfModule);
+const pdf = typeof pdfModule === "function" ? pdfModule : ((pdfModule as any).default || pdfModule);
 
 /**
  * Extracts raw text content from a base64 encoded PDF file.
