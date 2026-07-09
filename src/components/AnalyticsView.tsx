@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
 import { 
   ArrowLeft, Brain, ShieldCheck, AlertTriangle, CheckCircle, XCircle, 
-  Sparkles, CodeXml, Copy, Check, Info, FileCode
+  Sparkles, CodeXml, Copy, Check, Info, FileCode, PieChart as PieIcon
 } from "lucide-react";
 import { ExtractedData } from "../types";
 import { useToast } from "../context/ToastContext";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 interface AnalyticsViewProps {
   data: ExtractedData;
@@ -18,11 +19,73 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
   const [resolvedAlerts, setResolvedAlerts] = useState<Record<number, boolean>>({});
   const [mobileTab, setMobileTab] = useState<"metrics" | "insights">("metrics");
 
+  const currencySymbol = useMemo(() => {
+    const cur = data.currency || "USD";
+    if (cur.includes("EUR") || cur.includes("€")) return "€";
+    if (cur.includes("GBP") || cur.includes("£")) return "£";
+    if (cur.includes("JPY") || cur.includes("¥")) return "¥";
+    return "$";
+  }, [data.currency]);
+
   // Dynamic calculations for clinical validation checks
   const calculatedLineItemsSum = useMemo(() => {
     if (!data.lineItems) return 0;
     return data.lineItems.reduce((acc, item) => acc + (item.amount || 0), 0);
   }, [data.lineItems]);
+
+  const pieChartData = useMemo(() => {
+    const items = data.lineItems || [];
+    const chartData: Array<{ name: string; value: number; type: "item" | "tax" | "other" | "total" }> = items.map((item, index) => ({
+      name: item.description || `Item ${index + 1}`,
+      value: item.amount || 0,
+      type: "item" as const
+    }));
+    
+    const tax = data.financials.tax || 0;
+    if (tax > 0) {
+      chartData.push({
+        name: "Tax Amount",
+        value: tax,
+        type: "tax" as const
+      });
+    }
+
+    const total = data.financials.total || 0;
+    const lineItemsSum = items.reduce((acc, item) => acc + (item.amount || 0), 0);
+    const accountedAmount = lineItemsSum + tax;
+    const remaining = total - accountedAmount;
+    
+    if (remaining > 0.05) {
+      chartData.push({
+        name: "Other / Fees",
+        value: Number(remaining.toFixed(2)),
+        type: "other" as const
+      });
+    }
+
+    return chartData.filter(d => d.value > 0);
+  }, [data.lineItems, data.financials]);
+
+  const finalChartData = useMemo(() => {
+    if (pieChartData.length === 0 && (data.financials.total || 0) > 0) {
+      return [{
+        name: "Total Amount",
+        value: data.financials.total || 0,
+        type: "total" as const
+      }];
+    }
+    return pieChartData;
+  }, [pieChartData, data.financials.total]);
+
+  const CHART_COLORS = [
+    "#3b82f6", // Blue
+    "#8b5cf6", // Purple
+    "#06b6d4", // Cyan
+    "#10b981", // Emerald
+    "#f59e0b", // Amber
+    "#f43f5e", // Rose
+    "#64748b", // Slate
+  ];
 
   const arithmeticStatus = useMemo(() => {
     const subtotal = data.financials.subtotal || 0;
@@ -208,6 +271,107 @@ export default function AnalyticsView({ data, onGoBack, onUpdateData }: Analytic
                 <span className="text-xs font-bold text-on-surface-variant">Currency Spot</span>
               </div>
             </div>
+          </div>
+
+          {/* Section: Pie Chart Breakdown of Line Items and Taxes */}
+          <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-outline-variant/30 dark:border-slate-800 shadow-sm text-left space-y-4 w-full max-w-full min-w-0 overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pb-2 border-b border-slate-100 dark:border-slate-800/60">
+              <div className="space-y-0.5">
+                <h2 className="text-base font-bold text-on-surface flex items-center gap-2">
+                  <PieIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  Financial Allocation Breakdown
+                </h2>
+                <p className="text-xs text-on-surface-variant">Visual distribution of line items, tax, and fees</p>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-bold text-on-surface-variant block sm:inline mr-1">Total:</span>
+                <span className="text-sm font-extrabold font-mono text-blue-600 dark:text-blue-400">
+                  {currencySymbol}{(data.financials.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+            </div>
+
+            {finalChartData.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pt-2">
+                {/* Chart stage */}
+                <div className="md:col-span-6 flex justify-center items-center h-[240px] w-full min-w-0 relative">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={finalChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={85}
+                        paddingAngle={3}
+                        dataKey="value"
+                      >
+                        {finalChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} stroke="rgba(0,0,0,0.05)" strokeWidth={1} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const entry = payload[0].payload;
+                            return (
+                              <div className="bg-slate-900/95 dark:bg-slate-950/95 border border-slate-800/80 p-3 rounded-2xl shadow-xl text-left backdrop-blur-md">
+                                <p className="text-[11px] font-bold text-white max-w-[180px] break-words whitespace-normal leading-tight">{entry.name}</p>
+                                <p className="text-xs font-extrabold font-mono text-blue-400 mt-1">
+                                  {currencySymbol}{entry.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                </p>
+                                <p className="text-[9px] text-slate-400 font-mono mt-0.5 uppercase tracking-wider">
+                                  {entry.type === "item" ? "Line Item" : entry.type === "tax" ? "Tax" : entry.type === "other" ? "Other Fees" : "Total"}
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  
+                  {/* Visual overlay center total */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total</span>
+                    <span className="text-sm font-black font-mono text-on-surface">
+                      {currencySymbol}{(data.financials.total || 0).toLocaleString(undefined, { minimumFractionDigits: 0 })}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Custom grid-based legend for perfect mobile-friendly formatting without overflow */}
+                <div className="md:col-span-6 space-y-2.5 w-full max-h-[250px] overflow-y-auto custom-scrollbar pr-1">
+                  {finalChartData.map((entry, index) => {
+                    const percentage = data.financials.total > 0 ? (entry.value / data.financials.total) * 100 : 0;
+                    const color = CHART_COLORS[index % CHART_COLORS.length];
+                    return (
+                      <div key={index} className="flex items-center justify-between gap-3 text-xs p-2 rounded-xl bg-slate-50/50 dark:bg-slate-950/30 border border-slate-100/50 dark:border-slate-800/40 hover:border-slate-200/60 dark:hover:border-slate-800/80 transition-colors">
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }}></span>
+                          <span className="font-medium text-on-surface truncate pr-1" title={entry.name}>
+                            {entry.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0 font-mono text-right">
+                          <span className="text-[11px] font-bold text-on-surface">
+                            {currencySymbol}{entry.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          </span>
+                          <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 dark:bg-slate-800/60 px-1.5 py-0.5 rounded-md min-w-[38px] text-center">
+                            {percentage.toFixed(0)}%
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="p-8 text-center text-on-surface-variant bg-slate-50 dark:bg-slate-950 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
+                <p className="text-sm font-bold text-on-surface">No financial data available for breakdown</p>
+              </div>
+            )}
           </div>
 
           {/* Section: Clinical Validation Checks */}

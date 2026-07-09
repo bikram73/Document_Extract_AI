@@ -30,6 +30,7 @@ export class GeminiService implements AIService {
   }
 
   async extractStructuredData(base64Data: string, mimeType: string): Promise<ExtractedData> {
+    const serviceStartTime = Date.now();
     const ai = this.getClient();
     
     // De-duplicate candidate models to fall back through in case of rate limits or service unavailability
@@ -40,10 +41,6 @@ export class GeminiService implements AIService {
           "gemini-3.5-flash",
           "gemini-3.1-flash-lite",
           "gemini-3.1-pro-preview",
-          "gemini-2.5-flash",
-          "gemini-2.5-pro",
-          "gemini-1.5-flash",
-          "gemini-1.5-pro",
         ].filter(Boolean)
       )
     ) as string[];
@@ -59,9 +56,21 @@ export class GeminiService implements AIService {
     let lastError: any = null;
 
     for (const model of candidateModels) {
-      // Retry up to 2 times per model for 503 (UNAVAILABLE) or 429 (RATE_LIMIT) transient errors
+      // Guard: If we've already spent more than 8 seconds, don't try any more models
+      const totalElapsedMs = Date.now() - serviceStartTime;
+      if (totalElapsedMs > 8000) {
+        console.warn(`[GeminiService] ${totalElapsedMs}ms elapsed. Aborting candidate models search to avoid 504 gateway timeout.`);
+        break;
+      }
+
+      // Retry up to 2 times only for transient 503 errors.
       for (let attempt = 1; attempt <= 2; attempt++) {
         try {
+          // Inner guard: prevent starting another request if we are running close to timeout
+          if (Date.now() - serviceStartTime > 9500) {
+            break;
+          }
+
           console.log(`[GeminiService] Trying extraction with model: ${model} (attempt ${attempt}/${2})`);
           
           const response = await ai.models.generateContent({
@@ -177,12 +186,22 @@ export class GeminiService implements AIService {
         } catch (err: any) {
           lastError = err;
           const status = err.status || err.statusCode || (err.error && err.error.code);
-          const isTransient = 
-            status === 503 || 
+          
+          const isQuotaExceeded = 
             status === 429 || 
             (err.message && (
-              err.message.includes("503") || 
               err.message.includes("429") || 
+              err.message.includes("quota") || 
+              err.message.includes("Quota") || 
+              err.message.includes("RESOURCE_EXHAUSTED") || 
+              err.message.includes("limit") || 
+              err.message.includes("exceeded")
+            ));
+
+          const isTransient = 
+            status === 503 || 
+            (err.message && (
+              err.message.includes("503") || 
               err.message.includes("demand") || 
               err.message.includes("UNAVAILABLE") ||
               err.message.includes("overloaded")
@@ -190,10 +209,16 @@ export class GeminiService implements AIService {
 
           console.warn(`[GeminiService] Model ${model} attempt ${attempt} failed:`, err.message || err);
 
+          if (isQuotaExceeded) {
+            console.log(`[GeminiService] Quota or rate limit exceeded on ${model}. Skipping retries for this model.`);
+            // Break the retry loop immediately for 429 quota errors to let other models / sandbox handle it
+            break;
+          }
+
           if (isTransient && attempt < 2) {
-            // Wait 1000ms before retrying the same model
-            console.log(`[GeminiService] Transient error detected. Retrying model ${model} in 1000ms...`);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            // Wait 500ms (shorter sleep to avoid gateway timeouts) before retrying the same model
+            console.log(`[GeminiService] Transient 503 error detected. Retrying model ${model} in 500ms...`);
+            await new Promise((resolve) => setTimeout(resolve, 500));
           } else {
             // Move to the next candidate model
             break;
