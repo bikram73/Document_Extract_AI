@@ -18,7 +18,7 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 
 <div align="center">
 
-| <div align="center">Description</div> | <div align="center">Section</div> |
+| **<div align="center">Description</div>** | **<div align="center">Section</div>** |
 |--------------------------------------------------------------|------------------------------------------------|
 | <div align="center">**View the project features and capabilities.** 👉</div> | <div align="center"><a href="#features"><img src="https://img.shields.io/badge/✨%20Features-4F46E5?style=for-the-badge" /></a></div> |
 | <div align="center">**View the technologies, frameworks, and programming languages used.** 👉</div> | <div align="center"><a href="#tech-stack"><img src="https://img.shields.io/badge/🛠️%20Tech%20Stack-0891B2?style=for-the-badge" /></a></div> |
