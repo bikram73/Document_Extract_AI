@@ -14,6 +14,17 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 
 ---
 
+## 📑 Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Architecture](#architecture)
+- [API](#api)
+- [Sample Results](./SAMPLE_RESULTS.md)
+- [License](#license)
+
+---
+
 ## ✨ Features
 
 - **🌐 Cross-Document Intelligence**: Purpose-built parsers and validation templates for:
