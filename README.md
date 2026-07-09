@@ -10,6 +10,14 @@
   </a>
 </div>
 
+---
+
+## 🎥 Demo
+
+<p align="center">
+  <img src="public/demo.gif" alt="Document Extract AI Demo" width="900">
+</p>
+
 DocExtract AI is a full-stack web application designed to convert unstructured business documents—such as invoices, receipts, and purchase orders—into validated, structured JSON payloads. The system couples client-side parsing (digital PDF text extraction and optical character recognition) with cognitive language models to automate data extraction.
 
 ---
