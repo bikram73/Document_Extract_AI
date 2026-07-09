@@ -16,7 +16,30 @@ export class GroqService implements AIService {
       throw new Error("GROQ_API_KEY is not configured.");
     }
 
-    const model = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+    const hasImage = mimeType.startsWith("image/");
+    const customModel = process.env.GROQ_MODEL;
+
+    // Dedicated vision models for image extraction
+    const visionCandidates = [
+      "llama-3.2-11b-vision-preview",
+      "llama-3.2-90b-vision-preview",
+    ];
+
+    // Dedicated text models for PDF/text-based extraction
+    const textCandidates = [
+      "llama-3.3-70b-versatile",
+      "llama-3.1-8b-instant",
+      "mixtral-8x7b-32768",
+    ];
+
+    // Decide candidates based on input type (images must use vision-capable models)
+    let candidates = hasImage ? visionCandidates : textCandidates;
+
+    // If a custom model is provided, prioritize it
+    if (customModel) {
+      candidates = [customModel, ...candidates.filter(m => m !== customModel)];
+    }
+
     let promptText = buildPrompt();
 
     // If it's a PDF, extract the text and append it to the prompt
@@ -31,8 +54,6 @@ export class GroqService implements AIService {
       }
     }
 
-    const hasImage = mimeType.startsWith("image/");
-
     // Prepare content payload
     const content: any[] = [{ type: "text", text: promptText }];
 
@@ -45,19 +66,6 @@ export class GroqService implements AIService {
         },
       });
     }
-
-    const customModel = process.env.GROQ_MODEL;
-    const defaultCandidates = [
-      "llama-3.3-70b-versatile",
-      "llama-3.1-8b-instant",
-      "llama-3.2-11b-vision-preview",
-      "llama-3.2-90b-vision-preview",
-      "mixtral-8x7b-32768",
-    ];
-
-    const candidates = customModel
-      ? [customModel, ...defaultCandidates.filter(m => m !== customModel)]
-      : defaultCandidates;
 
     let lastError: any = null;
 
@@ -83,7 +91,7 @@ export class GroqService implements AIService {
             bodyPayload.response_format = { type: "json_object" };
           }
 
-          let response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -94,42 +102,7 @@ export class GroqService implements AIService {
 
           if (!response.ok) {
             const errText = await response.text();
-            
-            // Check if it failed due to image/vision support. If so, and we provided an image, retry as text-only!
-            if (hasImage && (response.status === 400 || response.status === 404 || errText.toLowerCase().includes("image") || errText.toLowerCase().includes("vision") || errText.toLowerCase().includes("multimodal"))) {
-              console.warn(`[GroqService] Model ${model} failed with image input. Retrying as text-only.`);
-              const retryBodyPayload: any = {
-                model: model,
-                messages: [
-                  {
-                    role: "user",
-                    content: [{ type: "text", text: promptText }],
-                  },
-                ],
-                temperature: 0.1,
-                max_tokens: 1500,
-              };
-              if (useJsonFormat) {
-                retryBodyPayload.response_format = { type: "json_object" };
-              }
-
-              const retryResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify(retryBodyPayload),
-              });
-
-              if (!retryResponse.ok) {
-                const retryErrText = await retryResponse.text();
-                throw new Error(`Groq API failed with status ${retryResponse.status}: ${retryErrText}`);
-              }
-              response = retryResponse;
-            } else {
-              throw new Error(`Groq API failed with status ${response.status}: ${errText}`);
-            }
+            throw new Error(`Groq API failed with status ${response.status}: ${errText}`);
           }
 
           const payload: any = await response.json();

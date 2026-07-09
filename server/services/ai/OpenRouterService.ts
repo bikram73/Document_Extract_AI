@@ -16,20 +16,34 @@ export class OpenRouterService implements AIService {
       throw new Error("OPENROUTER_API_KEY is not configured.");
     }
 
+    const hasImage = mimeType.startsWith("image/");
     const customModel = process.env.OPENROUTER_MODEL;
-    const defaultCandidates = [
+
+    // Dedicated vision models for image extraction
+    const visionCandidates = [
+      "google/gemini-2.5-flash",
+      "meta-llama/llama-3.2-11b-vision-instruct",
+      "meta-llama/llama-3.2-11b-vision-instruct:free",
+      "meta-llama/llama-3.2-90b-vision-instruct",
+    ];
+
+    // Dedicated text models for PDF/text-based extraction
+    const textCandidates = [
       "deepseek/deepseek-chat",
       "deepseek/deepseek-chat:free",
-      "google/gemini-2.5-flash",
       "meta-llama/llama-3.3-70b-instruct:free",
       "meta-llama/llama-3.3-70b-instruct",
       "qwen/qwen-2.5-coder-32b-instruct",
-      "meta-llama/llama-3.2-11b-vision-instruct",
+      "google/gemini-2.5-flash",
     ];
 
-    const candidates = customModel
-      ? [customModel, ...defaultCandidates.filter(m => m !== customModel)]
-      : defaultCandidates;
+    // Decide candidates based on input type (images must use vision-capable models)
+    let candidates = hasImage ? visionCandidates : textCandidates;
+
+    // If a custom model is provided, prioritize it
+    if (customModel) {
+      candidates = [customModel, ...candidates.filter(m => m !== customModel)];
+    }
 
     let promptText = buildPrompt();
 
@@ -44,8 +58,6 @@ export class OpenRouterService implements AIService {
         throw new Error(`OpenRouter does not support native PDF inputs, and PDF text extraction failed: ${err.message || err}`);
       }
     }
-
-    const hasImage = mimeType.startsWith("image/");
 
     // Prepare content payload
     const content: any[] = [{ type: "text", text: promptText }];
@@ -84,7 +96,7 @@ export class OpenRouterService implements AIService {
             bodyPayload.response_format = { type: "json_object" };
           }
 
-          let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -97,44 +109,7 @@ export class OpenRouterService implements AIService {
 
           if (!response.ok) {
             const errText = await response.text();
-            
-            // Check if it failed due to image/vision support. If so, and we provided an image, retry as text-only!
-            if (hasImage && (response.status === 400 || response.status === 404 || errText.toLowerCase().includes("image") || errText.toLowerCase().includes("endpoint") || errText.toLowerCase().includes("vision"))) {
-              console.warn(`[OpenRouterService] Model ${model} failed with image input. Retrying as text-only.`);
-              const retryBodyPayload: any = {
-                model: model,
-                messages: [
-                  {
-                    role: "user",
-                    content: [{ type: "text", text: promptText }],
-                  },
-                ],
-                temperature: 0.1,
-                max_tokens: 1500,
-              };
-              if (useJsonFormat) {
-                retryBodyPayload.response_format = { type: "json_object" };
-              }
-
-              const retryResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${apiKey}`,
-                  "HTTP-Referer": "https://docextract-ai.netlify.app",
-                  "X-Title": "DocExtract AI",
-                },
-                body: JSON.stringify(retryBodyPayload),
-              });
-
-              if (!retryResponse.ok) {
-                const retryErrText = await retryResponse.text();
-                throw new Error(`OpenRouter API failed with status ${retryResponse.status}: ${retryErrText}`);
-              }
-              response = retryResponse;
-            } else {
-              throw new Error(`OpenRouter API failed with status ${response.status}: ${errText}`);
-            }
+            throw new Error(`OpenRouter API failed with status ${response.status}: ${errText}`);
           }
 
           const payload: any = await response.json();

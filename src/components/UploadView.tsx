@@ -46,10 +46,66 @@ export default function UploadView({ onFileSelected, onSelectSample }: UploadVie
     }
 
     setError(null);
+
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            if (ctx) {
+              // Fill with white background (especially critical for transparent PNGs/WebPs so dark text remains legible)
+              ctx.fillStyle = "#FFFFFF";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(img, 0, 0);
+
+              // Export as high-quality JPEG
+              const jpegDataUrl = canvas.toDataURL("image/jpeg", 0.9);
+              const commaIndex = jpegDataUrl.indexOf(",");
+              if (commaIndex !== -1) {
+                const base64Data = jpegDataUrl.substring(commaIndex + 1);
+                // Standardize extension to .jpg for backend/display consistency
+                const baseName = file.name.substring(0, file.name.lastIndexOf(".")) || file.name;
+                onFileSelected({
+                  name: `${baseName}.jpg`,
+                  size: (file.size / (1024 * 1024)).toFixed(2) + " MB",
+                  base64Data: base64Data,
+                  mimeType: "image/jpeg",
+                  isCustom: true
+                });
+                return;
+              }
+            }
+            // Fallback if canvas context is unavailable
+            readOriginalFile(file);
+          } catch (err) {
+            console.warn("Canvas conversion failed, falling back to original file:", err);
+            readOriginalFile(file);
+          }
+        };
+        img.onerror = () => {
+          readOriginalFile(file);
+        };
+        img.src = reader.result as string;
+      };
+      reader.onerror = () => {
+        setError("Could not read file. Please try again.");
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // PDF or other non-image formats
+      readOriginalFile(file);
+    }
+  };
+
+  const readOriginalFile = (file: File) => {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
-      // Extract the raw base64 data without the dataurl header (e.g. data:image/png;base64,...)
       const commaIndex = result.indexOf(",");
       if (commaIndex !== -1) {
         const base64Data = result.substring(commaIndex + 1);
