@@ -14,22 +14,67 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 
 ---
 
-## 📑 Table of Contents
+# 📑 Table of Contents
 
-- [✨ Features](#features)
-- [🛠️ Tech Stack & Languages](#tech-stack)
-- [📂 File Structure](#file-structure)
-- [🚀 Installation & Local Setup](#installation)
-- [🏗️ Architecture Pipeline](#architecture)
-- [🧠 AI Prompt Strategy & Anti-Hallucination Guardrails](#prompt-strategy)
-- [📊 Confidence Scores Explanation](#confidence)
-- [📄 Challenge Deliverables](#deliverables)
-- [🖨️ Sample JSON Payload](#sample-json)
-- [🌐 API Documentation](#api)
-- [📄 Sample Documents & Extraction Results](#SAMPLE_RESULTS.md) (  [📄 Go To The Sample Documents Page](./SAMPLE_RESULTS.md) )
-- [⚡ Performance Notes](#performance)
-- [⚠️ Known Limitations](#limitations)
-- [📄 License](#license)
+<p align="center">
+
+<a href="#features">
+  <img src="https://img.shields.io/badge/✨%20Features-4F46E5?style=for-the-badge" />
+</a>
+
+<a href="#tech-stack">
+  <img src="https://img.shields.io/badge/🛠️%20Tech%20Stack-0891B2?style=for-the-badge" />
+</a>
+
+<a href="#file-structure">
+  <img src="https://img.shields.io/badge/📂%20File%20Structure-10B981?style=for-the-badge" />
+</a>
+
+<a href="#installation">
+  <img src="https://img.shields.io/badge/🚀%20Installation-F97316?style=for-the-badge" />
+</a>
+
+<a href="#architecture">
+  <img src="https://img.shields.io/badge/🏗️%20Architecture-DC2626?style=for-the-badge" />
+</a>
+
+<a href="#prompt-strategy">
+  <img src="https://img.shields.io/badge/🧠%20Prompt%20Strategy-7C3AED?style=for-the-badge" />
+</a>
+
+<a href="#confidence">
+  <img src="https://img.shields.io/badge/📊%20Confidence%20Scores-2563EB?style=for-the-badge" />
+</a>
+
+<a href="#deliverables">
+  <img src="https://img.shields.io/badge/📄%20Deliverables-059669?style=for-the-badge" />
+</a>
+
+<a href="#sample-json">
+  <img src="https://img.shields.io/badge/🖨️%20Sample%20JSON-E11D48?style=for-the-badge" />
+</a>
+
+<a href="#api">
+  <img src="https://img.shields.io/badge/🌐%20API%20Documentation-0EA5E9?style=for-the-badge" />
+</a>
+
+<a href="./SAMPLE_RESULTS.md">
+  <img src="https://img.shields.io/badge/📄%20Sample%20Results-14B8A6?style=for-the-badge" />
+</a>
+
+<a href="#performance">
+  <img src="https://img.shields.io/badge/⚡%20Performance-F59E0B?style=for-the-badge" />
+</a>
+
+<a href="#limitations">
+  <img src="https://img.shields.io/badge/⚠️%20Known%20Limitations-EF4444?style=for-the-badge" />
+</a>
+
+<a href="#license">
+  <img src="https://img.shields.io/badge/📄%20License-6B7280?style=for-the-badge" />
+</a>
+
+</p>
 
 ---
 <a id="features"></a>
