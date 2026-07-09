@@ -96,6 +96,28 @@ Since this is already a JPG image, GitHub will display it directly.
 
 ---
 
+# 🧾 Sample 4 — Receipt
+
+## Input Document
+
+Since this is already a PNG image, GitHub will display it directly.
+
+<img src="sample-documents/receipt2.png" width="350"/>
+
+---
+
+## Extracted JSON
+
+📄 **File:** `sample-output/receipt2.json`
+
+```json
+{
+  "... receipt json here ..."
+}
+```
+
+---
+
 # ✅ Validation Summary
 
 | Document | OCR | AI Extraction | Arithmetic Check | Date Validation | Status |
@@ -103,6 +125,7 @@ Since this is already a JPG image, GitHub will display it directly.
 | Invoice | ✅ | ✅ | ✅ | ✅ | Passed |
 | Purchase Order | ✅ | ✅ | ✅ | ✅ | Passed |
 | Receipt | ✅ | ✅ | ✅ | ✅ | Passed  |
+| Receipt 2 | ✅ | ✅ | ✅ | ✅ | Passed  |
 
 ---
 
@@ -113,12 +136,13 @@ Since this is already a JPG image, GitHub will display it directly.
 | Invoice | Tesseract OCR | Gemini 2.5 Flash | No |
 | Purchase Order | Tesseract OCR | Gemini 2.5 Flash | No |
 | Receipt | Tesseract OCR | Gemini 2.5 Flash | No |
+| Receipt 2 | Tesseract OCR | Gemini 2.5 Flash | No |
 
 ---
 
 # 📊 Overall Results
 
-- ✅ Successfully processed **3 document types**
+- ✅ Successfully processed **4 document types**
 - ✅ Extracted structured JSON
 - ✅ Performed arithmetic validation
 - ✅ Validated dates where available
