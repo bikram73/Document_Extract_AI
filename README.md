@@ -13,68 +13,17 @@
 DocExtract AI is a full-stack web application designed to convert unstructured business documents—such as invoices, receipts, and purchase orders—into validated, structured JSON payloads. The system couples client-side parsing (digital PDF text extraction and optical character recognition) with cognitive language models to automate data extraction.
 
 ---
-
 # 📑 Table of Contents
 
-<p align="center">
-
-<a href="#features">
-  <img src="https://img.shields.io/badge/✨%20Features-4F46E5?style=for-the-badge" />
-</a>
-
-<a href="#tech-stack">
-  <img src="https://img.shields.io/badge/🛠️%20Tech%20Stack-0891B2?style=for-the-badge" />
-</a>
-
-<a href="#file-structure">
-  <img src="https://img.shields.io/badge/📂%20File%20Structure-10B981?style=for-the-badge" />
-</a>
-
-<a href="#installation">
-  <img src="https://img.shields.io/badge/🚀%20Installation-F97316?style=for-the-badge" />
-</a>
-
-<a href="#architecture">
-  <img src="https://img.shields.io/badge/🏗️%20Architecture-DC2626?style=for-the-badge" />
-</a>
-
-<a href="#prompt-strategy">
-  <img src="https://img.shields.io/badge/🧠%20Prompt%20Strategy-7C3AED?style=for-the-badge" />
-</a>
-
-<a href="#confidence">
-  <img src="https://img.shields.io/badge/📊%20Confidence%20Scores-2563EB?style=for-the-badge" />
-</a>
-
-<a href="#deliverables">
-  <img src="https://img.shields.io/badge/📄%20Deliverables-059669?style=for-the-badge" />
-</a>
-
-<a href="#sample-json">
-  <img src="https://img.shields.io/badge/🖨️%20Sample%20JSON-E11D48?style=for-the-badge" />
-</a>
-
-<a href="#api">
-  <img src="https://img.shields.io/badge/🌐%20API%20Documentation-0EA5E9?style=for-the-badge" />
-</a>
-
-<a href="./SAMPLE_RESULTS.md">
-  <img src="https://img.shields.io/badge/📄%20Sample%20Results-14B8A6?style=for-the-badge" />
-</a>
-
-<a href="#performance">
-  <img src="https://img.shields.io/badge/⚡%20Performance-F59E0B?style=for-the-badge" />
-</a>
-
-<a href="#limitations">
-  <img src="https://img.shields.io/badge/⚠️%20Known%20Limitations-EF4444?style=for-the-badge" />
-</a>
-
-<a href="#license">
-  <img src="https://img.shields.io/badge/📄%20License-6B7280?style=for-the-badge" />
-</a>
-
-</p>
+| | |
+|---|---|
+| <a href="#features"><img src="https://img.shields.io/badge/✨%20Features-4F46E5?style=for-the-badge" /></a> | <a href="#tech-stack"><img src="https://img.shields.io/badge/🛠️%20Tech%20Stack-0891B2?style=for-the-badge" /></a> |
+| <a href="#file-structure"><img src="https://img.shields.io/badge/📂%20File%20Structure-10B981?style=for-the-badge" /></a> | <a href="#installation"><img src="https://img.shields.io/badge/🚀%20Installation-F97316?style=for-the-badge" /></a> |
+| <a href="#architecture"><img src="https://img.shields.io/badge/🏗️%20Architecture-DC2626?style=for-the-badge" /></a> | <a href="#prompt-strategy"><img src="https://img.shields.io/badge/🧠%20Prompt%20Strategy-7C3AED?style=for-the-badge" /></a> |
+| <a href="#confidence"><img src="https://img.shields.io/badge/📊%20Confidence%20Scores-2563EB?style=for-the-badge" /></a> | <a href="#deliverables"><img src="https://img.shields.io/badge/📄%20Challenge%20Deliverables-059669?style=for-the-badge" /></a> |
+| <a href="#sample-json"><img src="https://img.shields.io/badge/🖨️%20Sample%20JSON-E11D48?style=for-the-badge" /></a> | <a href="#api"><img src="https://img.shields.io/badge/🌐%20API%20Documentation-0EA5E9?style=for-the-badge" /></a> |
+| <a href="./SAMPLE_RESULTS.md"><img src="https://img.shields.io/badge/📄%20Sample%20Results-14B8A6?style=for-the-badge" /></a> | <a href="#performance"><img src="https://img.shields.io/badge/⚡%20Performance-F59E0B?style=for-the-badge" /></a> |
+| <a href="#limitations"><img src="https://img.shields.io/badge/⚠️%20Known%20Limitations-EF4444?style=for-the-badge" /></a> | <a href="#license"><img src="https://img.shields.io/badge/📄%20License-6B7280?style=for-the-badge" /></a> |
 
 ---
 <a id="features"></a>
