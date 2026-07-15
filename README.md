@@ -36,6 +36,8 @@ DocExtract AI is a full-stack web application designed to convert unstructured b
 | <div align="center">**View the available REST API endpoints and usage examples.** 👉</div> | <div align="center"><a href="#api"><img src="https://img.shields.io/badge/🌐%20API%20Documentation-0EA5E9?style=for-the-badge" /></a></div> |
 | <div align="center">**View an overview of the sample documents and extraction results included in this project.** 👉</div> | <div align="center"><a href="#sample-documents"><img src="https://img.shields.io/badge/📄%20Sample%20Documents%20%26%20Extraction%20Results-14B8A6?style=for-the-badge" /></a></div> |
 | <div align="center">**Open the dedicated Sample Results page to view all sample documents, images, PDFs, and extracted JSON outputs.** 👉</div> | <div align="center"><a href="./SAMPLE_RESULTS.md"><img src="https://img.shields.io/badge/📂%20Go%20To%20Sample%20Results%20Page-0EA5E9?style=for-the-badge" /></a></div> |
+| <div align="center">**Explore the complete system architecture, AI workflow, processing pipeline, data flow, deployment design, and technical decisions.** 👉</div> | <div align="center"><a href="./ARCHITECTURE.md"><img src="https://img.shields.io/badge/🏗️%20Architecture%20Document-DC2626?style=for-the-badge" /></a></div> |
+| <div align="center">**Review implementation details, AI pipeline, performance metrics, benchmarking, validation strategy, privacy, testing, and technical specifications.** 👉</div> | <div align="center"><a href="./TECHNICAL_REPORT.md"><img src="https://img.shields.io/badge/📊%20Technical%20Report-2563EB?style=for-the-badge" /></a></div> |
 | <div align="center">**Review processing speed, latency, and performance benchmarks.** 👉</div> | <div align="center"><a href="#performance"><img src="https://img.shields.io/badge/⚡%20Performance-F59E0B?style=for-the-badge" /></a></div> |
 | <div align="center">**Understand the current limitations and known failure cases of the AI extractor.** 👉</div> | <div align="center"><a href="#limitations"><img src="https://img.shields.io/badge/⚠️%20Known%20Limitations-EF4444?style=for-the-badge" /></a></div> |
 | <div align="center">**View the project license information.** 👉</div> | <div align="center"><a href="#license"><img src="https://img.shields.io/badge/📄%20License-6B7280?style=for-the-badge" /></a></div> |
@@ -451,6 +453,7 @@ This page includes:
 - AI provider information
 
 ---
+
 <a id="performance"></a>
 
 ## ⚡ Performance Notes
